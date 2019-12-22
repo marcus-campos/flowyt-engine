@@ -5,7 +5,8 @@
         {
             "id": "631bab12-1f61-43c7-9b1b-f26a538d0486",
             "action": "start",
-            "data": {}
+            "data": {},
+            "nex_action": "5e696ffc-0d57-4913-b392-9465fbc74a49"
         },
         {
             "id": "5e696ffc-0d57-4913-b392-9465fbc74a49",
@@ -14,7 +15,8 @@
                 "name": "{flow.request.name}",
                 "phone": "{flow.request.phone}",
                 "bill_value": "{lambda.util.calculate(150,2)}"
-            }
+            },
+            "nex_action": "6b43249a-659a-4003-a6b5-72227c73d734"
         },
         {
             "id": "6b43249a-659a-4003-a6b5-72227c73d734",
@@ -28,10 +30,11 @@
                     "phone": "{flow.phone}",
                     "bill_value": "{flow.bill_value}"
                 }
-            }
+            },
+            "nex_action": "1c9633c7-3b9b-40cb-8ed2-655738584f2a"
         },
         {
-            "id": "6b43249a-659a-4003-a6b5-72227c73d734",
+            "id": "1c9633c7-3b9b-40cb-8ed2-655738584f2a",
             "action": "switch",
             "data": {
                 "conditions": [
@@ -40,7 +43,7 @@
                         "first_expression": "{input.status}",
                         "operator": "equal",
                         "second_expression": "201",
-                        "next_action": "6b43249a-659a-4003-a6b5-72227c73d734"
+                        "next_action": "21458b13-b16e-4ed4-88e3-f31594a1f4a4"
                     },
                     {
                         "id": "a0fa08e7-71a1-4c22-bd33-7f8c778d8f8f",
@@ -50,15 +53,17 @@
                         "next_action": "3ed28f75-82d8-403e-b67b-2d38852fedb9"
                     }
                 ]
-            }
+            },
+            "nex_action": "{return.nex_action}"
         },
         {
-            "id": "6b43249a-659a-4003-a6b5-72227c73d734",
+            "id": "21458b13-b16e-4ed4-88e3-f31594a1f4a4",
             "action": "response",
             "data": {
                 "success": "true",
                 "msg": "Paciente cadastrado com sucesso!"
-            }
+            },
+            "nex_action": null
         },
         {
             "id": "3ed28f75-82d8-403e-b67b-2d38852fedb9",
@@ -66,7 +71,8 @@
             "data": {
                 "success": "False",
                 "msg": "Opps, algo aconteceu e o paciente não foi cadastrado :("
-            }
+            },
+            "nex_action": null
         }
     ]
 }
