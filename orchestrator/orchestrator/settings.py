@@ -1,5 +1,9 @@
+import os
+
+BASE_DIR = os.getcwd()
+
 APPS = [
     "apps.api"
 ]
 
-WORKSPACES = "../workspaces"
+WORKSPACES_DIR = "/workspaces"
