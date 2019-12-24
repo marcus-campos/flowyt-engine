@@ -12,5 +12,6 @@ for url in workspaces_urls:
         "path": url.get("path"), 
         "view": StartFlow,
         "methods": [url.get("method").upper()],
-        "kwargs": {"workspace": url.get("workspace"), "flow": url.get("flow")}
+        "kwargs": {"workspace": url.get("workspace"), "flow": url.get("flow")},
+        "subdomain": url.get("workspace")
     })

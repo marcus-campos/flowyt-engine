@@ -22,7 +22,7 @@
             "id": "6b43249a-659a-4003-a6b5-72227c73d734",
             "action": "request",
             "data": {
-                "url": "{env.base_url/v1/patient}",
+                "url": "https://webhook.site/e16a0731-3b08-4bed-bbeb-48f26a4d60d2",
                 "method": "post",
                 "headers": {},
                 "params": {

@@ -1,8 +1,8 @@
 [
     {
         "method": "post",
-        "path": "/patient/<id>/<name>",
-        "workspace": "agenda_medica",
+        "path": "/patient/<name>",
+        "workspace": "agenda-medica-dev",
         "flow": "cadastro_paciente"
     }
 ]

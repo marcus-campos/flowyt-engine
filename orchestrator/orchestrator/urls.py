@@ -4,6 +4,7 @@ from flask_restful import Api
 from apps.api.urls import urls as api_urls
 from apps.workspace.urls import urls as workspace_urls
 
+
 urls = [
     api_urls,
     workspace_urls
@@ -15,8 +16,9 @@ def load_urls(api):
             api.add_resource(
                 view.get("view"), 
                 view.get("path"), 
-                methods=view.get("methods"), 
-                resource_class_kwargs=view.get("kwargs")
+                methods=view.get("methods", None), 
+                resource_class_kwargs=view.get("kwargs", {}),
+                subdomain=view.get("subdomain", None)
             )
     
     return api

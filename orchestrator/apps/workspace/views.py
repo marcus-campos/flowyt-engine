@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource, abort
 
-from .serializers import BuildSerializer
+from apps.workspace.serializers import BuildSerializer
 
 
 class BuildDetail(Resource):

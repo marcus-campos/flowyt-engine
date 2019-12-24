@@ -5,7 +5,7 @@
         "id": "99ea46c1-cb6b-447f-97f5-6e013d7b8f05",
         "release_name": "v0.0.1"
     },
-    "environments": {
+    "env": {
         "dev": {
             "prefix": "/dev",
             "vars": {

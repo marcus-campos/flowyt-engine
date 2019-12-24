@@ -1,9 +1,8 @@
 import os
 
+# System
 BASE_DIR = os.getcwd()
+SERVER_NAME = 'orchestrator.local:5000'
 
-APPS = [
-    "apps.api"
-]
-
+# Apps
 WORKSPACES_DIR = "/workspaces"
