@@ -38,9 +38,9 @@
                 "conditions": [
                     {
                         "id": "e2882513-db85-4464-a2f1-1f8981389637",
-                        "first_expression": "{response.name}",
+                        "first_expression": "${response.data.city}",
                         "operator": "equal",
-                        "second_expression": "201",
+                        "second_expression": "Betim",
                         "next_action": "21458b13-b16e-4ed4-88e3-f31594a1f4a4"
                     },
                     {
@@ -52,7 +52,7 @@
                     }
                 ]
             },
-            "next_action": "21458b13-b16e-4ed4-88e3-f31594a1f4a4"
+            "next_action": "${pipeline.next_action}"
         },
         {
             "id": "21458b13-b16e-4ed4-88e3-f31594a1f4a4",
@@ -67,7 +67,7 @@
             "id": "3ed28f75-82d8-403e-b67b-2d38852fedb9",
             "action": "response",
             "data": {
-                "success": "False",
+                "success": "false",
                 "msg": "Opps, algo aconteceu e o paciente não foi cadastrado :("
             },
             "next_action": null
