@@ -6,6 +6,7 @@ import json
 from apps.api.serializers import StartSerializer
 from apps.workspace.flows.pipeline.pipeline import Pipeline
 
+
 class StartFlow(Resource):
 
     serializer_class = StartSerializer()
@@ -15,19 +16,17 @@ class StartFlow(Resource):
 
     def handle(self, *args, **kwargs):
         request_data = self.__get_request_data(*args, **kwargs)
-        self.pipeline_class.start(
-            request_data=request_data
-        )
-    
+        self.pipeline_class.start(request_data=request_data)
+
     def __get_request_data(self, *args, **kwargs):
         request_data = {
             "headers": dict(request.headers),
-            "params": locals().get('kwargs', {}),
+            "params": locals().get("kwargs", {}),
             "qs": request.args.to_dict(),
             "form": request.form.to_dict(),
-            "data": request.get_json()
+            "data": request.get_json(),
         }
-        
+
         return request_data
 
     def get(self, *args, **kwargs):

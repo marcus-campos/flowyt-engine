@@ -1,6 +1,7 @@
 from apps.workspace.flows.pipeline.actions.actions import get_action
 
-class Actions():
+
+class Actions:
     def __init__(self, pipeline):
         self.actions = {}
         self.__first_action = None
@@ -20,14 +21,15 @@ class Actions():
 
     def next_action(self):
         self.__current_action = self.__next_action
-        
+
         if not self.__current_action:
             return None
 
         self.__next_action = self.actions[self.__current_action].next_action
         return self.actions.get(self.__current_action)
 
-class Action():
+
+class Action:
     def __init__(self, action_settings):
         self.settings = action_settings
         self.__load_action(action_settings)

@@ -1,7 +1,7 @@
 from flask_restful import reqparse
 
 
-class GenericSerializer():
+class GenericSerializer:
     def __init__(self):
         self.parser = reqparse.RequestParser(bundle_errors=True)
         self.rules(self.parser)

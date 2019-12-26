@@ -13,5 +13,5 @@ api = Api(app)
 # Load urls
 api = load_urls(api)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)

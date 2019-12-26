@@ -23,7 +23,7 @@
                 "url": "https://webhook.site/e16a0731-3b08-4bed-bbeb-48f26a4d60d2",
                 "method": "post",
                 "headers": {},
-                "params": {
+                "data": {
                     "name": "${flow.name}"
                 }
             },
