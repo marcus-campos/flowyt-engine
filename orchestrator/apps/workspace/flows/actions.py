@@ -25,13 +25,15 @@ class Actions:
         self.__current_action = self.__next_action
 
         elements = {}
-        
+
         if type(self.__current_action) is str:
             elements = re.findall("\$\{.*?\}", self.__current_action)
-       
+
         if len(elements) > 0:
             for element in elements:
-                result = contexted_run_pipeline(context=pipeline_context, source=element)
+                result = contexted_run_pipeline(
+                    context=pipeline_context, source=element
+                )
                 self.__current_action = self.__current_action.replace(
                     element, str(result)
                 )

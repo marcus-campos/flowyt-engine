@@ -14,7 +14,7 @@ class GenericAction:
                 "next_flow": pipeline_context.get("next_flow", None),
                 "next_action": pipeline_context.get("next_action", None),
             }
-            
+
         return context
 
     def start(self, context):

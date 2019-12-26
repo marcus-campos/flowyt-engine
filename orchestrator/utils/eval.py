@@ -24,8 +24,8 @@ def contexted_run(context, source):
                 "session": session,
                 "workspace": workspace,
                 "function": function,
-                "response": response
-            }
+                "response": response,
+            },
         )
     except SyntaxError:
         pass
@@ -44,7 +44,7 @@ def contexted_run_pipeline(context, source):
     result = None
 
     try:
-        result = eval(source,  {"pipeline": pipeline})
+        result = eval(source, {"pipeline": pipeline})
     except SyntaxError:
         pass
 

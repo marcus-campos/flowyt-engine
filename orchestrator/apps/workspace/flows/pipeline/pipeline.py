@@ -29,7 +29,7 @@ class Pipeline:
             "private": {"integrations": self.workspace_class.integrations},
             "pipeline_context": {},
         }
-        
+
         # While proccess vars
         process_pipeline = True
         pipeline_response = {}
@@ -52,7 +52,7 @@ class Pipeline:
                 action = actions.next_action(context.pipeline_context)
                 if not action:
                     has_actions = False
-                    #TODO: if next_flow not empty change start_flow
+                    # TODO: if next_flow not empty change start_flow
                     process_pipeline = False
                     return
 
@@ -64,18 +64,19 @@ class Pipeline:
 
                 # Remove action response if exists
                 if action_response == context.public.response:
-                    action_response = {},
+                    action_response = ({},)
                     context.public.response = {}
                 else:
                     action_response = context.public.response
 
                 # Stop pipeline if get response
-                if context.pipeline_context.get('response'):
+                if context.pipeline_context.get("response"):
                     process_pipeline = False
                     has_actions = False
-                    pipeline_response = context.pipeline_context.get('response')
-                    
+                    pipeline_response = context.pipeline_context.get("response")
+
         return pipeline_response
+
 
 def run(name):
     return name
