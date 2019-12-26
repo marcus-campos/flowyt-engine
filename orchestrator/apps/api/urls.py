@@ -1,11 +1,10 @@
 import json
-from orchestrator.settings import (BASE_DIR, WORKSPACES_DIR)
+from utils.json_parser import parse_json_file
 from .views import StartFlow
 
 urls = []
 
-with open(BASE_DIR + WORKSPACES_DIR + "/urls.json", 'r') as f:
-    workspaces_urls = json.load(f)
+workspaces_urls = parse_json_file('/urls.json')
 
 for url in workspaces_urls:
     urls.append({

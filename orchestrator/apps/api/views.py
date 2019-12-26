@@ -4,22 +4,18 @@ from flask_restful import Resource, abort
 import json
 
 from apps.api.serializers import StartSerializer
-from apps.engine.pipeline import Pipeline
+from apps.workspace.flows.pipeline.pipeline import Pipeline
 
 class StartFlow(Resource):
 
     serializer_class = StartSerializer()
-    pipeline_class = Pipeline()
 
     def __init__(self, workspace, flow, *args, **kwargs):
-        self.workspace = workspace
-        self.flow = flow
+        self.pipeline_class = Pipeline(workspace, flow)
 
     def handle(self, *args, **kwargs):
         request_data = self.__get_request_data(*args, **kwargs)
         self.pipeline_class.start(
-            workspace=self.workspace, 
-            flow=self.flow,
             request_data=request_data
         )
     
