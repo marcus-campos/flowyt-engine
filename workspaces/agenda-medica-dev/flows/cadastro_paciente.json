@@ -12,7 +12,7 @@
             "id": "5e696ffc-0d57-4913-b392-9465fbc74a49",
             "action": "flow_var",
             "data": {
-                "name": "{% lambda['test'].run('123') %}"
+                "name": "${request.data.name}"
             },
             "next_action": "6b43249a-659a-4003-a6b5-72227c73d734"
         },
@@ -24,9 +24,7 @@
                 "method": "post",
                 "headers": {},
                 "params": {
-                    "name": "{flow.name}",
-                    "phone": "{flow.phone}",
-                    "bill_value": "{flow.bill_value}"
+                    "name": "${flow.name}"
                 }
             },
             "next_action": "1c9633c7-3b9b-40cb-8ed2-655738584f2a"
@@ -38,7 +36,7 @@
                 "conditions": [
                     {
                         "id": "e2882513-db85-4464-a2f1-1f8981389637",
-                        "first_expression": "{input.status}",
+                        "first_expression": "${response.name}",
                         "operator": "equal",
                         "second_expression": "201",
                         "next_action": "21458b13-b16e-4ed4-88e3-f31594a1f4a4"

@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 flask = "*"
 flask-restful = "*"
+dotmap = "*"
 
 [requires]
 python_version = "3.8"
