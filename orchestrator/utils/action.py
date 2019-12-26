@@ -6,17 +6,20 @@ class GenericAction:
     def __init__(self, action_data=None):
         self.action_data = action_data
 
-    def next_action(self, context, params=None):
-        if params:
-            context["pipeline_context"] = {
-                "next_flow": params.get("next_flow", None),
-                "next_action": params.get("next_action", None),
+    def next_action(self, context, pipeline_context=None):
+        context.pipeline_context = {}
+        if pipeline_context:
+            context.pipeline_context = {
+                "response": pipeline_context.get("response", None),
+                "next_flow": pipeline_context.get("next_flow", None),
+                "next_action": pipeline_context.get("next_action", None),
             }
+            
         return context
 
     def start(self, context):
         self.action_data = self.load_action_data(self.action_data, context)
-        self.handle(self.action_data, context)
+        context = self.handle(self.action_data, context)
         return self.next_action(context)
 
     def handle(self, action_data, context):

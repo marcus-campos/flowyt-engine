@@ -1,4 +1,6 @@
 from apps.workspace.flows.pipeline.actions.actions import get_action
+from utils.eval import contexted_run_pipeline
+import re
 
 
 class Actions:
@@ -19,8 +21,20 @@ class Actions:
                 self.__next_action = action["id"]
                 actions_added = True
 
-    def next_action(self):
+    def next_action(self, pipeline_context):
         self.__current_action = self.__next_action
+
+        elements = {}
+        
+        if type(self.__current_action) is str:
+            elements = re.findall("\$\{.*?\}", self.__current_action)
+       
+        if len(elements) > 0:
+            for element in elements:
+                result = contexted_run_pipeline(context=pipeline_context, source=element)
+                self.__current_action = self.__current_action.replace(
+                    element, str(result)
+                )
 
         if not self.__current_action:
             return None

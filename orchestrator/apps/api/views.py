@@ -16,7 +16,7 @@ class StartFlow(Resource):
 
     def handle(self, *args, **kwargs):
         request_data = self.__get_request_data(*args, **kwargs)
-        self.pipeline_class.start(request_data=request_data)
+        return self.pipeline_class.start(request_data=request_data)
 
     def __get_request_data(self, *args, **kwargs):
         request_data = {

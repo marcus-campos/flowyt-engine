@@ -11,8 +11,8 @@ class Pipeline:
         self.workspace_class = Workspace(self.workspace)
 
     def start(self, request_data):
+        # Config pipeline
         start_flow = self.flow
-        process_pipeline = True
         context = {
             "public": {
                 "workspace": {
@@ -29,32 +29,53 @@ class Pipeline:
             "private": {"integrations": self.workspace_class.integrations},
             "pipeline_context": {},
         }
-
+        
+        # While proccess vars
+        process_pipeline = True
+        pipeline_response = {}
         while process_pipeline:
+            # Load flow
             flow_class = Flow(self.workspace, start_flow)
+            # Get action
             actions = flow_class.pipeline
 
+            # While proccess vars
             has_actions = True
             action_response = {}
             while has_actions:
+                # Context vars
                 context["public"]["flow"] = flow_class.vars
                 context["public"]["response"] = action_response
                 context = DotMap(context)
 
-                action = actions.next_action()
+                # Get next action
+                action = actions.next_action(context.pipeline_context)
                 if not action:
                     has_actions = False
+                    #TODO: if next_flow not empty change start_flow
+                    process_pipeline = False
                     return
 
+                # Execute action
                 context = action.action.start(context)
 
+                # Add flow vars
                 flow_class.vars = context.public.flow
 
-                action_response = context.public.input
-                context.public.input = {}
+                # Remove action response if exists
+                if action_response == context.public.response:
+                    action_response = {},
+                    context.public.response = {}
+                else:
+                    action_response = context.public.response
 
-            process_pipeline = False
-
+                # Stop pipeline if get response
+                if context.pipeline_context.get('response'):
+                    process_pipeline = False
+                    has_actions = False
+                    pipeline_response = context.pipeline_context.get('response')
+                    
+        return pipeline_response
 
 def run(name):
     return name

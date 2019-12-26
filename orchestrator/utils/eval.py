@@ -24,9 +24,27 @@ def contexted_run(context, source):
                 "session": session,
                 "workspace": workspace,
                 "function": function,
-                "response": response,
-            },
+                "response": response
+            }
         )
+    except SyntaxError:
+        pass
+
+    if type(result) is not str:
+        result = "null"
+
+    return result
+
+
+def contexted_run_pipeline(context, source):
+    pipeline = context
+
+    # Remove ${} from string
+    source = source.replace("${", "")[:-1]
+    result = None
+
+    try:
+        result = eval(source,  {"pipeline": pipeline})
     except SyntaxError:
         pass
 
