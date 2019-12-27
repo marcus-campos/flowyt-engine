@@ -1,3 +1,5 @@
+import json
+
 from dotmap import DotMap
 
 
@@ -26,6 +28,7 @@ def contexted_run(context, source):
                 "function": function,
                 "response": response,
             },
+            {"json": json},
         )
     except SyntaxError:
         pass
