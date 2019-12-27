@@ -64,7 +64,7 @@ class Pipeline:
 
                 # Remove action response if exists
                 if action_response == context.public.response:
-                    action_response = ({},)
+                    action_response = {}
                     context.public.response = {}
                 else:
                     action_response = context.public.response
