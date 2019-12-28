@@ -30,7 +30,7 @@ class Pipeline:
             "private": {"integrations": self.workspace_class.integrations},
             "pipeline_context": {},
         }
-        
+
         # While proccess vars
         process_pipeline = True
         pipeline_response = {}
