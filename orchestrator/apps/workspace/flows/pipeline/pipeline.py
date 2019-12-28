@@ -1,14 +1,15 @@
 from dotmap import DotMap
 from apps.workspace.workspace import Workspace
 from apps.workspace.flows.flow import Flow
+from apps.workspace.functions import Functions
 
 
 class Pipeline:
     def __init__(self, workspace, flow):
         self.flow = flow
         self.workspace = workspace
-
         self.workspace_class = Workspace(self.workspace)
+        self.functions_class = Functions(self.workspace)
 
     def start(self, request_data):
         # Config pipeline
@@ -23,7 +24,7 @@ class Pipeline:
                 "env": self.workspace_class.env,
                 "session": {},
                 "request": request_data,
-                "function": {"test": run},
+                "function": self.functions_class.workspace_functions,
                 "response": {},
             },
             "private": {"integrations": self.workspace_class.integrations},
@@ -76,7 +77,3 @@ class Pipeline:
                     pipeline_response = context.pipeline_context.get("response")
 
         return pipeline_response
-
-
-def run(name):
-    return name

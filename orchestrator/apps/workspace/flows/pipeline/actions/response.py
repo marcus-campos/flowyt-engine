@@ -20,9 +20,9 @@ class Response(GenericAction):
         for key in action_data:
             if isinstance(action_data[key], dict):
                 self.__load_json_fields(action_data[key])
-            
+
             data = self.__is_json(str(action_data[key]))
-            
+
             if data:
                 action_data[key] = data
 
