@@ -52,6 +52,9 @@ class Request(GenericAction):
             "status_code": response.status_code,
             "data": response.json() if len(response.text) > 0 else {},
             "headers": response.headers,
+            "elapsed": {
+                "total_seconds": response.elapsed.total_seconds()
+            }
         }
 
         return context
