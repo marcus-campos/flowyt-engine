@@ -18,7 +18,7 @@ def contexted_run(context, source):
 
     try:
         result = eval(
-            source,
+            "str({0})".format(source),
             {
                 "env": env,
                 "flow": flow,
@@ -47,7 +47,7 @@ def contexted_run_pipeline(context, source):
     result = None
 
     try:
-        result = eval(source, {"pipeline": pipeline})
+        result = eval("str({0})".format(source), {"pipeline": pipeline})
     except SyntaxError:
         pass
 
