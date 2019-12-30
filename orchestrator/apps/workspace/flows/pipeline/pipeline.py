@@ -12,8 +12,7 @@ class Pipeline:
         self.functions_class = Functions(self.workspace)
 
     def start(self, request_data):
-        # Config pipeline
-        start_flow = self.flow
+        # Config context
         context = {
             "public": {
                 "workspace": {
@@ -30,6 +29,12 @@ class Pipeline:
             "private": {"integrations": self.workspace_class.integrations},
             "pipeline_context": {},
         }
+
+        return self.process(context)
+
+    def process(self, context):
+        # Config pipeline
+        start_flow = self.flow
 
         # While proccess vars
         process_pipeline = True
@@ -53,7 +58,6 @@ class Pipeline:
                 action = actions.next_action(context.pipeline_context)
                 if not action:
                     has_actions = False
-                    # TODO: if next_flow not empty change start_flow
                     process_pipeline = False
                     return
 
@@ -75,5 +79,15 @@ class Pipeline:
                     process_pipeline = False
                     has_actions = False
                     pipeline_response = context.pipeline_context.get("response")
+
+                # Jump flow
+                if context.pipeline_context.get("next_flow"):
+                    has_actions = False
+                    start_flow = context.pipeline_context.get("next_flow")
+
+                    # Clear context vars
+                    action_response = {}
+                    context.public.response = {}
+                    
 
         return pipeline_response
