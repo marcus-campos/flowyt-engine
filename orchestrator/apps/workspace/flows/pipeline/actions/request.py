@@ -5,6 +5,7 @@ from utils.http import HttpRequest
 
 
 class Request(GenericAction):
+
     def start(self, context):
         self.action_data = self.load_action_data(self.action_data, context)
         context = self.handle(self.action_data, context)
@@ -28,25 +29,8 @@ class Request(GenericAction):
             "headers": action_data.get("headers"),
         }
 
-        response = {}
-
-        if action_data.get("method") == "get":
-            request_data["params"] = request_data["data"]
-            del request_data["data"]
-            response = request.get(**request_data)
-
-        if action_data.get("method") == "post":
-            response = request.post(**request_data)
-
-        if action_data.get("method") == "put":
-            response = request.put(**request_data)
-
-        if action_data.get("method") == "path":
-            response = request.path(**request_data)
-
-        if action_data.get("method") == "delete":
-            del request_data["data"]
-            response = request.delete(**request_data)
+        handler = getattr(self, request.method.lower())
+        response = handler(request_data)
 
         context.public.response = {
             "status_code": response.status_code,
@@ -58,3 +42,21 @@ class Request(GenericAction):
         }
 
         return context
+
+        def get(self, request_data):
+            request_data["params"] = request_data["data"]
+            del request_data["data"]
+            return request.get(**request_data)
+
+        def post(self, request_data):
+            return request.post(**request_data)
+
+        def patch(self, request_data):
+            return request.put(**request_data)
+
+        def put(self, request_data):
+            return request.patch(**request_data)
+
+        def delete(self, request_data):
+            return request.delete(**request_data)
+
