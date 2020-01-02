@@ -5,7 +5,6 @@ from utils.http import HttpRequest
 
 
 class Request(GenericAction):
-
     def start(self, context):
         self.action_data = self.load_action_data(self.action_data, context)
         context = self.handle(self.action_data, context)
@@ -36,9 +35,7 @@ class Request(GenericAction):
             "status_code": response.status_code,
             "data": response.json() if len(response.text) > 0 else {},
             "headers": response.headers,
-            "elapsed": {
-                "total_seconds": response.elapsed.total_seconds()
-            }
+            "elapsed": {"total_seconds": response.elapsed.total_seconds()},
         }
 
         return context
@@ -59,4 +56,3 @@ class Request(GenericAction):
 
         def delete(self, request_data):
             return request.delete(**request_data)
-

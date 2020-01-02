@@ -88,6 +88,5 @@ class Pipeline:
                     # Clear context vars
                     action_response = {}
                     context.public.response = {}
-                    
 
         return pipeline_response
