@@ -14,7 +14,7 @@ class Functions:
         functions_path = BASE_DIR + WORKSPACES_DIR + "/{0}/functions".format(workspace)
 
         for module in os.listdir(functions_path):
-            if module == "__init__.py" or module[-3:] != ".py":
+            if self.__skip_module(module):
                 continue
 
             spec = importlib.util.spec_from_file_location(
@@ -23,3 +23,6 @@ class Functions:
             module_loaded = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module_loaded)
             self.workspace_functions[module[:-3]] = module_loaded
+
+    def __skip_module(self, module):
+        return module == "__init__.py" or not module.endswith(".py")
