@@ -32,6 +32,8 @@ class Pipeline:
 
         return self.process(context)
 
+    # TODO essa função precisava muito de um refactor. Ela acabou se tornando bem grande e responsável
+    #  por muitas coisas. Queria fazer isso a 8 mãos, se possível
     def process(self, context):
         # Config pipeline
         start_flow = self.flow
@@ -39,7 +41,6 @@ class Pipeline:
         # While proccess vars
         process_pipeline = True
         pipeline_response = {}
-
         while process_pipeline:
             # Load flow
             flow_class = Flow(self.workspace, start_flow)
@@ -58,8 +59,6 @@ class Pipeline:
                 # Get next action
                 action = actions.next_action(context.pipeline_context)
                 if not action:
-                    has_actions = False
-                    process_pipeline = False
                     return
 
                 # Execute action
