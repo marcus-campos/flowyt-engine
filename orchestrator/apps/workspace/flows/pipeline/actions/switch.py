@@ -1,9 +1,10 @@
-import re
-
 from utils.action import GenericAction
 
 
 class Switch(GenericAction):
+    def __init__(self):
+        self.action_data = None
+
     def start(self, context):
         self.action_data = self.load_action_data(self.action_data, context)
 
