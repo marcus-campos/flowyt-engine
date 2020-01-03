@@ -1,7 +1,7 @@
-from dotmap import DotMap
-from apps.workspace.workspace import Workspace
 from apps.workspace.flows.flow import Flow
 from apps.workspace.functions import Functions
+from apps.workspace.workspace import Workspace
+from dotmap import DotMap
 
 
 class Pipeline:
@@ -39,6 +39,7 @@ class Pipeline:
         # While proccess vars
         process_pipeline = True
         pipeline_response = {}
+
         while process_pipeline:
             # Load flow
             flow_class = Flow(self.workspace, start_flow)
