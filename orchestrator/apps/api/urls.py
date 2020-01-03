@@ -1,5 +1,5 @@
-import json
 from utils.json_parser import parse_json_file
+
 from .views import StartFlow
 
 urls = []

@@ -32,12 +32,8 @@ class Actions:
 
         if len(elements) > 0:
             for element in elements:
-                result = contexted_run_pipeline(
-                    context=pipeline_context, source=element
-                )
-                self.__current_action = self.__current_action.replace(
-                    element, str(result)
-                )
+                result = contexted_run_pipeline(context=pipeline_context, source=element)
+                self.__current_action = self.__current_action.replace(element, str(result))
 
         if not self.__current_action:
             return None

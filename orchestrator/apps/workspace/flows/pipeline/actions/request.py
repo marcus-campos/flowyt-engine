@@ -15,9 +15,7 @@ class Request(GenericAction):
         if status_code < 200 or status_code > 299:
             pipeline_context["next_action"] = self.action_data.get("next_action_fail")
         else:
-            pipeline_context["next_action"] = self.action_data.get(
-                "next_action_success"
-            )
+            pipeline_context["next_action"] = self.action_data.get("next_action_success")
 
         return self.next_action(context, pipeline_context)
 

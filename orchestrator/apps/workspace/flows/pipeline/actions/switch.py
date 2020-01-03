@@ -17,30 +17,22 @@ class Switch(GenericAction):
 
         for condition in action_data.get("conditions"):
             if condition.get("operator") == "equal":
-                result = condition.get("first_expression") == condition.get(
-                    "second_expression"
-                )
+                result = condition.get("first_expression") == condition.get("second_expression")
                 next_action = condition.get("next_action") if result else None
                 break
 
             if condition.get("operator") == "different":
-                result = condition.get("first_expression") != condition.get(
-                    "second_expression"
-                )
+                result = condition.get("first_expression") != condition.get("second_expression")
                 next_action = condition.get("next_action") if result else None
                 break
 
             if condition.get("operator") == "greater than":
-                result = condition.get("first_expression") > condition.get(
-                    "second_expression"
-                )
+                result = condition.get("first_expression") > condition.get("second_expression")
                 next_action = condition.get("next_action") if result else None
                 break
 
             if condition.get("operator") == "less than":
-                result = condition.get("first_expression") < condition.get(
-                    "second_expression"
-                )
+                result = condition.get("first_expression") < condition.get("second_expression")
                 next_action = condition.get("next_action") if result else None
                 break
 
