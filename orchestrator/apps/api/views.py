@@ -1,10 +1,7 @@
-from flask import request
-from flask_restful import Resource, abort
-
-import json
-
 from apps.api.serializers import StartSerializer
 from apps.workspace.flows.pipeline.pipeline import Pipeline
+from flask import request
+from flask_restful import Resource
 
 
 class StartFlow(Resource):

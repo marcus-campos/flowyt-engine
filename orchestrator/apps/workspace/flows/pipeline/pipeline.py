@@ -1,7 +1,7 @@
-from dotmap import DotMap
-from apps.workspace.workspace import Workspace
 from apps.workspace.flows.flow import Flow
 from apps.workspace.functions import Functions
+from apps.workspace.workspace import Workspace
+from dotmap import DotMap
 
 
 class Pipeline:
@@ -32,6 +32,8 @@ class Pipeline:
 
         return self.process(context)
 
+    # TODO essa função precisava muito de um refactor. Ela acabou se tornando bem grande e responsável
+    #  por muitas coisas. Queria fazer isso a 8 mãos, se possível
     def process(self, context):
         # Config pipeline
         start_flow = self.flow
@@ -57,8 +59,6 @@ class Pipeline:
                 # Get next action
                 action = actions.next_action(context.pipeline_context)
                 if not action:
-                    has_actions = False
-                    process_pipeline = False
                     return
 
                 # Execute action
@@ -88,6 +88,5 @@ class Pipeline:
                     # Clear context vars
                     action_response = {}
                     context.public.response = {}
-                    
 
         return pipeline_response

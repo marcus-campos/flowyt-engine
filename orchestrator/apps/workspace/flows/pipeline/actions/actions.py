@@ -1,9 +1,9 @@
 from .default import Default
-from .start import Start
 from .flow_var import FlowVar
 from .request import Request
-from .switch import Switch
 from .response import Response
+from .start import Start
+from .switch import Switch
 
 __actions = {
     "start": Start,
