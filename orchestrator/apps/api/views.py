@@ -17,11 +17,10 @@ class StartFlow(Resource):
 
         status = result.get("status", 200)
         _status = result.get("_status", None)
-        
+
         if _status:
             del result["_status"]
             status = _status
-
 
         return result, status
 

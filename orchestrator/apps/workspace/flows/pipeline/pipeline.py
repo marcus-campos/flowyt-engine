@@ -49,7 +49,7 @@ class Pipeline:
                     "id": self.workspace_class.id,
                     "name": self.workspace_class.name,
                     "elapsed_time": time.time() - start_time,
-                    "flows": self.debug_logs
+                    "flows": self.debug_logs,
                 }
             }
 
@@ -80,11 +80,13 @@ class Pipeline:
 
             # Debug logs
             if context.get("private").get("pipeline_debug"):
-                self.debug_logs.append({
-                    "name": self.flow,
-                    "elapsed_time": time.time() - start_time,
-                    "actions": json.loads(json.dumps(pipeline_actions.debug_actions_logs))
-                })
+                self.debug_logs.append(
+                    {
+                        "name": self.flow,
+                        "elapsed_time": time.time() - start_time,
+                        "actions": json.loads(json.dumps(pipeline_actions.debug_actions_logs)),
+                    }
+                )
 
         return pipeline_response
 
@@ -108,25 +110,25 @@ class PipelineActions:
         while self.has_actions:
             # Get start action process time
             start_time = time.time()
-            
+
             # Contexted action vars
             self.contexted_action_vars()
-            
+
             # Execute action
             action = self.execute_action()
             if not action:
                 self.has_actions = False
                 return None
-            
+
             # Add flow vars
             self.flow_class.vars = self.context.public.flow
-            
+
             # Remove action response if exists
             self.clean_action_response()
-            
+
             # Jump flow
             self.jump_flow()
-            
+
             # Debug logs
             if self.context.private.pipeline_debug:
                 self.debug_log(action, start_time)
@@ -149,29 +151,21 @@ class PipelineActions:
             self.execution_error = True
             print(action)
 
-            if hasattr(e, 'message'):
+            if hasattr(e, "message"):
                 self.pipeline_response = {
                     "_status": 500,
                     "exception": {
                         "message": e.message,
-                        "action": {
-                            "id": action.id,
-                            "name": action.action_name,
-                            "data": action.data
-                        }
-                    }
+                        "action": {"id": action.id, "name": action.action_name, "data": action.data},
+                    },
                 }
             else:
                 self.pipeline_response = {
                     "_status": 500,
                     "exception": {
                         "message": str(e),
-                        "action": {
-                            "id": action.id,
-                            "name": action.action_name,
-                            "data": action.data
-                        }
-                    }
+                        "action": {"id": action.id, "name": action.action_name, "data": action.data},
+                    },
                 }
 
         return action
@@ -190,15 +184,14 @@ class PipelineActions:
             self.action_response = self.context.public.response
 
     def debug_log(self, action, start_time):
-        self.debug_actions_logs.append({
-            "action": {
+        self.debug_actions_logs.append(
+            {
                 "id": action.id,
                 "name": action.action_name,
                 "data": action.data,
-                "time_spent": time.time() - start_time
+                "time_spent": time.time() - start_time,
             }
-        })
-
+        )
 
     def jump_flow(self):
         if self.context.pipeline_context.get("next_flow"):

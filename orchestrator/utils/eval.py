@@ -37,7 +37,6 @@ def contexted_run(context, source):
     if type(result) in [int, float]:
         result = str(result)
 
-   
     if type(result) is DotMap:
         aux_result = result.toDict()
         if type(aux_result) is dict and aux_result != {}:
