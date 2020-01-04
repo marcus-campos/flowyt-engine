@@ -11,6 +11,7 @@ class Workspace:
 
         self.id = workspace_settings.get("id")
         self.name = workspace_settings.get("name")
+        self.debug = workspace_settings.get("debug")
         self.release = workspace_settings.get("release", {})
         self.integrations = workspace_settings.get("integrations", {})
         self.env = workspace_settings.get("env", {})

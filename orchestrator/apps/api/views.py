@@ -13,7 +13,12 @@ class StartFlow(Resource):
 
     def handle(self, *args, **kwargs):
         request_data = self.__get_request_data(*args, **kwargs)
-        return self.pipeline_class.start(request_data=request_data)
+        result = self.pipeline_class.start(request_data=request_data)
+
+        if result.get("execution_error"):
+            return result.get("pipeline_response"), 500
+        
+        return result.get("pipeline_response") 
 
     def __get_request_data(self, *args, **kwargs):
         request_data = {
