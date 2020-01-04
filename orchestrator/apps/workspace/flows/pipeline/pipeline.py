@@ -147,16 +147,31 @@ class PipelineActions:
             self.process_pipeline = False
             self.has_actions = False
             self.execution_error = True
+            print(action)
 
             if hasattr(e, 'message'):
                 self.pipeline_response = {
                     "_status": 500,
-                    "exception": e.message
+                    "exception": {
+                        "message": e.message,
+                        "action": {
+                            "id": action.id,
+                            "name": action.action_name,
+                            "data": action.data
+                        }
+                    }
                 }
             else:
                 self.pipeline_response = {
                     "_status": 500,
-                    "exception": str(e)
+                    "exception": {
+                        "message": str(e),
+                        "action": {
+                            "id": action.id,
+                            "name": action.action_name,
+                            "data": action.data
+                        }
+                    }
                 }
 
         return action
