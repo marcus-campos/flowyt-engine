@@ -52,11 +52,8 @@ class Pipeline:
                     "flows": self.debug_logs
                 }
             }
-            
-        return { 
-            "execution_error": self.execution_error,
-            "pipeline_response": result
-        }
+
+        return result
 
     def process(self, context):
         # Current flow
@@ -111,25 +108,25 @@ class PipelineActions:
         while self.has_actions:
             # Get start action process time
             start_time = time.time()
-
+            
             # Contexted action vars
             self.contexted_action_vars()
-
+            
             # Execute action
             action = self.execute_action()
             if not action:
                 self.has_actions = False
                 return None
-
+            
             # Add flow vars
             self.flow_class.vars = self.context.public.flow
-
+            
             # Remove action response if exists
             self.clean_action_response()
-
+            
             # Jump flow
             self.jump_flow()
-
+            
             # Debug logs
             if self.context.private.pipeline_debug:
                 self.debug_log(action, start_time)
@@ -152,9 +149,15 @@ class PipelineActions:
             self.execution_error = True
 
             if hasattr(e, 'message'):
-                self.pipeline_response["exception"] = e.message
+                self.pipeline_response = {
+                    "_status": 500,
+                    "exception": e.message
+                }
             else:
-                self.pipeline_response["exception"] = str(e)
+                self.pipeline_response = {
+                    "_status": 500,
+                    "exception": str(e)
+                }
 
         return action
 
