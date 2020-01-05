@@ -13,7 +13,6 @@ flask = "*"
 flask-restful = "*"
 dotmap = "*"
 requests = "*"
-pyyaml = "*"
 
 [requires]
 python_version = "3.8"

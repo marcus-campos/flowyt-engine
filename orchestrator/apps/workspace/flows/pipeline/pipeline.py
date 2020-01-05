@@ -149,7 +149,6 @@ class PipelineActions:
             self.process_pipeline = False
             self.has_actions = False
             self.execution_error = True
-            print(action)
 
             if hasattr(e, "message"):
                 self.pipeline_response = {
