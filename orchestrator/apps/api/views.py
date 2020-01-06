@@ -13,7 +13,16 @@ class StartFlow(Resource):
 
     def handle(self, *args, **kwargs):
         request_data = self.__get_request_data(*args, **kwargs)
-        return self.pipeline_class.start(request_data=request_data)
+        result = self.pipeline_class.start(request_data=request_data)
+
+        status = result.get("status", 200)
+        _status = result.get("_status", None)
+
+        if _status:
+            del result["_status"]
+            status = _status
+
+        return result, status
 
     def __get_request_data(self, *args, **kwargs):
         request_data = {

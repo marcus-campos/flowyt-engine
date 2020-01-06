@@ -50,6 +50,7 @@ class Action:
 
     def __load_action(self, action_settings):
         self.id = action_settings["id"]
+        self.action_name = action_settings["action"]
         self.data = action_settings.get("data", {})
-        self.action = get_action(action_settings["action"])(action_data=self.data)
+        self.action = get_action(self.action_name)(action_data=self.data)
         self.next_action = action_settings["next_action"]
