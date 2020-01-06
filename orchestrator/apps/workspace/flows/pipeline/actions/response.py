@@ -27,5 +27,5 @@ class Response(GenericAction):
     def __is_dict(self, data):
         try:
             return ast.literal_eval(data)
-        except ValueError as e:
+        except:
             return False
