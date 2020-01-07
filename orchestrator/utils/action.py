@@ -43,27 +43,10 @@ class GenericAction:
 
             for element in elements:
                 result = contexted_run(context=context, source=element)
-                action_data[key] = action_data[key].replace(element, str(result))
-
-        action_data = self.__load_dict_fields(action_data)
-
-        return action_data
-
-    def __load_dict_fields(self, action_data):
-        # Load json fields
-        for key in action_data:
-            if isinstance(action_data[key], dict):
-                self.__load_dict_fields(action_data[key])
-
-            data = self.__is_dict(str(action_data[key]))
-
-            if data:
-                action_data[key] = data
+                
+                if type(result) is str:
+                    action_data[key] = action_data[key].replace(element, str(result))
+                else:
+                    action_data[key] = result
 
         return action_data
-
-    def __is_dict(self, data):
-        try:
-            return ast.literal_eval(data)
-        except:
-            return False
