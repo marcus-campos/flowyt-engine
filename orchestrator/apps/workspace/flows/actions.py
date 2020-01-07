@@ -15,11 +15,12 @@ class Actions:
     def __load_actions(self, pipeline):
         actions_added = False
         for action in pipeline:
-            self.actions[action["id"]] = Action(action)
+            action_id = action["id"]
+            self.actions[action_id] = Action(action)
 
             if not actions_added:
-                self.__first_action = action["id"]
-                self.__next_action = action["id"]
+                self.__first_action = action_id
+                self.__next_action = action_id
                 actions_added = True
 
     def next_action(self, pipeline_context):
@@ -32,12 +33,8 @@ class Actions:
 
         if len(elements) > 0:
             for element in elements:
-                result = contexted_run_pipeline(
-                    context=pipeline_context, source=element
-                )
-                self.__current_action = self.__current_action.replace(
-                    element, str(result)
-                )
+                result = contexted_run_pipeline(context=pipeline_context, source=element)
+                self.__current_action = self.__current_action.replace(element, str(result))
 
         if not self.__current_action:
             return None
@@ -53,6 +50,7 @@ class Action:
 
     def __load_action(self, action_settings):
         self.id = action_settings["id"]
+        self.action_name = action_settings["action"]
         self.data = action_settings.get("data", {})
-        self.action = get_action(action_settings["action"])(action_data=self.data)
+        self.action = get_action(self.action_name)(action_data=self.data)
         self.next_action = action_settings["next_action"]

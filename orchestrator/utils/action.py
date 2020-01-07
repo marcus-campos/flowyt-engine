@@ -37,6 +37,7 @@ class GenericAction:
             elements = []
             if type(action_data[key]) is str:
                 elements = re.findall("\$\{.*?\}", action_data[key])
+
             for element in elements:
                 result = contexted_run(context=context, source=element)
                 action_data[key] = action_data[key].replace(element, str(result))

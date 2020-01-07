@@ -1,4 +1,5 @@
 import json
+import time
 
 from dotmap import DotMap
 
@@ -18,7 +19,7 @@ def contexted_run(context, source):
 
     try:
         result = eval(
-            "str({0})".format(source),
+            "{0}".format(source),
             {
                 "env": env,
                 "flow": flow,
@@ -33,7 +34,22 @@ def contexted_run(context, source):
     except SyntaxError:
         pass
 
-    if type(result) is not str:
+    if type(result) in [int, float]:
+        result = str(result)
+
+    if type(result) is DotMap:
+        aux_result = result.toDict()
+        if type(aux_result) is dict and aux_result != {}:
+            result = aux_result
+    elif type(result) is list:
+        new_result = []
+        for item in result:
+            if type(item) is DotMap:
+                aux_result = item.toDict()
+                if type(aux_result) is dict and aux_result != {}:
+                    new_result.append(aux_result)
+        result = new_result
+    elif type(result) is not str:
         result = "null"
 
     return result

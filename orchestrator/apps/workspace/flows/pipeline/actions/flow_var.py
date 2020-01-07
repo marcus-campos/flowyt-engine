@@ -1,5 +1,4 @@
 from utils.action import GenericAction
-from dotmap import DotMap
 
 
 class FlowVar(GenericAction):
