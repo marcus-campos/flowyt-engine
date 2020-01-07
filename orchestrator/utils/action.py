@@ -1,10 +1,13 @@
+import ast
 import re
+
 from utils.eval import contexted_run
 
 
 class GenericAction:
     def __init__(self, action_data=None):
         self.action_data = action_data
+        self.context = None
 
     def next_action(self, context, pipeline_context=None):
         context.pipeline_context = {}
@@ -19,11 +22,11 @@ class GenericAction:
 
     def start(self, context):
         self.action_data = self.load_action_data(self.action_data, context)
-        context = self.handle(self.action_data, context)
-        return self.next_action(context)
+        context, pipeline_context = self.handle(self.action_data, context)
+        return self.next_action(context, pipeline_context)
 
     def handle(self, action_data, context):
-        return context
+        return context, None
 
     def load_action_data(self, action_data, context):
         for key in action_data:
@@ -42,4 +45,25 @@ class GenericAction:
                 result = contexted_run(context=context, source=element)
                 action_data[key] = action_data[key].replace(element, str(result))
 
+        action_data = self.__load_dict_fields(action_data)
+
         return action_data
+
+    def __load_dict_fields(self, action_data):
+        # Load json fields
+        for key in action_data:
+            if isinstance(action_data[key], dict):
+                self.__load_dict_fields(action_data[key])
+
+            data = self.__is_dict(str(action_data[key]))
+
+            if data:
+                action_data[key] = data
+
+        return action_data
+
+    def __is_dict(self, data):
+        try:
+            return ast.literal_eval(data)
+        except:
+            return False
