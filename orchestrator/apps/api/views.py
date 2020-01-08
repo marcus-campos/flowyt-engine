@@ -26,7 +26,7 @@ class StartFlow(Resource):
 
     def __get_request_data(self, *args, **kwargs):
         request_data = {
-            "headers": dict(request.headers),
+            "headers": {k.lower(): v for k, v in dict(request.headers).items()},
             "params": locals().get("kwargs", {}),
             "qs": request.args.to_dict(),
             "form": request.form.to_dict(),

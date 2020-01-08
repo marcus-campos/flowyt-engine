@@ -48,10 +48,10 @@ class Request(GenericAction):
         return request.post(**request_data)
 
     def patch(self, request, request_data):
-        return request.put(**request_data)
+        return request.patch(**request_data)
 
     def put(self, request, request_data):
-        return request.patch(**request_data)
+        return request.put(**request_data)
 
     def delete(self, request, request_data):
         return request.delete(**request_data)
