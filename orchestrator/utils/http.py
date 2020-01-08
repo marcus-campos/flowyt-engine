@@ -41,6 +41,10 @@ class HttpRequest:
         url = self.url
         headers = self.__get_default_headers(kwargs.get("headers", {}))
         data = kwargs.get("data", {})
+
+        if headers.get("Content-Type") == "application/json":
+            data = json.dumps(data)
+
         response = requests.put(url=url, data=data, headers=headers)
         return response
 
