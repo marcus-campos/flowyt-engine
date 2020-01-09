@@ -16,20 +16,18 @@ class Switch(GenericAction):
                 next_action = condition.get("next_action") if result else None
                 break
 
-            if condition.get("operator") == "greater than":
+            if condition.get("operator") == "greater_than":
                 result = condition.get("first_expression") > condition.get("second_expression")
                 next_action = condition.get("next_action") if result else None
                 break
 
-            if condition.get("operator") == "less than":
+            if condition.get("operator") == "less_than":
                 result = condition.get("first_expression") < condition.get("second_expression")
                 next_action = condition.get("next_action") if result else None
                 break
 
         if not next_action:
-            condition_else = action_data.get("conditions")[-1]
-            if condition_else.get("operator") == "else":
-                next_action = condition_else.get("next_action")
+            next_action = action_data.get("next_action_else")
 
         pipeline_context = {"next_action": next_action}
 
