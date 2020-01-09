@@ -116,9 +116,6 @@ class PipelineActions:
 
             # Execute action
             action = self.execute_action()
-            if not action:
-                self.has_actions = False
-                return None
 
             # Add flow vars
             self.flow_class.vars = self.context.public.flow
@@ -145,8 +142,17 @@ class PipelineActions:
             # Get next action
             action = self.actions.next_action(self.context.pipeline_context)
 
-            # Execute action
+            if not action:
+                response = self.context.pipeline_context.get("response")
+                next_flow = self.context.pipeline_context.get("next_flow")
 
+                if not response and not next_flow:
+                    self.has_actions = False
+                    self.process_pipeline = False
+
+                return None
+
+            # Execute action
             self.context = action.action.start(self.context)
         except Exception as e:
             self.process_pipeline = False
