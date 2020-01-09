@@ -28,11 +28,11 @@ class HttpRequest:
         url = self.url
         headers = self.__get_default_headers(kwargs.get("headers", {}))
         data = kwargs.get("data", {})
-        
+
         if headers.get("Content-Type") == "application/json":
             data = json.dumps(data)
 
-        #TODO: Support multipart files upload
+        # TODO: Support multipart files upload
 
         response = requests.post(url=url, data=data, headers=headers)
         return response

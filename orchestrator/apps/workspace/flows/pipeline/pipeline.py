@@ -140,10 +140,13 @@ class PipelineActions:
 
     def execute_action(self):
         action = None
+
         try:
             # Get next action
             action = self.actions.next_action(self.context.pipeline_context)
+
             # Execute action
+
             self.context = action.action.start(self.context)
         except Exception as e:
             self.process_pipeline = False

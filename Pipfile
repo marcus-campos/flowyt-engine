@@ -13,6 +13,7 @@ flask = "*"
 flask-restful = "*"
 dotmap = "*"
 requests = "*"
+cerberus = "*"
 
 [requires]
 python_version = "3.8"
