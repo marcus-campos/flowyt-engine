@@ -1,7 +1,8 @@
 from apps.api.serializers import StartSerializer
 from apps.workspace.flows.pipeline.pipeline import Pipeline
-from flask import request
+from flask import request, Response
 from flask_restful import Resource
+import json
 
 
 class StartFlow(Resource):
@@ -13,25 +14,46 @@ class StartFlow(Resource):
 
     def handle(self, *args, **kwargs):
         request_data = self.__get_request_data(*args, **kwargs)
-        result = self.pipeline_class.start(request_data=request_data)
+        response_data = self.pipeline_class.start(request_data=request_data)
+        response = self.__make_response(response_data, request_data)
 
-        status = result.get("status", 200)
-        _status = result.get("_status", None)
+        return response
 
-        if _status:
-            del result["_status"]
-            status = _status
+    def __make_response(self, response, request):
+        request_headers = request.get("headers", {})
 
-        return result, status
+        response_status = response.get("status", 200)
+        response_headers = response.get("headers", {})
+        response_data = response.get("data", {})
+
+        # Add debug in response
+        if request.get("debug", "false") == "true":
+            response_data["__debug__"] = response.get("__debug__", {})
+
+        # Default json
+        result = json.dumps(response_data)
+        
+        # Change response
+        if request_headers.get("accept", None) == "application/json":
+            result = result
+        elif request_headers.get("accept", None) == "application/xml":
+            result = None
+        elif response_headers.get("content_type", None) == "application/xml":
+            result = None
+
+        result = Response(headers=response_headers, response=result, status=response_status)
+        return result
 
     def __get_request_data(self, *args, **kwargs):
         request_data = {
-            "headers": {k.lower(): v for k, v in dict(request.headers).items()},
+            "headers": {k.lower().replace("-", "_"): v for k, v in dict(request.headers).items()},
             "params": locals().get("kwargs", {}),
             "qs": request.args.to_dict(),
             "form": request.form.to_dict(),
             "data": request.get_json(),
         }
+
+        request_data["debug"] = request_data["headers"].get("x_orchestryzi_debug", "false")
 
         return request_data
 
