@@ -1,9 +1,10 @@
+import uuid
+
 from flask import Flask
 from flask_restful import Api
 
 from apps.api.urls import urls as api_urls
 from apps.build.urls import urls as build_urls
-import uuid
 
 urls = [api_urls, build_urls]
 

@@ -1,12 +1,23 @@
 import os
+# Load env
+from dotenv import load_dotenv
+
+# Load env file
+env_path = os.getcwd() + "/orchestrator/.env"
+load_dotenv(dotenv_path=env_path)
+
+
+########################################
+##             SETTINGS               ##
+########################################
 
 # System
-SECRET_KEY = "de5ee9689580bed0175b2b79053799d30b7a1f09c7d8f483"
-ENV = "development"  #'production'
-DEBUG = True
-# SERVER_NAME = "orchestrator.local:5000"
+ENV = os.getenv("APP_ENV", "development")
+SECRET_KEY = os.getenv("APP_SECRET_KEY", "")
+DEBUG = (os.getenv("APP_DEBUG", "false").lower() == "true")
+SERVER_NAME = os.getenv("APP_SERVER_NAME", "")
 
 # Apps
 BASE_DIR = os.getcwd()
-WORKSPACES_DIR = "/workspaces"
-SUBDOMAIN_MODE = False
+WORKSPACES_DIR = os.getenv("WORKSPACES_DIR", "/workspaces")
+SUBDOMAIN_MODE = (os.getenv("WORKSPACES_DIR", "false").lower() == "true")

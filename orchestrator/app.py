@@ -1,3 +1,6 @@
+
+import os
+
 from flask import Flask
 from flask_restful import Api
 
@@ -8,8 +11,8 @@ app = Flask(__name__)
 # App config
 app.config.from_object("orchestrator.settings")
 
-
 api = Api(app)
+
 # Load urls
 api = load_urls(api)
 
