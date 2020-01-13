@@ -32,7 +32,7 @@ class StartFlow(Resource):
 
         # Default json
         result = json.dumps(response_data)
-        
+
         # Change response
         if request_headers.get("accept", None) == "application/json":
             result = result
