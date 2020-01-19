@@ -1,8 +1,8 @@
 import os
+import sys
 
 from flask import Flask
 from flask_restful import Api
-
 from orchestrator.urls import load_urls
 
 app = Flask(__name__)
@@ -15,5 +15,9 @@ api = Api(app)
 # Load urls
 api = load_urls(api)
 
+print(app.url_map)
+
 if __name__ == "__main__":
+    cli = sys.modules["flask.cli"]
+    cli.show_server_banner = lambda *x: None
     app.run()

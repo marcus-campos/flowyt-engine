@@ -68,3 +68,12 @@ class StartFlow(Resource):
 
     def delete(self, *args, **kwargs):
         return self.handle(*args, **kwargs)
+
+
+class Workspaces(Resource):
+    def __init__(self, workspaces):
+        self.workspaces = workspaces
+
+    def get(self):
+        print(self.workspaces)
+        return "test"
