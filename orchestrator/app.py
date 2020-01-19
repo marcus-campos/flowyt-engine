@@ -15,8 +15,6 @@ api = Api(app)
 # Load urls
 api = load_urls(api)
 
-print(app.url_map)
-
 if __name__ == "__main__":
     cli = sys.modules["flask.cli"]
     cli.show_server_banner = lambda *x: None

@@ -1,4 +1,6 @@
+from orchestrator.settings import WORKSPACES_PATH
 from utils.json_parser import parse_json_file
+
 from .actions import Actions
 
 
@@ -8,7 +10,7 @@ class Flow:
         self.__load_flow(workspace, flow)
 
     def __load_flow(self, workspace, flow):
-        flow_settings = parse_json_file("/{0}/flows/{1}.json".format(workspace, flow))
+        flow_settings = parse_json_file("{0}/{1}/flows/{2}.json".format(WORKSPACES_PATH, workspace, flow))
 
         self.id = flow_settings.get("id")
         self.name = flow_settings.get("name")

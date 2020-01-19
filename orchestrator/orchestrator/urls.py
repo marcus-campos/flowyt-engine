@@ -12,7 +12,6 @@ urls = [api_urls, build_urls]
 def load_urls(api):
     for url in urls:
         for view in url:
-            print(view)
             endpoint_name = str(uuid.uuid4())
             api.add_resource(
                 view.get("view"),

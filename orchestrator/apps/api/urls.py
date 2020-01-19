@@ -1,13 +1,13 @@
 import os
 
-from orchestrator.settings import BASE_DIR, SUBDOMAIN_MODE, WORKSPACES_DIR
+from orchestrator.settings import SUBDOMAIN_MODE, WORKSPACES_PATH
 
-from .views import StartFlow
+from .views import StartFlow, Workspaces
 from utils.json_parser import parse_json_file
 
 urls = []
 
-path = BASE_DIR + WORKSPACES_DIR
+path = WORKSPACES_PATH
 dirlist = [item for item in os.listdir(path) if os.path.isdir(os.path.join(path, item))]
 
 for workspace_name in dirlist:
@@ -27,3 +27,12 @@ for workspace_name in dirlist:
             del url_to_append["subdomain"]
 
         urls.append(url_to_append)
+
+workspaces_urls = {
+    "path": "/_workspaces/routes",
+    "view": Workspaces,
+    "methods": ["GET"],
+    "kwargs": {"workspaces_urls": urls.copy()},
+}
+
+urls.append(workspaces_urls)
