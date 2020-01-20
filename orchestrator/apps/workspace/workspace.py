@@ -1,3 +1,5 @@
+from orchestrator.settings import WORKSPACES_PATH
+
 from utils.json_parser import parse_json_file
 
 
@@ -7,7 +9,9 @@ class Workspace:
         self.__load_workspace(workspace)
 
     def __load_workspace(self, workspace):
-        workspace_settings = parse_json_file("/{0}/config/settings.json".format(workspace))
+        workspace_settings = parse_json_file(
+            "{0}/{1}/config/settings.json".format(WORKSPACES_PATH, workspace)
+        )
 
         self.id = workspace_settings.get("id")
         self.name = workspace_settings.get("name")

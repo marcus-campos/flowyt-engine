@@ -12,11 +12,7 @@ urls = [api_urls, build_urls]
 def load_urls(api):
     for url in urls:
         for view in url:
-            endpoint_name = "{0}-{1}-{2}".format(
-                view.get("subdomain", "orchestrator"),
-                view.get("kwargs", {}).get("flow"),
-                view.get("path").replace("/", "-").replace("<", "").replace(">", ""),
-            )
+            endpoint_name = str(uuid.uuid4())
             api.add_resource(
                 view.get("view"),
                 view.get("path"),

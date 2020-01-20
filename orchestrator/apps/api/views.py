@@ -68,3 +68,23 @@ class StartFlow(Resource):
 
     def delete(self, *args, **kwargs):
         return self.handle(*args, **kwargs)
+
+
+class Workspaces(Resource):
+    def __init__(self, workspaces_urls):
+        self.workspaces_urls = workspaces_urls
+
+    def get(self):
+        urls = []
+
+        for url in self.workspaces_urls:
+            urls.append(
+                {
+                    "path": url.get("path"),
+                    "methods": url.get("methods"),
+                    "workspace": url.get("kwargs").get("workspace"),
+                    "flow": url.get("kwargs").get("flow"),
+                    "subdomain": url.get("subdomain"),
+                }
+            )
+        return urls
