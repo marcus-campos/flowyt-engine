@@ -44,7 +44,7 @@ class GenericAction:
 
             for element in elements:
                 result = contexted_run(context=context, source=element)
-                
+
                 if type(result) is str:
                     action_data[key] = action_data[key].replace(element, str(result))
                 elif type(result) is DotMap:

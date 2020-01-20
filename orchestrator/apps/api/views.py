@@ -37,16 +37,14 @@ class StartFlow(Resource):
         result = json.dumps(response_data)
 
         # Change response
-        if request_headers.get("accept", None) == "application/json":
+        if request_headers.get("accept") == "application/json":
             result = result
         elif (
-            request_headers.get("accept", None) == "application/xml"
-            or response_headers.get("Content-Type", None) == "application/xml"
+            request_headers.get("accept") == "application/xml"
+            or response_headers.get("Content-Type") == "application/xml"
         ):
-            if request.get("debug", "false") == "true":
-                response_data = {
-                    "root": response_data
-                }
+            if request.get("debug") == "true":
+                response_data = {"root": response_data}
             result = xmltodict.unparse(response_data)
             response_headers["Content-Type"] = "application/xml"
 
