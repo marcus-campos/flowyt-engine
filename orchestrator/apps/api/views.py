@@ -1,8 +1,11 @@
+import json
+
+import xmltodict
+from flask import Response, request
+from flask_restful import Resource
+
 from apps.api.serializers import StartSerializer
 from apps.workspace.flows.pipeline.pipeline import Pipeline
-from flask import request, Response
-from flask_restful import Resource
-import json
 
 
 class StartFlow(Resource):
@@ -36,10 +39,12 @@ class StartFlow(Resource):
         # Change response
         if request_headers.get("accept", None) == "application/json":
             result = result
-        elif request_headers.get("accept", None) == "application/xml":
-            result = None
-        elif response_headers.get("content_type", None) == "application/xml":
-            result = None
+        elif (
+            request_headers.get("accept", None) == "application/xml"
+            or response_headers.get("content_type", None) == "application/xml"
+        ):
+            result = xmltodict.unparse(response_data)
+            response_headers["Content-Type"] = "application/xml"
 
         result = Response(headers=response_headers, response=result, status=response_status)
         return result
@@ -52,6 +57,9 @@ class StartFlow(Resource):
             "form": request.form.to_dict(),
             "data": request.get_json(),
         }
+
+        if request_data["headers"].get("content_type") == "application/xml":
+            request_data["data"] = xmltodict.parse(request.data, xml_attribs=False)
 
         request_data["debug"] = request_data["headers"].get("x_orchestryzi_debug", "false")
 

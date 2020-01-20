@@ -50,6 +50,6 @@ class GenericAction:
                 if type(result) is DotMap:
                     action_data[key] = result.toDict()
                 else:
-                    action_data[key] = result
+                    action_data[key] += result
 
         return action_data
