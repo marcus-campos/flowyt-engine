@@ -43,6 +43,10 @@ class StartFlow(Resource):
             request_headers.get("accept", None) == "application/xml"
             or response_headers.get("Content-Type", None) == "application/xml"
         ):
+            if request.get("debug", "false") == "true":
+                response_data = {
+                    "root": response_data
+                }
             result = xmltodict.unparse(response_data)
             response_headers["Content-Type"] = "application/xml"
 
