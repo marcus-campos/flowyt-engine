@@ -20,7 +20,7 @@ class Request(GenericAction):
         response = handler(request, request_data)
 
         try:
-            response_data = response.json()
+            response_data = response.json() if len(response.text) > 0 else {}
         except:
             try:
                 response_data = xmltodict.parse(response.content)

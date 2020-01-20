@@ -41,7 +41,7 @@ class StartFlow(Resource):
             result = result
         elif (
             request_headers.get("accept", None) == "application/xml"
-            or response_headers.get("content_type", None) == "application/xml"
+            or response_headers.get("Content-Type", None) == "application/xml"
         ):
             result = xmltodict.unparse(response_data)
             response_headers["Content-Type"] = "application/xml"
