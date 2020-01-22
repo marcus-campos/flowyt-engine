@@ -15,5 +15,4 @@ class Response(GenericAction):
 
     def __get_headers(self, headers):
         default_headers = {"Content-Type": "application/json"}
-
         return {**default_headers, **headers}

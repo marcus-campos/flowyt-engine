@@ -47,7 +47,7 @@ class GenericAction:
 
                 if type(result) is str:
                     action_data[key] = action_data[key].replace(element, str(result))
-                if type(result) is DotMap:
+                elif type(result) is DotMap:
                     action_data[key] = result.toDict()
                 else:
                     action_data[key] = result

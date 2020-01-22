@@ -15,6 +15,7 @@ dotmap = "*"
 requests = "*"
 cerberus = "*"
 python-dotenv = "*"
+xmltodict = "*"
 
 [requires]
 python_version = "3.8"
