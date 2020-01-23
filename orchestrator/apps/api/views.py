@@ -5,7 +5,7 @@ from flask import Response, request
 from flask_restful import Resource
 
 from apps.api.serializers import StartSerializer
-from apps.workspace.flows.pipeline.pipeline import Pipeline
+from apps.engine.pipeline import Pipeline
 
 
 class StartFlow(Resource):

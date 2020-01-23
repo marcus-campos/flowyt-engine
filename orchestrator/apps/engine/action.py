@@ -1,6 +1,6 @@
 import re
 
-from apps.workspace.flows.pipeline.actions.actions import get_action
+from apps.engine.actions.register import get_action
 from utils.eval import contexted_run_pipeline
 
 
