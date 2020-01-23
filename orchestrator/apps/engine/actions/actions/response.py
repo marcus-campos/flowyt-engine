@@ -1,5 +1,5 @@
 import re
-from utils.action import GenericAction
+from apps.engine.actions.action import GenericAction
 
 
 class Response(GenericAction):

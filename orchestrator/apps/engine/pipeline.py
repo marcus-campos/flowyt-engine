@@ -1,6 +1,6 @@
-from apps.workspace.flows.flow import Flow
-from apps.workspace.functions import Functions
-from apps.workspace.workspace import Workspace
+from apps.engine.flow import Flow
+from apps.engine.functions import Functions
+from apps.engine.workspace import Workspace
 from dotmap import DotMap
 import time
 import json
@@ -161,7 +161,7 @@ class PipelineActions:
 
             if hasattr(e, "message"):
                 self.pipeline_response = {
-                    "_status": 500,
+                    "status": 500,
                     "exception": {
                         "message": e.message,
                         "action": {"id": action.id, "name": action.action_name, "data": action.data},
@@ -169,7 +169,7 @@ class PipelineActions:
                 }
             else:
                 self.pipeline_response = {
-                    "_status": 500,
+                    "status": 500,
                     "exception": {
                         "message": str(e),
                         "action": {"id": action.id, "name": action.action_name, "data": action.data},

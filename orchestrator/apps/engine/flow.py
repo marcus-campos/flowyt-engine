@@ -1,7 +1,7 @@
 from orchestrator.settings import WORKSPACES_PATH
 from utils.json_parser import parse_json_file
 
-from .actions import Actions
+from .action import Actions
 
 
 class Flow:
