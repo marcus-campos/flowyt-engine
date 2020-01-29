@@ -25,7 +25,7 @@ runserver:
 	python ./orchestrator/app.py
 
 installer:
-	rm -rf build/ && \
+	make clean-build && \
 	cd orchestrator/ && \
 	python installer.py build && \
 	mv build ../ && \
@@ -34,7 +34,7 @@ installer:
 	cp orchestrator/.env.example.build build/orchestryzi/.env.example
 
 installer_and_zip:
-	rm -rf build/ && \
+	make clean-build && \
 	cd orchestrator/ && \
 	python installer.py build && \
 	mv build ../ && \
