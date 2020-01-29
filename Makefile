@@ -27,5 +27,8 @@ runserver:
 installer:
 	rm -rf build/ && cd orchestrator/ && python installer.py build && mv build ../ && cd .. && cp -r workspaces build/orchestryzi && cp orchestrator/.env.example.build build/orchestryzi/.env.example
 
+installer_and_zip:
+	rm -rf build/ && cd orchestrator/ && python installer.py build && mv build ../ && cd .. && cp -r workspaces build/orchestryzi && cp orchestrator/.env.example.build build/orchestryzi/.env.example && zip -r build/orchestryzi.zip build/orchestryzi
+
 runbuild:
 	./build/orchestryzi/app
