@@ -5,10 +5,12 @@ from .actions.response import Response
 from .actions.start import Start
 from .actions.switch import Switch
 from .actions.validation import Validation
+from .actions.workspace_var import WorkspaceVar
 
 __actions = {
     "start": Start,
     "flow_var": FlowVar,
+    "workspace_var": WorkspaceVar,
     "request": Request,
     "switch": Switch,
     "response": Response,

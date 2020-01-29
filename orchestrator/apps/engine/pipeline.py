@@ -25,14 +25,14 @@ class Pipeline:
         pipeline_debug = True if self.workspace_class.debug and request_debug else False
         context = {
             "public": {
-                "workspace": {
+                "info": {
                     "id": self.workspace_class.id,
                     "name": self.workspace_class.name,
                     "debug": self.workspace_class.debug,
                     "release": self.workspace_class.release,
                 },
                 "env": self.workspace_class.env,
-                "session": {},
+                "workspace": {},
                 "request": request_data,
                 "function": self.functions_class.workspace_functions,
                 "response": {},
