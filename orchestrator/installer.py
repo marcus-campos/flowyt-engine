@@ -11,7 +11,13 @@ buildOptions = {
 
 base = "Console"
 
-executables = [Executable("app.py", base=base)]
+executables = [
+    Executable(
+        "app.py", 
+        base=base,
+        targetName = 'orchestryzi'
+    )
+]
 
 ###############
 # CLI
