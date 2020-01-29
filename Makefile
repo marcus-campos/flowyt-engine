@@ -41,7 +41,9 @@ installer_and_zip:
 	cd .. && \
 	mkdir build/orchestryzi/workspaces && \
 	cp orchestrator/.env.example.build build/orchestryzi/.env.example && \
-	zip -r build/orchestryzi.zip build/orchestryzi
+	cd build/ && \
+	zip -r orchestryzi.zip orchestryzi && \
+	cd ..
 
 runbuild:
 	./build/orchestryzi/app
