@@ -3,8 +3,10 @@ import os
 # Load env
 from dotenv import load_dotenv
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Load env file
-env_path = os.getcwd() + "/orchestrator/.env"
+env_path = BASE_DIR + "/../../.env"
 load_dotenv(dotenv_path=env_path)
 
 
@@ -13,13 +15,15 @@ load_dotenv(dotenv_path=env_path)
 ########################################
 
 # System
-ENV = os.getenv("APP_ENV", "development")
+ENV = os.getenv("SYS_APP_ENV", "production")
+DEBUG = os.getenv("SYS_APP_DEBUG", "false").lower() == "true"
+
 SECRET_KEY = os.getenv("APP_SECRET_KEY", "")
-DEBUG = os.getenv("APP_DEBUG", "false").lower() == "true"
-# SERVER_NAME = os.getenv("APP_SERVER_NAME", "127.0.0.1:5000")
+HOST = os.getenv("APP_HOST", "127.0.0.1")
+PORT = os.getenv("APP_PORT", "5555")
+SERVER_NAME = "{0}:{1}".format(HOST, PORT)
 
 # Apps
-BASE_DIR = os.getcwd()
-WORKSPACES_DIR = os.getenv("WORKSPACES_DIR", "/workspaces")
+WORKSPACES_DIR = "/../../workspaces"
 WORKSPACES_PATH = BASE_DIR + WORKSPACES_DIR
 SUBDOMAIN_MODE = os.getenv("WORKSPACES_DIR", "false").lower() == "true"

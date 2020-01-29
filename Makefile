@@ -23,3 +23,9 @@ pip-install:
 
 runserver:
 	python ./orchestrator/app.py
+
+installer:
+	rm -rf build/ && cd orchestrator/ && python installer.py build && mv build ../ && cd .. && cp -r workspaces build/orchestryzi && cp orchestrator/.env.example.build build/orchestryzi/.env.example
+
+runbuild:
+	./build/orchestryzi/app
