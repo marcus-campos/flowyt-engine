@@ -1,3 +1,5 @@
+import sys
+
 from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need
@@ -5,15 +7,21 @@ from cx_Freeze import setup, Executable
 buildOptions = {
     "packages": ["os", "sys"],
     "excludes": [],
-    "includes": ["_sysconfigdata__darwin_darwin", "pkg_resources.py2_warn"],
+    "includes": [],
     "build_exe": "build/orchestryzi",
 }
+
+if sys.platform == "darwin": #macOS
+    buildOptions["includes"] += [
+        "_sysconfigdata__darwin_darwin", 
+        "pkg_resources.py2_warn"
+    ]
 
 base = "Console"
 
 executables = [
     Executable(
-        "app.py", 
+        "app.py",
         base=base,
         targetName = 'orchestryzi'
     )
