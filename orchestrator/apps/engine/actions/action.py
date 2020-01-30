@@ -10,6 +10,14 @@ class GenericAction:
         self.action_data = action_data
         self.context = None
 
+    def start(self, context):
+        self.action_data = self.load_action_data(self.action_data, context)
+        context, pipeline_context = self.handle(self.action_data, context)
+        return self.next_action(context, pipeline_context)
+
+    def handle(self, action_data, context):
+        return context, None
+
     def next_action(self, context, pipeline_context=None):
         context.pipeline_context = {}
         if pipeline_context:
@@ -20,14 +28,6 @@ class GenericAction:
             }
 
         return context
-
-    def start(self, context):
-        self.action_data = self.load_action_data(self.action_data, context)
-        context, pipeline_context = self.handle(self.action_data, context)
-        return self.next_action(context, pipeline_context)
-
-    def handle(self, action_data, context):
-        return context, None
 
     def load_action_data(self, action_data, context):
         for key in action_data:
@@ -48,10 +48,11 @@ class GenericAction:
                 if type(result) is str:
                     action_data[key] = action_data[key].replace(element, str(result))
                 elif type(result) is list:
-                    aux_list = []
-                    for item in result:
-                        aux_list.append(item.toDict())
-                    action_data[key] = aux_list
+                    for index in range(len(result)):
+                        item = result[index]
+                        if type(item) is DotMap:
+                            result[index] = item.toDict()
+                    action_data[key] = result
                 elif type(result) is DotMap:
                     action_data[key] = result.toDict()
                 else:

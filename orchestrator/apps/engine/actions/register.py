@@ -1,5 +1,6 @@
 from .actions.default import Default
 from .actions.flow_var import FlowVar
+from .actions.jump import Jump
 from .actions.request import Request
 from .actions.response import Response
 from .actions.start import Start
@@ -15,6 +16,7 @@ __actions = {
     "switch": Switch,
     "response": Response,
     "validation": Validation,
+    "jump": Jump,
 }
 
 
