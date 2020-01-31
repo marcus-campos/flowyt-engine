@@ -47,7 +47,7 @@ installer_and_zip:
 	cd ..
 
 runbuild:
-	./build/orchestryzi/app
+	./build/orchestryzi/orchestryzi
 
 copy_docs:
 	cp -r docs/* ../orchestryzi-engine-demo
