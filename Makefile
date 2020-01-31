@@ -48,3 +48,6 @@ installer_and_zip:
 
 runbuild:
 	./build/orchestryzi/app
+
+copy_docs:
+	cp -r docs/* ../orchestryzi-engine-demo
