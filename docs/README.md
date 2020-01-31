@@ -8,8 +8,8 @@ Muito se fala em microsserviços atualmente e, neste ambiente complexo e com mui
 
 
 ## Começando
-Você instalou o Python e os outros utilitários (pip, virtualenv e git) no
-seu computador, certo? Caso contrário, [vá aqui para instalar](https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-ubuntu-18-04-quickstart).
+Você instalou o Python 3.8.1 e os outros utilitários (pip, virtualenv e git) no
+seu computador, certo? Caso contrário, [vá aqui para instalar](https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-ubuntu-18-04-quickstart-pt).
 
 A primeira coisa que precisamos fazer é criar uma pasta para o seu projeto. Se você quiser fazer isso também, siga estes comandos no seu terminal para criar a pasta `projects` (essa etapa é opcional):
 
@@ -23,7 +23,7 @@ a pasta. Se você se perder, seu terminal deve mostrar
 em qual diretório você está e executando `ls` (no Mac ou Linux,` dir` no Windows),
 listará o conteúdo da pasta em que você está. Use `cd ..` para fazer o voltar uma pasta.
 
-Baixe na aba [releases]("/releases/latest") a versão mais recente do Orchestryzi compatível com seu sistema, e extraia o conteudo dentro da pasta `projects` que você acabou de criar:
+Baixe na aba [releases](https://github.com/marcus-campos/orchestryzi-engine-demo/releases/latest) a versão mais recente do Orchestryzi compatível com seu sistema, e extraia o conteudo dentro da pasta `projects` que você acabou de criar:
 
 ```shell
 $ mv orchestryzi.zip projects

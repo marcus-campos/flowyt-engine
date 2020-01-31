@@ -39,7 +39,8 @@ installer_and_zip:
 	python installer.py build && \
 	mv build ../ && \
 	cd .. && \
-	mkdir build/orchestryzi/workspaces && \
+	cp -r docs/examples/workspaces build/orchestryzi/workspaces && \
+	cp -r docs build/orchestryzi/docs && \
 	cp orchestrator/.env.example.build build/orchestryzi/.env.example && \
 	cd build/ && \
 	zip -r orchestryzi.zip orchestryzi && \
