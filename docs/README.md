@@ -1,14 +1,52 @@
 # Orchestryzi
 
-### O que é?
+## O que é?
 Conforme a quantidade de microsserviços cresce, também cresce a sua complexidade. Por isso o time da Devyzi desenvolveu um orquestrador baseado em fluxos de processos para tornar mais difícil a visibilidade da distribuição dos fluxos sem a utilização de um orquestrador central.
 
-### Por que microsserviços?
+## Por que microsserviços?
 Muito se fala em microsserviços atualmente e, neste ambiente complexo e com muita atividades paralelas e automações de processos de negócios, é necessário um serviço de orquestração. Assim, o Orchestryzi habilita a orquestração entre os serviços e também fornece controle e visibilidade para as interações. Essa habilidade da ao time de engenharia a possibilidade de alavancar os serviços existentes, construir novos fluxos e atualizar os existentes, aumentando assim a velocidade de utilização do fluxo, o que forneceu uma rota efetivamente mais fácil para a adoção da solução.
 
-### O que são workspaces?
-Um workspaces é um grupo de configurações, fluxos e funções que compõe um projeto. Um woskpace padrão tem a seguinte estrutura:
 
+## Começando
+Você instalou o Python e os outros utilitários (pip, virtualenv e git) no
+seu computador, certo? Caso contrário, [vá aqui para instalar](https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-ubuntu-18-04-quickstart).
+
+A primeira coisa que precisamos fazer é criar uma pasta para o seu projeto. Se você quiser fazer isso também, siga estes comandos no seu terminal para criar a pasta `projects` (essa etapa é opcional):
+
+```shell
+$ mkdir projects
+$ cd projects
+```
+
+Se você precisar de uma revisão da linha de comando, o `mkdir` cria pastas e o` cd` acessa
+a pasta. Se você se perder, seu terminal deve mostrar
+em qual diretório você está e executando `ls` (no Mac ou Linux,` dir` no Windows),
+listará o conteúdo da pasta em que você está. Use `cd ..` para fazer o voltar uma pasta.
+
+Baixe na aba [releases]("/releases/latest") a versão mais recente do Orchestryzi compatível com seu sistema, e extraia o conteudo dentro da pasta `projects` que você acabou de criar:
+
+```shell
+$ mv orchestryzi.zip projects
+$ unzip orchestryzi.zip
+```
+
+Agora, acesse a pasta contendo os arquivos que você extraiu, se necessário dê permissões de execução e execute o orchestryzi:
+
+```shell
+$ cd orchestryzi
+$ chmod +x orchestryzi
+$ ./orchestryzi
+```
+
+Caso seja necessário, você pode alterar algumas configurações, para isso copie o arquivo `.env.example`, renomeie para `.env` e reinicie o orchestryzi
+
+```shell
+$ cp .env.example .env
+$ ./orchestryzi
+```
+
+## O que são workspaces?
+Um workspaces é um grupo de configurações, fluxos e funções que compõe um projeto. Um woskpace padrão tem a seguinte estrutura:
 
 ```
 workspaces
