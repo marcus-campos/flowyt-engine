@@ -31,7 +31,7 @@ installer:
 	mv build ../ && \
 	cd .. && \
 	mkdir build/orchestryzi/workspaces && \
-	cp orchestrator/.env.example.build build/orchestryzi/.env.example
+	cp .env.example.build build/orchestryzi/.env.example
 
 installer_and_zip:
 	make clean-build && \
@@ -41,7 +41,7 @@ installer_and_zip:
 	cd .. && \
 	cp -r docs/examples/workspaces build/orchestryzi/workspaces && \
 	cp -r docs build/orchestryzi/docs && \
-	cp orchestrator/.env.example.build build/orchestryzi/.env.example && \
+	cp .env.example.build build/orchestryzi/.env.example && \
 	cd build/ && \
 	zip -r orchestryzi.zip orchestryzi && \
 	cd ..

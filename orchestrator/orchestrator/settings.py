@@ -26,4 +26,4 @@ SERVER_NAME = "{0}:{1}".format(HOST, PORT)
 # Apps
 WORKSPACES_DIR = "/../../workspaces"
 WORKSPACES_PATH = BASE_DIR + WORKSPACES_DIR
-SUBDOMAIN_MODE = os.getenv("WORKSPACES_DIR", "false").lower() == "true"
+SUBDOMAIN_MODE = os.getenv("SUBDOMAIN_MODE", "false").lower() == "true"
