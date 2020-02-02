@@ -30,7 +30,7 @@ class Request(GenericAction):
         context.public.response = {
             "status_code": response.status_code,
             "data": response_data,
-            "headers": response.headers,
+            "headers": dict(response.headers),
             "elapsed": {"total_seconds": response.elapsed.total_seconds()},
         }
 

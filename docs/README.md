@@ -197,3 +197,4 @@ Essa estrutura é utilizada para definir o que vai ser executado e qual é a pr�
 
 * [Template literals](concepts/template_literals.md)
 * [Funções](concepts/functions.md)
+* [Debug](concepts/debug.md)

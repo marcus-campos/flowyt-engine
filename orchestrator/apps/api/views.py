@@ -31,6 +31,10 @@ class StartFlow(Resource):
 
         # Add debug in response
         if request.get("debug", "false") == "true":
+            if type(response_data) is list:
+                response_data = {
+                    "data": response_data
+                }
             response_data["__debug__"] = response.get("__debug__", {})
 
         # Default json
