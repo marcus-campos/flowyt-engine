@@ -11,21 +11,12 @@ buildOptions = {
     "build_exe": "build/orchestryzi",
 }
 
-if sys.platform == "darwin": #macOS
-    buildOptions["includes"] += [
-        "_sysconfigdata__darwin_darwin", 
-        "pkg_resources.py2_warn"
-    ]
+if sys.platform == "darwin":  # macOS
+    buildOptions["includes"] += ["_sysconfigdata__darwin_darwin", "pkg_resources.py2_warn"]
 
 base = "Console"
 
-executables = [
-    Executable(
-        "app.py",
-        base=base,
-        targetName = 'orchestryzi'
-    )
-]
+executables = [Executable("app.py", base=base, targetName="orchestryzi")]
 
 ###############
 # CLI
