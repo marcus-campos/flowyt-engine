@@ -19,9 +19,11 @@ ENV = os.getenv("SYS_APP_ENV", "production")
 DEBUG = os.getenv("SYS_APP_DEBUG", "false").lower() == "true"
 
 SECRET_KEY = os.getenv("APP_SECRET_KEY", "")
-HOST = os.getenv("APP_HOST", "127.0.0.1")
-PORT = os.getenv("APP_PORT", "5555")
-SERVER_NAME = "{0}:{1}".format(HOST.replace("https://", "").replace("http://", ""), PORT)
+
+if os.getenv("APP_HOST", None) and os.getenv("APP_PORT", None):
+    HOST = os.getenv("APP_HOST", "127.0.0.1")
+    PORT = os.getenv("APP_PORT", "5000")
+    SERVER_NAME = "{0}:{1}".format(HOST.replace("https://", "").replace("http://", ""), PORT)
 
 # Apps
 WORKSPACES_DIR = "/../../workspaces"
