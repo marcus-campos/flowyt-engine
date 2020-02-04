@@ -17,6 +17,7 @@ requests = "*"
 cerberus = "*"
 python-dotenv = "*"
 xmltodict = "*"
+gunicorn = "*"
 
 [requires]
 python_full_version = "3.8.1"
