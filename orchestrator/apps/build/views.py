@@ -1,15 +1,21 @@
+import asyncio
+import os
+import uuid
+import zipfile
+import sys
+
 from flask import request
 from flask_restful import Resource, abort
 from orchestrator.settings import STORAGE_FOLDER_TEMP_UPLOADS, WORKSPACES_PATH
 from werkzeug.utils import secure_filename
-import os
-import uuid
-import zipfile
-
 
 from apps.build.serializers import BuildSerializer
 
 ALLOWED_EXTENSIONS = {"zip"}
+
+class Reload(Resource):
+    def get(self):
+        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv) 
 
 class BuildWorkspace(Resource):
     def post(self):
@@ -42,8 +48,6 @@ class BuildWorkspace(Resource):
         os.remove(path_to_zip_file)
 
         return {"msg": "The workspace upload was completed successfully!"}, 200
-            
-
                                     
     def allowed_file(self, filename):
         return '.' in filename and \
