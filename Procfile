@@ -1,1 +1,1 @@
-web: gunicorn --chdir=orchestrator wsgi:app
+web: gunicorn --chdir=orchestrator/ wsgi:app
