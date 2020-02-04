@@ -14,15 +14,15 @@ ALLOWED_EXTENSIONS = {"zip"}
 class BuildWorkspace(Resource):
     def post(self):
         # check if the post request has the file part
-        if 'file' not in request.files:
-            return {"msg": "No file part"}, 400
+        if 'workpace_zip_file' not in request.files:
+            return {"msg": "No workpace_zip_file in multipart form"}, 400
 
-        file = request.files['file']
+        file = request.files['workpace_zip_file']
 
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
-            return {"msg": "No selected file"}, 400
+            return {"msg": "No selected file."}, 400
 
         if not self.allowed_file(file.filename):
             return {"msg": "The file is not a zip"}, 400
