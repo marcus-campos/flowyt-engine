@@ -26,6 +26,9 @@ if os.getenv("APP_HOST", None) and os.getenv("APP_PORT", None):
     SERVER_NAME = "{0}:{1}".format(HOST.replace("https://", "").replace("http://", ""), PORT)
 
 # Apps
+UPLOAD_FOLDER = BASE_DIR + "/../../storage"
+STORAGE_FOLDER_TEMP_UPLOADS = UPLOAD_FOLDER + "/temp/uploads"
+
 WORKSPACES_DIR = "/../../workspaces"
 WORKSPACES_PATH = BASE_DIR + WORKSPACES_DIR
 SUBDOMAIN_MODE = os.getenv("SUBDOMAIN_MODE", "false").lower() == "true"

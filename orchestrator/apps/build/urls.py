@@ -1,6 +1,5 @@
-from .views import (Build, BuildDetail)
+from .views import (BuildWorkspace)
 
 urls = [
-    {"path": "/build", "view": Build},
-    {"path": "/build/<build_id>", "view": BuildDetail},
+    {"path": "/_workspaces/build/workspace", "view": BuildWorkspace},
 ]
