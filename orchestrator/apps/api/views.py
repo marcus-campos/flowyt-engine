@@ -8,6 +8,7 @@ from orchestrator.settings import SECRET_KEY
 
 from apps.api.serializers import StartSerializer
 from apps.engine.pipeline import Pipeline
+from utils.middlewares import secret_key_required
 
 
 class StartFlow(Resource):
@@ -90,16 +91,7 @@ class StartFlow(Resource):
 
     def delete(self, *args, **kwargs):
         return self.handle(*args, **kwargs)
-
-
-
-def secret_key_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if request.headers.get("X-Orchestryzi-Token") == SECRET_KEY:
-            return f(*args, **kwargs)
-        return {"msg": "You are not authorized to perform this action"}, 401
-    return decorated_function
+        
 
 class Workspaces(Resource):
     def __init__(self, workspaces_urls):

@@ -5,7 +5,10 @@ from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-ENV_PATH = BASE_DIR + "/../../.env"
+SRC_DIR = BASE_DIR + "/../../"
+
+ENV_PATH = SRC_DIR + ".env"
+print(ENV_PATH)
 
 # Load env file
 load_dotenv(dotenv_path=ENV_PATH)
@@ -27,9 +30,9 @@ if os.getenv("APP_HOST", None) and os.getenv("APP_PORT", None):
     SERVER_NAME = "{0}:{1}".format(HOST.replace("https://", "").replace("http://", ""), PORT)
 
 # Apps
-UPLOAD_FOLDER = BASE_DIR + "/../../storage"
+UPLOAD_FOLDER = SRC_DIR + "storage"
 STORAGE_FOLDER_TEMP_UPLOADS = UPLOAD_FOLDER + "/temp/uploads"
 
-WORKSPACES_DIR = "/../../workspaces"
-WORKSPACES_PATH = BASE_DIR + WORKSPACES_DIR
+WORKSPACES_DIR = "workspaces"
+WORKSPACES_PATH = SRC_DIR + WORKSPACES_DIR
 SUBDOMAIN_MODE = os.getenv("SUBDOMAIN_MODE", "false").lower() == "true"

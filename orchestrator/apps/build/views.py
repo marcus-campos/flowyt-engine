@@ -1,32 +1,28 @@
-import asyncio
 import os
 import sys
 import uuid
 import zipfile
-from functools import wraps
+import threading
 
 from flask import request
 from flask_restful import Resource, abort
-from orchestrator.settings import (STORAGE_FOLDER_TEMP_UPLOADS, WORKSPACES_PATH, SECRET_KEY)
 from werkzeug.utils import secure_filename
 
 from apps.build.serializers import BuildSerializer
-from utils.env_parser import parser
+from orchestrator.settings import STORAGE_FOLDER_TEMP_UPLOADS, WORKSPACES_PATH
+from utils.middlewares import secret_key_required, secret_key_maybe_required
 
-def secret_key_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if request.headers.get("X-Orchestryzi-Token") == SECRET_KEY:
-            return f(*args, **kwargs)
-        return {"msg": "You are not authorized to perform this action"}, 401
-    return decorated_function
 
 class Reload(Resource):
     
-    @secret_key_required
+    @secret_key_maybe_required
     def get(self):
+        print("Reloading...")
+        self.reload()
+
+    def reload(self):
         os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
-        return {"msg": "Reloading..."}, 200
+    
 
 class BuildWorkspace(Resource):
     ALLOWED_EXTENSIONS = {"zip"}
