@@ -5,9 +5,10 @@ from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+ENV_PATH = BASE_DIR + "/../../.env"
+
 # Load env file
-env_path = BASE_DIR + "/../../.env"
-load_dotenv(dotenv_path=env_path)
+load_dotenv(dotenv_path=ENV_PATH)
 
 
 ########################################

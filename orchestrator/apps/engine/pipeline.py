@@ -160,25 +160,19 @@ class PipelineActions:
             self.execution_error = True
 
             if hasattr(e, "message"):
-                self.pipeline_response = {
-                    "status": 500,
-                    "exception": {}
-                }
-               
+                self.pipeline_response = {"status": 500, "exception": {}}
+
                 if self.context.private.pipeline_debug:
                     self.pipeline_response["exception"] = {
                         "message": e.message,
-                        "action": {"id": action.id, "name": action.action_name, "data": action.data}
+                        "action": {"id": action.id, "name": action.action_name, "data": action.data},
                     }
             else:
-                self.pipeline_response = {
-                    "status": 500,
-                    "exception": {}
-                }
+                self.pipeline_response = {"status": 500, "exception": {}}
                 if self.context.private.pipeline_debug:
                     self.pipeline_response["exception"] = {
                         "message": str(e),
-                        "action": {"id": action.id, "name": action.action_name, "data": action.data}
+                        "action": {"id": action.id, "name": action.action_name, "data": action.data},
                     }
 
         return action

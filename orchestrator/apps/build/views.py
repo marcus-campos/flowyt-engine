@@ -1,23 +1,37 @@
 import asyncio
 import os
+import sys
 import uuid
 import zipfile
-import sys
+from functools import wraps
 
 from flask import request
 from flask_restful import Resource, abort
-from orchestrator.settings import STORAGE_FOLDER_TEMP_UPLOADS, WORKSPACES_PATH
+from orchestrator.settings import (STORAGE_FOLDER_TEMP_UPLOADS, WORKSPACES_PATH, SECRET_KEY)
 from werkzeug.utils import secure_filename
 
 from apps.build.serializers import BuildSerializer
+from utils.env_parser import parser
 
-ALLOWED_EXTENSIONS = {"zip"}
+def secret_key_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if request.headers.get("X-Orchestryzi-Token") == SECRET_KEY:
+            return f(*args, **kwargs)
+        return {"msg": "You are not authorized to perform this action"}, 401
+    return decorated_function
 
 class Reload(Resource):
+    
+    @secret_key_required
     def get(self):
-        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv) 
+        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
+        return {"msg": "Reloading..."}, 200
 
 class BuildWorkspace(Resource):
+    ALLOWED_EXTENSIONS = {"zip"}
+
+    @secret_key_required
     def post(self):
         # check if the post request has the file part
         if 'workpace_zip_file' not in request.files:
@@ -51,4 +65,4 @@ class BuildWorkspace(Resource):
                                     
     def allowed_file(self, filename):
         return '.' in filename and \
-            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+            filename.rsplit('.', 1)[1].lower() in self.ALLOWED_EXTENSIONS

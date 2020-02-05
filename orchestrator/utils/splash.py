@@ -1,5 +1,6 @@
 from flask import request
 
+
 def loading(config):
     ascii_art = (
         "\n"
@@ -25,7 +26,7 @@ def loading(config):
 def __host_name(host, port, preferred_url_scheme):
     if not host:
         host = "127.0.0.1"
-    
+
     if not port:
         port = 5000
     return "{0}://{1}:{2}".format(preferred_url_scheme, host, port)

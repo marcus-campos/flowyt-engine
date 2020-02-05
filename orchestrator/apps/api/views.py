@@ -1,8 +1,10 @@
 import json
+from functools import wraps
 
 import xmltodict
 from flask import Response, request
 from flask_restful import Resource
+from orchestrator.settings import SECRET_KEY
 
 from apps.api.serializers import StartSerializer
 from apps.engine.pipeline import Pipeline
@@ -32,9 +34,7 @@ class StartFlow(Resource):
         # Add debug in response
         if request.get("debug", "false") == "true":
             if type(response_data) is list:
-                response_data = {
-                    "data": response_data
-                }
+                response_data = {"data": response_data}
             response_data["exception"] = response.get("exception")
             response_data["__debug__"] = response.get("__debug__", {})
 
@@ -92,10 +92,20 @@ class StartFlow(Resource):
         return self.handle(*args, **kwargs)
 
 
+
+def secret_key_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if request.headers.get("X-Orchestryzi-Token") == SECRET_KEY:
+            return f(*args, **kwargs)
+        return {"msg": "You are not authorized to perform this action"}, 401
+    return decorated_function
+
 class Workspaces(Resource):
     def __init__(self, workspaces_urls):
         self.workspaces_urls = workspaces_urls
 
+    @secret_key_required
     def get(self):
         urls = []
 
