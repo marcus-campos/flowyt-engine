@@ -112,3 +112,8 @@ class Workspaces(Resource):
                 }
             )
         return urls
+
+class Hello(Resource):
+
+    def get(self):
+        return {"msg": "It's all good!"}

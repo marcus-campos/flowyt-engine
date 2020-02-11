@@ -2,7 +2,7 @@ import os
 
 from orchestrator.settings import SUBDOMAIN_MODE, WORKSPACES_PATH
 
-from .views import StartFlow, Workspaces
+from .views import StartFlow, Workspaces, Hello
 from utils.json_parser import parse_json_file
 
 urls = []
@@ -33,6 +33,12 @@ workspaces_urls = {
     "view": Workspaces,
     "methods": ["GET"],
     "kwargs": {"workspaces_urls": urls.copy()},
+}
+
+workspaces_urls = {
+    "path": "/health",
+    "view": Hello,
+    "methods": ["GET"]
 }
 
 urls.append(workspaces_urls)
