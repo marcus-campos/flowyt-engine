@@ -18,6 +18,7 @@ cerberus = "*"
 python-dotenv = "*"
 xmltodict = "*"
 gunicorn = "*"
+awsebcli = "*"
 
 [requires]
-python_full_version = "3.8.1"
+python_version = ">=3.6"
