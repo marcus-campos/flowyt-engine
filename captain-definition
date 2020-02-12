@@ -2,12 +2,18 @@
   "schemaVersion": 2,
   "dockerfileLines": [
     "FROM python:3.8.1",
+    "ENV PYTHONUNBUFFERED 1",
+    "RUN pip install -U pip setuptools",
+
     "RUN mkdir -p /usr/src/app",
     "WORKDIR /usr/src/app",
-    "COPY . /usr/src/app",
+    "COPY ./ /usr/src/app",
+
+    "RUN pip install --upgrade pip",
     "RUN pip install pipenv",
     "RUN pipenv install",
+
     "EXPOSE 8000",
-    "CMD [\"gunicorn\", \"-b\", \"0.0.0.0:8000\", \"--chdir\", \"orchestrator/\", \"wsgi:app\"]"
+    "CMD sh /usr/src/app/run_web.sh"
   ]
 }
