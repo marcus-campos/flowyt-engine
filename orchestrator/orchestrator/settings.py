@@ -8,7 +8,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SRC_DIR = BASE_DIR + "/../../"
 
 ENV_PATH = SRC_DIR + ".env"
-print(ENV_PATH)
 
 # Load env file
 load_dotenv(dotenv_path=ENV_PATH)
