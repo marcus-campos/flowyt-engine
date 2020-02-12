@@ -7,7 +7,7 @@
     "COPY ./ /usr/src/app",
     "RUN pip install pipenv",
     "RUN pipenv install",
-    "EXPOSE 80",
-    "CMD [\"gunicorn\", \"-b\", \"0.0.0.0:80\", \"--chdir\", \"orchestrator/\", \"wsgi:app\"]"
+    "EXPOSE 8000",
+    "CMD [\"gunicorn\", \"-b\", \"0.0.0.0:8000\", \"--chdir\", \"orchestrator/\", \"wsgi:app\"]"
   ]
 }
