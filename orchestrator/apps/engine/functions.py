@@ -1,7 +1,7 @@
 import os
 import importlib.util
 from pathlib import Path
-from orchestrator.settings import BASE_DIR, WORKSPACES_DIR
+from orchestrator.settings import WORKSPACES_PATH
 
 
 class Functions:
@@ -11,7 +11,7 @@ class Functions:
         self.__load_functions(self.workspace)
 
     def __load_functions(self, workspace):
-        functions_path = BASE_DIR + WORKSPACES_DIR + "/{0}/functions".format(workspace)
+        functions_path = WORKSPACES_PATH + "/{0}/functions".format(workspace)
 
         for module in os.listdir(functions_path):
             module_path = Path(module)

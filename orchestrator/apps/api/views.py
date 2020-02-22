@@ -43,8 +43,9 @@ class StartFlow(Resource):
             if not response_data.get("exception"):
                 response_data["exception"] = "Something went wrong. Enable debug mode to see more details."
 
-            if not response_data.get("__debug__"):
-                del response_data["__debug__"]
+            if "__debug__" in response_data:
+                if not response_data.get("__debug__"):
+                    del response_data["__debug__"]
 
         # Default json
         result = json.dumps(response_data)

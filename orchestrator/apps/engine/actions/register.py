@@ -7,6 +7,7 @@ from .actions.start import Start
 from .actions.switch import Switch
 from .actions.validation import Validation
 from .actions.workspace_var import WorkspaceVar
+from .actions.sql_db import SqlDatabase
 
 __actions = {
     "start": Start,
@@ -17,6 +18,7 @@ __actions = {
     "response": Response,
     "validation": Validation,
     "jump": Jump,
+    "sql_db": SqlDatabase,
 }
 
 
