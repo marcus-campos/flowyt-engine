@@ -3,7 +3,7 @@ import sqlalchemy
 from apps.engine.actions.action import GenericAction
 
 
-class Database():
+class Database:
     result = None
     engine = None
     session = None
@@ -11,9 +11,9 @@ class Database():
     def __init__(self, config):
         host = "{0}:{1}".format(config.host, config.port)
 
-        self.engine = sqlalchemy.create_engine("{0}://{1}:{2}@{3}/{4}".format(
-            config.sgbd, config.user, config.password, host, config.database
-        ))
+        self.engine = sqlalchemy.create_engine(
+            "{0}://{1}:{2}@{3}/{4}".format(config.sgbd, config.user, config.password, host, config.database)
+        )
 
         self.session = sqlalchemy.orm.scoped_session(sqlalchemy.orm.sessionmaker(bind=self.engine))
 
@@ -32,8 +32,8 @@ class Database():
             data.append(line)
         return data
 
-class SqlDatabase(GenericAction):
 
+class SqlDatabase(GenericAction):
     def handle(self, action_data, context):
         database = Database(context.private.integrations.sql_database)
 
@@ -43,10 +43,8 @@ class SqlDatabase(GenericAction):
             return context, None
 
         result = database.raw(action_data.get("sql"))
-        
-        context.public.response = {
-            "db": database
-        }
+
+        context.public.response = {"db": database}
 
         return context, None
 

@@ -92,7 +92,7 @@ class StartFlow(Resource):
 
     def delete(self, *args, **kwargs):
         return self.handle(*args, **kwargs)
-        
+
 
 class Workspaces(Resource):
     def __init__(self, workspaces_urls):
@@ -114,7 +114,7 @@ class Workspaces(Resource):
             )
         return urls
 
-class Hello(Resource):
 
+class Hello(Resource):
     def get(self):
         return {"msg": "It's all good!"}
