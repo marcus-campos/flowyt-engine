@@ -19,6 +19,7 @@ python-dotenv = "*"
 xmltodict = "*"
 gunicorn = "*"
 awsebcli = "*"
+sqlalchemy = "*"
 
 [requires]
 python_full_version = "3.8.1"
