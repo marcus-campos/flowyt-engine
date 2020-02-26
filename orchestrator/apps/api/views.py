@@ -36,10 +36,10 @@ class StartFlow(Resource):
         if request.get("debug", "false") == "true":
             if type(response_data) is list:
                 response_data = {"data": response_data}
-            response_data["exception"] = response.get("exception")
             response_data["__debug__"] = response.get("__debug__", {})
 
         if "exception" in response:
+            response_data["exception"] = response.get("exception")
             if not response_data.get("exception"):
                 response_data["exception"] = "Something went wrong. Enable debug mode to see more details."
 
