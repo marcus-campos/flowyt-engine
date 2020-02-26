@@ -20,10 +20,7 @@ class Loop(GenericAction):
                 result = action(index)
                 if result:
                     results.append(result)
-        
-        context.public.response = {
-            "data": results
-        }
+
+        context.public.response = {"data": results}
 
         return context, None
-

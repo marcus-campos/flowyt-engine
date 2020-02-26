@@ -193,7 +193,7 @@ class PipelineActions:
     def debug_log(self, action, start_time):
         if not action:
             return
-        
+
         self.debug_actions_logs.append(
             {
                 "id": action.id,

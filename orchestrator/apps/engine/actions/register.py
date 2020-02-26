@@ -22,7 +22,7 @@ __actions = {
     "jump": Jump,
     "sql_db": SqlDatabase,
     "loop": Loop,
-    "action": Action
+    "action": Action,
 }
 
 
