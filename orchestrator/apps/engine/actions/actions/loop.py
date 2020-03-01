@@ -9,13 +9,13 @@ class Loop(GenericAction):
 
         results = []
 
-        if loop_type is "list":
+        if loop_type == "list":
             for index, value in enumerate(data):
                 result = action(index, value)
                 if result:
                     results.append(result)
 
-        if loop_type is "range":
+        if loop_type == "range":
             for index in range(data):
                 result = action(index)
                 if result:

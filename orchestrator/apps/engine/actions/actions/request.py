@@ -14,7 +14,7 @@ class Request(GenericAction):
         request_data = {
             "data": action_data.get("data"),
             "headers": action_data.get("headers"),
-            "files": action_data.get("files")
+            "files": action_data.get("files"),
         }
 
         handler = getattr(self, action_data.get("method").lower())
