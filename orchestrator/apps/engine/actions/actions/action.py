@@ -1,7 +1,7 @@
 from apps.engine.actions.action import GenericAction
 
 
-class WorkspaceVar(GenericAction):
+class Action(GenericAction):
     def handle(self, action_data, context):
-        context.public.workspace = {**action_data}
+        context.public.response = {"data": action_data}
         return context, None
