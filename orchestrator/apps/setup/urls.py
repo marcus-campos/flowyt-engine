@@ -1,5 +1,5 @@
 from .views import Setup
 
 urls = [
-    {"path": "/_workspaces/setup", "view": Setup},
+    {"path": "/_engine/setup", "view": Setup},
 ]

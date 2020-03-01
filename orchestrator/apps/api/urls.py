@@ -30,11 +30,11 @@ for workspace_name in dirlist:
 
 urls.append(
     {
-        "path": "/_workspaces/routes",
+        "path": "/_engine/workspaces/routes",
         "view": Workspaces,
         "methods": ["GET"],
         "kwargs": {"workspaces_urls": urls.copy()},
     }
 )
 
-urls.append({"path": "/health", "view": Hello, "methods": ["GET"]})
+urls.append({"path": "/_engine/health", "view": Hello, "methods": ["GET"]})

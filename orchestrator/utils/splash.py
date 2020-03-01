@@ -17,7 +17,7 @@ def loading(config):
     )
     print(ascii_art + "\n")
     print(
-        " * Check available routes at {0}/_workspaces/routes".format(
+        " * Check available routes at {0}/_engine/workspaces/routes".format(
             __host_name(config.get("HOST"), config.get("PORT"), config.get("PREFERRED_URL_SCHEME", "http"))
         )
     )
