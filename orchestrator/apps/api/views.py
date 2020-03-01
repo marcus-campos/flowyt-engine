@@ -118,4 +118,7 @@ class Workspaces(Resource):
 
 class Hello(Resource):
     def get(self):
-        return {"msg": "It's all good!"}
+        return {
+            "msg": "It's all good!",
+            "curious?": "https://www.youtube.com/watch?v=c4nunES9DyI"
+        }
