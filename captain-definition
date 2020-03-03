@@ -3,6 +3,11 @@
   "dockerfileLines": [
     "FROM python:3.8.1",
     "ENV PYTHONUNBUFFERED 1",
+    
+    "ENV SYS_APP_ENV $SYS_APP_ENV",
+    "ENV APP_SECRET_KEY $APP_SECRET_KEY",
+    "ENV SYS_APP_DEBUG $SYS_APP_DEBUG",
+
     "RUN pip install -U pip setuptools",
 
     "RUN mkdir -p /usr/src/app",
