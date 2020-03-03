@@ -16,11 +16,12 @@ from utils.middlewares import secret_key_required, secret_key_maybe_required
 class Reload(Resource):
     @secret_key_maybe_required
     def get(self):
-        print("Reloading...")
         self.reload()
+        return {"msg": "Reloading..."}, 200
 
     def reload(self):
-        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
+        os.popen("ps aux |grep gunicorn |grep orechestryzi_engine|awk '{ print $2 }' |xargs kill -HUP")
+        return True
 
 
 class Publish(Resource):
