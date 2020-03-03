@@ -19,7 +19,7 @@
     "RUN pipenv lock --requirements > requirements.txt",
     "RUN pip install -r requirements.txt",
 
-    "VOLUME ./workspaces /usr/src/app/workspaces"
+    "VOLUME ./workspaces /usr/src/app/workspaces",
 
     "EXPOSE 8000",
     "CMD sh /usr/src/app/run_web.sh"
