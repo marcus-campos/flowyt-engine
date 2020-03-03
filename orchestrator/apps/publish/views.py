@@ -8,13 +8,12 @@ from flask import request
 from flask_restful import Resource, abort
 from werkzeug.utils import secure_filename
 
-from apps.build.serializers import BuildSerializer
+from apps.publish.serializers import PublishSerializer
 from orchestrator.settings import STORAGE_FOLDER_TEMP_UPLOADS, WORKSPACES_PATH
 from utils.middlewares import secret_key_required, secret_key_maybe_required
 
 
 class Reload(Resource):
-    
     @secret_key_maybe_required
     def get(self):
         print("Reloading...")
@@ -22,22 +21,22 @@ class Reload(Resource):
 
     def reload(self):
         os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
-    
 
-class BuildWorkspace(Resource):
+
+class Publish(Resource):
     ALLOWED_EXTENSIONS = {"zip"}
 
     @secret_key_required
     def post(self):
         # check if the post request has the file part
-        if 'workpace_zip_file' not in request.files:
+        if "workpace_zip_file" not in request.files:
             return {"msg": "No workpace_zip_file in multipart form"}, 400
 
-        file = request.files['workpace_zip_file']
+        file = request.files["workpace_zip_file"]
 
         # if user does not select file, browser also
         # submit an empty part without filename
-        if file.filename == '':
+        if file.filename == "":
             return {"msg": "No selected file."}, 400
 
         if not self.allowed_file(file.filename):
@@ -51,14 +50,13 @@ class BuildWorkspace(Resource):
         path_to_zip_file = STORAGE_FOLDER_TEMP_UPLOADS + "/" + filename
         directory_to_extract_to = WORKSPACES_PATH
 
-        with zipfile.ZipFile(path_to_zip_file, 'r') as zip_ref:
+        with zipfile.ZipFile(path_to_zip_file, "r") as zip_ref:
             zip_ref.extractall(directory_to_extract_to)
 
         # Remove upload
         os.remove(path_to_zip_file)
 
         return {"msg": "The workspace upload was completed successfully!"}, 200
-                                    
+
     def allowed_file(self, filename):
-        return '.' in filename and \
-            filename.rsplit('.', 1)[1].lower() in self.ALLOWED_EXTENSIONS
+        return "." in filename and filename.rsplit(".", 1)[1].lower() in self.ALLOWED_EXTENSIONS
