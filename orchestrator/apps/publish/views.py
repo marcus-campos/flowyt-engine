@@ -56,7 +56,7 @@ class Publish(Resource):
         # Remove upload
         os.remove(path_to_zip_file)
 
-        return {"msg": "The workspace upload was completed successfully!"}, 200
+        return {"msg": "The workspace {0} upload was completed successfully!".format(filename)}, 200
 
     def allowed_file(self, filename):
         return "." in filename and filename.rsplit(".", 1)[1].lower() in self.ALLOWED_EXTENSIONS
