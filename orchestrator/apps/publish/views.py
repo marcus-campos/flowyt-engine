@@ -51,12 +51,12 @@ class Publish(Resource):
         directory_to_extract_to = WORKSPACES_PATH
 
         with zipfile.ZipFile(path_to_zip_file, "r") as zip_ref:
-            zip_ref.extractall(directory_to_extract_to)
+            zip_ref.extractall("{0}/{1}".format(directory_to_extract_to, file.filename[:-4]))
 
         # Remove upload
         os.remove(path_to_zip_file)
 
-        return {"msg": "The workspace {0} upload was completed successfully!".format(filename)}, 200
+        return {"msg": "The workspace {0} upload was completed successfully!".format(file.filename[:-4])}, 200
 
     def allowed_file(self, filename):
         return "." in filename and filename.rsplit(".", 1)[1].lower() in self.ALLOWED_EXTENSIONS
