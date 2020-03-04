@@ -72,7 +72,7 @@ class StartFlow(Resource):
             "qs": request.args.to_dict(),
             "form": request.form.to_dict(),
             "data": request.get_json(),
-            "files": request.file,
+            #"files": request.file,
         }
 
         if request_data["headers"].get("content_type") == "application/xml":
