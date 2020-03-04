@@ -19,3 +19,4 @@ class Workspace:
         self.release = workspace_settings.get("release", {})
         self.integrations = workspace_settings.get("integrations", {})
         self.env = workspace_settings.get("env", {})
+        self.safe_mode = workspace_settings.get("safe_mode", True)

@@ -25,11 +25,12 @@ class Pipeline:
         pipeline_debug = True if self.workspace_class.debug and request_debug else False
         context = {
             "public": {
-                "info": {
+                "workspace_info": {
                     "id": self.workspace_class.id,
                     "name": self.workspace_class.name,
                     "debug": self.workspace_class.debug,
                     "release": self.workspace_class.release,
+                    "safe_mode": self.workspace_class.safe_mode
                 },
                 "env": self.workspace_class.env,
                 "workspace": {},
@@ -71,7 +72,8 @@ class Pipeline:
 
             # Execute actions
             pipeline_actions = PipelineActions(current_flow, flow_class, context)
-            pipeline_response = pipeline_actions.process()
+            pipeline_response = pipeline_actions.process(start_time)
+
             # Updates
             context = pipeline_actions.context
             process_pipeline = pipeline_actions.process_pipeline
@@ -105,9 +107,14 @@ class PipelineActions:
         self.has_actions = True
         self.action_response = {}
         self.pipeline_response = {}
+        self.safe_mode = context["public"]["workspace_info"]["safe_mode"]
 
-    def process(self):
+    def process(self, start_at):
         while self.has_actions:
+            # Safe check
+            if self.safe_mode:
+                self.safe_check(start_at)
+
             # Get start action process time
             start_time = time.time()
 
@@ -134,6 +141,17 @@ class PipelineActions:
             self.stop_pipeline()
 
         return self.pipeline_response
+
+    def safe_check(self, start_at):
+        current_time = time.time()
+        need_abort = current_time - start_at >= 60
+
+        if need_abort:
+            self.pipeline_response["exception"] = {
+                "message": "This flow took a long time to run and was aborted by safe mode"
+            }
+
+        self.stop_pipeline()
 
     def execute_action(self):
         action = None
