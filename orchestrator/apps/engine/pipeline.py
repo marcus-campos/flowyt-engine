@@ -144,7 +144,7 @@ class PipelineActions:
 
     def safe_check(self, start_at):
         current_time = time.time()
-        need_abort = current_time - start_at >= 60
+        need_abort = current_time - start_at >= 30
 
         if need_abort:
             self.pipeline_response["exception"] = {
