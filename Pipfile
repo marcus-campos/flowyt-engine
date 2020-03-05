@@ -20,6 +20,7 @@ xmltodict = "*"
 gunicorn = "*"
 awsebcli = "*"
 sqlalchemy = "*"
+psutil = "*"
 
 [requires]
 python_full_version = "3.8.1"

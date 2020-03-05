@@ -30,7 +30,7 @@ class Pipeline:
                     "name": self.workspace_class.name,
                     "debug": self.workspace_class.debug,
                     "release": self.workspace_class.release,
-                    "safe_mode": self.workspace_class.safe_mode
+                    "safe_mode": self.workspace_class.safe_mode,
                 },
                 "env": self.workspace_class.env,
                 "workspace": {},
@@ -144,14 +144,15 @@ class PipelineActions:
 
     def safe_check(self, start_at):
         current_time = time.time()
-        need_abort = current_time - start_at >= 30
+        need_abort = (current_time - start_at) >= 30
 
         if need_abort:
             self.pipeline_response["exception"] = {
                 "message": "This flow took a long time to run and was aborted by safe mode"
             }
-
-        self.stop_pipeline()
+            self.process_pipeline = False
+            self.has_actions = False
+            self.execution_error = True
 
     def execute_action(self):
         action = None

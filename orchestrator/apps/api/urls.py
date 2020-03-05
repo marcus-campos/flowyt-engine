@@ -2,7 +2,7 @@ import os
 
 from orchestrator.settings import SUBDOMAIN_MODE, WORKSPACES_PATH
 
-from .views import StartFlow, Workspaces, Hello
+from .views import StartFlow, Workspaces, Ping, Info
 from utils.json_parser import parse_json_file
 
 urls = []
@@ -37,4 +37,5 @@ urls.append(
     }
 )
 
-urls.append({"path": "/_engine/health", "view": Hello, "methods": ["GET"]})
+urls.append({"path": "/_engine/ping", "view": Ping, "methods": ["GET"]})
+urls.append({"path": "/_engine/info", "view": Info, "methods": ["GET"]})

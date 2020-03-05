@@ -1,4 +1,5 @@
 import json
+import psutil
 from functools import wraps
 
 import xmltodict
@@ -72,7 +73,7 @@ class StartFlow(Resource):
             "qs": request.args.to_dict(),
             "form": request.form.to_dict(),
             "data": request.get_json(),
-            #"files": request.file,
+            # "files": request.file,
         }
 
         if request_data["headers"].get("content_type") == "application/xml":
@@ -116,6 +117,27 @@ class Workspaces(Resource):
         return urls
 
 
-class Hello(Resource):
+class Ping(Resource):
     def get(self):
         return {"msg": "It's all good!", "curious?": "https://www.youtube.com/watch?v=c4nunES9DyI"}
+
+
+class Info(Resource):
+
+    @secret_key_required
+    def get(self):
+        cpu = {
+            "cpu{0}".format(index): percent
+            for index, percent in enumerate(psutil.cpu_percent(interval=1, percpu=True))
+        }
+        memory = psutil.virtual_memory()
+        return {
+            "cpu": cpu,
+            "memory": {
+                "total": round((memory.total / 1024) / 1024),
+                "used": round((memory.used / 1024) / 1024),
+                "available": round((memory.available / 1024) / 1024),
+                "free": round((memory.free / 1024) / 1024),
+                "percent": memory.percent,
+            }
+        }
