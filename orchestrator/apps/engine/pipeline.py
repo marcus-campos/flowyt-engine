@@ -112,7 +112,7 @@ class PipelineActions:
     def process(self, start_at):
         while self.has_actions:
             # Safe check
-            if self.safe_mode:
+            if self.safe_mode["enable"]:
                 self.safe_check(start_at)
 
             # Get start action process time
@@ -144,11 +144,12 @@ class PipelineActions:
 
     def safe_check(self, start_at):
         current_time = time.time()
-        need_abort = (current_time - start_at) >= 30
+        safe_time = self.safe_mode["safe_time"]
+        need_abort = (current_time - start_at) >= safe_time
 
         if need_abort:
             self.pipeline_response["exception"] = {
-                "message": "This flow took a long time to run and was aborted by safe mode"
+                "message": "This flow took a long time to run and was aborted. The limit is {0} seconds and the flow took {1} seconds.".format(safe_time, (current_time - start_at))
             }
             self.process_pipeline = False
             self.has_actions = False
