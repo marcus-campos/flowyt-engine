@@ -149,7 +149,9 @@ class PipelineActions:
 
         if need_abort:
             self.pipeline_response["exception"] = {
-                "message": "This flow took a long time to run and was aborted. The limit is {0} seconds and the flow took {1} seconds.".format(safe_time, (current_time - start_at))
+                "message": "This flow took a long time to run and was aborted. The limit is {0} seconds and the flow took {1} seconds.".format(
+                    safe_time, (current_time - start_at)
+                )
             }
             self.process_pipeline = False
             self.has_actions = False

@@ -123,7 +123,6 @@ class Ping(Resource):
 
 
 class Info(Resource):
-
     @secret_key_required
     def get(self):
         cpu = {
@@ -139,5 +138,5 @@ class Info(Resource):
                 "available": round((memory.available / 1024) / 1024),
                 "free": round((memory.free / 1024) / 1024),
                 "percent": memory.percent,
-            }
+            },
         }
