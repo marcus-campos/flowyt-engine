@@ -1,6 +1,6 @@
-from apps.engine.flow import Flow
-from apps.engine.functions import Functions
-from apps.engine.workspace import Workspace
+from engine.flow import Flow
+from engine.functions import Functions
+from engine.workspace import Workspace
 from dotmap import DotMap
 import time
 import json

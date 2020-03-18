@@ -1,7 +1,7 @@
 import os
 import importlib.util
 from pathlib import Path
-from orchestrator.settings import WORKSPACES_PATH
+from engine.settings import WORKSPACES_PATH
 
 
 class Functions:

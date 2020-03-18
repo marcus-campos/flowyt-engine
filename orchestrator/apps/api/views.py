@@ -8,7 +8,7 @@ from flask_restful import Resource
 from orchestrator.settings import SECRET_KEY
 
 from apps.api.serializers import StartSerializer
-from apps.engine.pipeline import Pipeline
+from engine.pipeline import Pipeline
 from utils.middlewares import secret_key_required
 
 

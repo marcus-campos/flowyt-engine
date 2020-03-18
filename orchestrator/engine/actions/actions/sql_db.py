@@ -1,6 +1,6 @@
 import sqlalchemy
 
-from apps.engine.actions.action import GenericAction
+from engine.actions.action import GenericAction
 
 
 class Database:
