@@ -12,6 +12,27 @@ from engine.pipeline import Pipeline
 from utils.middlewares import secret_key_required
 
 
+class Workspaces(Resource):
+    def __init__(self, workspaces_urls):
+        self.workspaces_urls = workspaces_urls
+
+    @secret_key_required
+    def get(self):
+        urls = []
+
+        for url in self.workspaces_urls:
+            urls.append(
+                {
+                    "path": url.get("path"),
+                    "methods": url.get("methods"),
+                    "workspace": url.get("kwargs").get("workspace"),
+                    "flow": url.get("kwargs").get("flow"),
+                    "subdomain": url.get("subdomain"),
+                }
+            )
+        return urls
+
+
 class StartFlow(Resource):
 
     serializer_class = StartSerializer()
@@ -94,49 +115,3 @@ class StartFlow(Resource):
 
     def delete(self, *args, **kwargs):
         return self.handle(*args, **kwargs)
-
-
-class Workspaces(Resource):
-    def __init__(self, workspaces_urls):
-        self.workspaces_urls = workspaces_urls
-
-    @secret_key_required
-    def get(self):
-        urls = []
-
-        for url in self.workspaces_urls:
-            urls.append(
-                {
-                    "path": url.get("path"),
-                    "methods": url.get("methods"),
-                    "workspace": url.get("kwargs").get("workspace"),
-                    "flow": url.get("kwargs").get("flow"),
-                    "subdomain": url.get("subdomain"),
-                }
-            )
-        return urls
-
-
-class Ping(Resource):
-    def get(self):
-        return {"msg": "It's all good!", "curious?": "https://www.youtube.com/watch?v=c4nunES9DyI"}
-
-
-class Info(Resource):
-    @secret_key_required
-    def get(self):
-        cpu = {
-            "cpu{0}".format(index): percent
-            for index, percent in enumerate(psutil.cpu_percent(interval=1, percpu=True))
-        }
-        memory = psutil.virtual_memory()
-        return {
-            "cpu": cpu,
-            "memory": {
-                "total": round((memory.total / 1024) / 1024),
-                "used": round((memory.used / 1024) / 1024),
-                "available": round((memory.available / 1024) / 1024),
-                "free": round((memory.free / 1024) / 1024),
-                "percent": memory.percent,
-            },
-        }

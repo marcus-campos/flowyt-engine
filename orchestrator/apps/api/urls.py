@@ -2,7 +2,7 @@ import os
 
 from orchestrator.settings import SUBDOMAIN_MODE, WORKSPACES_PATH
 
-from .views import StartFlow, Workspaces, Ping, Info
+from .views import StartFlow, Workspaces
 from utils.json_parser import parse_json_file
 
 urls = []
@@ -36,6 +36,3 @@ urls.append(
         "kwargs": {"workspaces_urls": urls.copy()},
     }
 )
-
-urls.append({"path": "/_engine/ping", "view": Ping, "methods": ["GET"]})
-urls.append({"path": "/_engine/info", "view": Info, "methods": ["GET"]})
