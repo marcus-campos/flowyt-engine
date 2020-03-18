@@ -1,13 +1,13 @@
 from functools import wraps
 
 from flask import request
-from orchestrator.settings import SECRET_KEY
+from orchestrator.settings import SECRET_KEY, WORKSPACE_EXECUTION_MODE
 
 
 def secret_key_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if request.headers.get("X-Orchestryzi-Token") == SECRET_KEY:
+        if request.headers.get("X-Orchestryzi-Token") == SECRET_KEY and WORKSPACE_EXECUTION_MODE == "local":
             return f(*args, **kwargs)
         return {"msg": "You are not authorized to perform this action"}, 401
 
