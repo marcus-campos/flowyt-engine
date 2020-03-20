@@ -37,8 +37,9 @@ class StartFlow(Resource):
 
     serializer_class = StartSerializer()
 
-    def __init__(self, workspace, flow, *args, **kwargs):
-        self.pipeline_class = Pipeline(workspace, flow)
+    def __init__(self, extras, *args, **kwargs):
+        pass
+        # self.pipeline_class = Pipeline(workspace, flow)
 
     def handle(self, *args, **kwargs):
         request_data = self.__get_request_data(*args, **kwargs)
@@ -114,4 +115,16 @@ class StartFlow(Resource):
         return self.handle(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
+        return self.handle(*args, **kwargs)
+
+    def path(self, *args, **kwargs):
+        return self.handle(*args, **kwargs)
+
+    def trace(self, *args, **kwargs):
+        return self.handle(*args, **kwargs)
+
+    def options(self, *args, **kwargs):
+        return self.handle(*args, **kwargs)
+
+    def connect(self, *args, **kwargs):
         return self.handle(*args, **kwargs)

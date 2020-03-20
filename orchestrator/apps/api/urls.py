@@ -1,13 +1,13 @@
 import os
 
-from orchestrator.settings import SUBDOMAIN_MODE, WORKSPACES_PATH, WORKSPACE_EXECUTION_MODE
+from orchestrator.settings import SUBDOMAIN_MODE, WORKSPACES_PATH, WORKSPACE_STORAGE_MODE
 
 from .views import StartFlow, Workspaces
 from utils.json_parser import parse_json_file
 
 urls = []
 
-if WORKSPACE_EXECUTION_MODE == "local":
+if WORKSPACE_STORAGE_MODE == "local":
     path = WORKSPACES_PATH
     dirlist = [item for item in os.listdir(path) if os.path.isdir(os.path.join(path, item))]
 
@@ -19,7 +19,7 @@ if WORKSPACE_EXECUTION_MODE == "local":
                 "path": url.get("path"),
                 "view": StartFlow,
                 "methods": [url.get("method").upper()],
-                "kwargs": {"workspace": workspace_name, "flow": url.get("flow")},
+                "kwargs": {"extras": {"workspace": workspace_name, "flow": url.get("flow")}},
                 "subdomain": workspace_name,
             }
 
@@ -35,5 +35,16 @@ if WORKSPACE_EXECUTION_MODE == "local":
             "view": Workspaces,
             "methods": ["GET"],
             "kwargs": {"workspaces_urls": urls.copy()},
+        }
+    )
+
+if WORKSPACE_STORAGE_MODE == "redis":
+    urls.append(
+        {
+            "path": "/<path:path>",
+            "view": StartFlow,
+            "methods": ["GET", "POST", "PUT", "DELETE", "PATH"],
+            "kwargs": {"extras": {"workspace": None, "flow": None}},
+            "subdomain": "<subdomain>",
         }
     )

@@ -21,6 +21,7 @@ gunicorn = "*"
 awsebcli = "*"
 sqlalchemy = "*"
 psutil = "*"
+redis = "*"
 
 [requires]
 python_full_version = "3.8.1"
