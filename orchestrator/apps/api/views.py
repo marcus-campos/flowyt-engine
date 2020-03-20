@@ -1,15 +1,18 @@
 import json
-import psutil
 from functools import wraps
 
+import psutil
 import xmltodict
+from engine.pipeline import Pipeline
 from flask import Response, request
 from flask_restful import Resource
 from orchestrator.settings import SECRET_KEY
 
 from apps.api.serializers import StartSerializer
-from engine.pipeline import Pipeline
+from apps.api.services.routes import Router
+from apps.api.services.workspace_load import WorkspaceLoad
 from utils.middlewares import secret_key_required
+from utils.redis import redis
 
 
 class Workspaces(Resource):
@@ -37,11 +40,9 @@ class StartFlow(Resource):
 
     serializer_class = StartSerializer()
 
-    def __init__(self, extras, *args, **kwargs):
-        pass
-        # self.pipeline_class = Pipeline(workspace, flow)
-
-    def handle(self, *args, **kwargs):
+    def handle(self, subdomain, workspace, path, *args, **kwargs):
+        workspace_data = WorkspaceLoad().load(workspace, subdomain)
+        
         request_data = self.__get_request_data(*args, **kwargs)
         response_data = self.pipeline_class.start(request_data=request_data)
         response = self.__make_response(response_data, request_data)
@@ -117,7 +118,7 @@ class StartFlow(Resource):
     def delete(self, *args, **kwargs):
         return self.handle(*args, **kwargs)
 
-    def path(self, *args, **kwargs):
+    def patch(self, *args, **kwargs):
         return self.handle(*args, **kwargs)
 
     def trace(self, *args, **kwargs):

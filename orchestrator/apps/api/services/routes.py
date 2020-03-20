@@ -1,7 +1,7 @@
 from werkzeug.routing import Map, Rule, NotFound, RequestRedirect
 
 
-class Router:
+class Router():
     urls_map = []
     server_name = ""
     subdomain = ""
@@ -24,9 +24,9 @@ class Router:
 
     def match(self, path, workspace, method):
         urls = self.urls_map.bind(self.server_name, workspace, self.subdomain)
-        
+
         try:
             return urls.match(path, method)
-        except:
+        except Exception as e:
             return False
-
+    
