@@ -5,13 +5,10 @@ from .action import Actions
 
 
 class Flow:
-    def __init__(self, workspace, flow):
+    def __init__(self, workspace_data, flow):
         self.vars = {}
-        self.__load_flow(workspace, flow)
-
-    def __load_flow(self, workspace, flow):
-        flow_settings = parse_json_file("{0}/{1}/flows/{2}.json".format(WORKSPACES_PATH, workspace, flow))
-
+        
+        flow_settings = workspace_data["flows"][flow]
         self.id = flow_settings.get("id")
         self.name = flow_settings.get("name")
         self.pipeline = Actions(flow_settings.get("pipeline", {}))

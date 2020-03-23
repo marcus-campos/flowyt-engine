@@ -1,11 +1,11 @@
 import copy
-import importlib.util
+import json
 import os
-from pathlib import Path
 
 from orchestrator.settings import WORKSPACE_STORAGE_MODE, WORKSPACES_PATH
 
 from utils.json_parser import parse_json_file
+from utils.redis import redis
 
 
 class WorkspaceLoad():
@@ -20,10 +20,16 @@ class WorkspaceLoad():
         if WORKSPACE_STORAGE_MODE == "local":
             return self.__load_local(workspace)
 
-        return self.__load_redis()
+        return self.__load_redis(workspace, subdomain)
 
-    def __load_redis(self):
-        pass
+    def __load_redis(self, worksace, subdomain):
+        raw_data = redis.get(worksace)
+
+        if not raw_data:
+            return None
+
+        return json.loads(raw_data)
+
 
     def __load_local(self, workspace):
         model = copy.deepcopy(self.base_model)
@@ -45,25 +51,4 @@ class WorkspaceLoad():
             flow_name = flow[:-5]
             flows[flow_name] = parse_json_file("{0}/{1}".format(flows_path, flow))
 
-        # Functions
-        functions_path = "{0}/functions".format(workspace_path)
-        functions = {}
-
-        for module in os.listdir(functions_path):
-            module_path = Path(module)
-
-            if module_path.name == "__init__.py" or not module_path.suffix == ".py":
-                continue
-
-            spec = importlib.util.spec_from_file_location(
-                "module.name", functions_path + "/{0}".format(module)
-            )
-            module_loaded = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module_loaded)
-            functions[module_path.stem] = module_loaded
-
-        model["functions"] = functions
-
         return model
-
-        

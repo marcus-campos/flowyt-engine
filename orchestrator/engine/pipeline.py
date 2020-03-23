@@ -1,5 +1,4 @@
 from engine.flow import Flow
-from engine.functions import Functions
 from engine.workspace import Workspace
 from dotmap import DotMap
 import time
@@ -7,12 +6,11 @@ import json
 
 
 class Pipeline:
-    def __init__(self, workspace, flow):
+    def __init__(self, workspace_data, flow):
         self.start_pipeline_time = time.time()
         self.flow = flow
-        self.workspace = workspace
-        self.workspace_class = Workspace(self.workspace)
-        self.functions_class = Functions(self.workspace)
+        self.workspace_data = workspace_data
+        self.workspace_class = Workspace(self.workspace_data["config"]["settings"])
         self.debug_logs = []
         self.execution_error = False
 
@@ -35,7 +33,7 @@ class Pipeline:
                 "env": self.workspace_class.env,
                 "workspace": {},
                 "request": request_data,
-                "function": self.functions_class.workspace_functions,
+                "function": self.workspace_data["functions"],
                 "response": {},
             },
             "private": {"integrations": self.workspace_class.integrations, "pipeline_debug": pipeline_debug},
@@ -68,7 +66,7 @@ class Pipeline:
             start_time = time.time()
 
             # Load flow
-            flow_class = Flow(self.workspace, current_flow)
+            flow_class = Flow(self.workspace_data, current_flow)
 
             # Execute actions
             pipeline_actions = PipelineActions(current_flow, flow_class, context)

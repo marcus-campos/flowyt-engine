@@ -3,16 +3,15 @@ from functools import wraps
 
 import psutil
 import xmltodict
-from engine.pipeline import Pipeline
+from engine.manager import Engine
 from flask import Response, request
 from flask_restful import Resource
-from orchestrator.settings import SECRET_KEY
+from orchestrator.settings import SECRET_KEY, SERVER_NAME
 
 from apps.api.serializers import StartSerializer
 from apps.api.services.routes import Router
 from apps.api.services.workspace_load import WorkspaceLoad
 from utils.middlewares import secret_key_required
-from utils.redis import redis
 
 
 class Workspaces(Resource):
@@ -37,14 +36,24 @@ class Workspaces(Resource):
 
 
 class StartFlow(Resource):
-
+    engine_class = Engine()
     serializer_class = StartSerializer()
 
-    def handle(self, subdomain, workspace, path, *args, **kwargs):
+    def handle(self, subdomain, workspace, method, path, *args, **kwargs):
+        # Load workspace
         workspace_data = WorkspaceLoad().load(workspace, subdomain)
+
+        if not workspace_data:
+            return {"message": "The requested workspace was not found on the server."}, 404
         
+        # Check route
+        flow = Router(SERVER_NAME, subdomain, workspace_data["routes"]).match(path, workspace, method)
+
+        # Start engine
         request_data = self.__get_request_data(*args, **kwargs)
-        response_data = self.pipeline_class.start(request_data=request_data)
+        response_data = self.engine_class.start(workspace_data, request_data, workspace, flow)
+
+        # Response
         response = self.__make_response(response_data, request_data)
 
         return response
@@ -107,25 +116,25 @@ class StartFlow(Resource):
         return request_data
 
     def get(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="GET", *args, **kwargs)
 
     def post(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="POST", *args, **kwargs)
 
     def put(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="PUT", *args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="DELETE", *args, **kwargs)
 
     def patch(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="PATCH", *args, **kwargs)
 
     def trace(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="TRACE", *args, **kwargs)
 
     def options(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="OPTIONS", *args, **kwargs)
 
     def connect(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="CONNECT", *args, **kwargs)

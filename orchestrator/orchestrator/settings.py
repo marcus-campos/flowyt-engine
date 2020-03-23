@@ -40,8 +40,8 @@ WORKSPACES_PATH = SRC_DIR + WORKSPACES_DIR
 
 # Workspace storage mode redis
 REDIS = {
-    "host": os.getenv("REDIS_HOST", "127.0.0.1"),
-    "port": os.getenv("REDIS_PORT", "6379"),
-    "password": os.getenv("REDIS_PASSWORD"),
-    "db": os.getenv("REDIS_DB", 0),
+    "HOST": os.getenv("REDIS_HOST", "127.0.0.1"),
+    "PORT": os.getenv("REDIS_PORT", 6379),
+    "PASSWORD": os.getenv("REDIS_PASSWORD"),
+    "DB": os.getenv("REDIS_DB", 0),
 }
