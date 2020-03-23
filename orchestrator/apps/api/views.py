@@ -45,7 +45,7 @@ class StartFlow(Resource):
 
         if not workspace_data:
             return {"message": "The requested workspace was not found on the server."}, 404
-        
+
         # Check route
         flow = Router(SERVER_NAME, subdomain, workspace_data["routes"]).match(path, workspace, method)
 

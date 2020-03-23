@@ -8,13 +8,8 @@ from utils.json_parser import parse_json_file
 from utils.redis import redis
 
 
-class WorkspaceLoad():
-    base_model = {
-        "config": {},
-        "flows": {},
-        "functions": {},
-        "routes": []
-    }
+class WorkspaceLoad:
+    base_model = {"config": {}, "flows": {}, "functions": {}, "routes": []}
 
     def load(self, workspace, subdomain):
         if WORKSPACE_STORAGE_MODE == "local":
@@ -30,16 +25,13 @@ class WorkspaceLoad():
 
         return json.loads(raw_data)
 
-
     def __load_local(self, workspace):
         model = copy.deepcopy(self.base_model)
         workspace_path = "{0}/{1}".format(WORKSPACES_PATH, workspace)
 
         # Config
-        model["config"]["settings"] = parse_json_file(
-            "{0}/config/settings.json".format(workspace_path)
-        )
-        
+        model["config"]["settings"] = parse_json_file("{0}/config/settings.json".format(workspace_path))
+
         # Routes
         model["routes"] = parse_json_file("{0}/routes.json".format(workspace_path))
 

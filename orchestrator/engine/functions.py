@@ -8,29 +8,24 @@ from engine.settings import WORKSPACES_PATH
 
 
 class FunctionLoader(object):
-    base_model = {
-        "config": {},
-        "flows": {},
-        "functions": {},
-        "routes": []
-    }
+    base_model = {"config": {}, "flows": {}, "functions": {}, "routes": []}
 
     def load_string(self, modules, language):
         functions = {}
         for module in modules:
             context = None
             if language == "python":
-                context = self._load_py(module["data"])
+                context = self._load_python(module["data"])
             elif language == "javascript":
-                context = self._load_py(module["data"])
+                context = self._load_javascript(module["data"])
 
             functions[module["name"]] = context
-            
+
         return functions
 
     def load_local(self, workspace):
         workspace_path = "{0}/{1}".format(WORKSPACES_PATH, workspace)
-        
+
         functions_path = "{0}/functions".format(workspace_path)
         functions = {}
 
@@ -49,12 +44,12 @@ class FunctionLoader(object):
 
         return functions
 
-    def _load_py(self, text):
+    def _load_python(self, text):
         context = {}
         exec(text, context)
         return context
 
-    def _load_js(self, text):
+    def _load_javascript(self, text):
         context = js2py.EvalJs(enable_require=False)
         context.execute(text)
         return context

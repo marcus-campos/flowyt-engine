@@ -2,7 +2,7 @@ import ast
 import re
 from dotmap import DotMap
 
-from utils.eval import contexted_run
+from engine.eval import contexted_run
 
 
 class GenericAction:
@@ -39,11 +39,18 @@ class GenericAction:
                     self.load_action_data(item, context)
 
             elements = []
+            language = context.private.development_language
             if type(action_data[key]) is str:
                 elements = re.findall("\$\{.*?\}", action_data[key])
+                if not elements:
+                    language = "python"
+                    elements = re.findall("\$\(py\)\{.*?\}", action_data[key])
+                    if not elements:
+                        language = "javascript"
+                        elements = re.findall("\$\(js\)\{.*?\}", action_data[key])
 
             for element in elements:
-                result = contexted_run(context=context, source=element)
+                result = contexted_run(context=context, source=element, language=language)
 
                 if type(result) is str:
                     action_data[key] = action_data[key].replace(element, str(result))

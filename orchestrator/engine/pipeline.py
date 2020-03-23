@@ -36,7 +36,11 @@ class Pipeline:
                 "function": self.workspace_data["functions"],
                 "response": {},
             },
-            "private": {"integrations": self.workspace_class.integrations, "pipeline_debug": pipeline_debug},
+            "private": {
+                "integrations": self.workspace_class.integrations,
+                "development_language": self.workspace_class.development_language,
+                "pipeline_debug": pipeline_debug,
+            },
             "pipeline_context": {},
         }
 
