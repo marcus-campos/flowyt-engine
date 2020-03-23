@@ -8,11 +8,21 @@ from utils.json_parser import parse_json_file
 
 urls = []
 
-urls.append(
-    {
-        "path": "/<string:workspace>/<path:path>",
-        "view": StartFlow,
-        "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "CONNECT", "TRACE"],
-        "subdomain": "<subdomain>",
-    }
-)
+if SUBDOMAIN_MODE:
+    urls.append(
+        {
+            "path": "/<string:workspace>/<path:path>",
+            "view": StartFlow,
+            "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "CONNECT", "TRACE"],
+            "subdomain": "<subdomain>",
+        }
+    )
+else:
+    urls.append(
+        {
+            "path": "/<string:workspace>/<path:path>",
+            "view": StartFlow,
+            "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "CONNECT", "TRACE"],
+            "subdomain": None,
+        }
+    )

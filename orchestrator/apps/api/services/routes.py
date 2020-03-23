@@ -17,6 +17,6 @@ class Router:
         return Map(urls)
 
     def match(self, path, workspace, method):
-        urls = self.urls_map.bind(self.server_name, workspace)
+        urls = self.urls_map.bind(script_name=workspace)
         flow = urls.match(path, method)
         return flow[0]
