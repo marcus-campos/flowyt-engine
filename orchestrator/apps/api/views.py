@@ -40,7 +40,7 @@ class StartFlow(Resource):
     serializer_class = StartSerializer()
 
     def handle(self, workspace, method, path, *args, **kwargs):
-        subdomain = kwargs.get("subdomain", None)
+        subdomain = kwargs.get("subdomain", "")
         # Load workspace
         workspace_data = WorkspaceLoad().load(workspace, subdomain)
 
