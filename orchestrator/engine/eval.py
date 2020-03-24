@@ -23,7 +23,12 @@ def __run_javascript(source, run_context):
         """.format(source)
         context = js2py.EvalJs(run_context, enable_require=False)
         context.execute(wrapper)
-        result = context.result
+
+        if type(context.result) is js2py.base.JsObjectWrapper:
+            result = context.result.to_list()
+            if not result:
+                result = context.result.to_dict()
+
     except Exception:
         pass
 
