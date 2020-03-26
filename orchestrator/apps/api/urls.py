@@ -8,21 +8,33 @@ from utils.json_parser import parse_json_file
 
 urls = []
 
+methods = ["GET", "POST", "PUT", "DELETE", "PATCH", "CONNECT", "TRACE"]
+
 if SUBDOMAIN_MODE:
     urls.append(
         {
             "path": "/<string:workspace>/<path:path>",
             "view": StartFlow,
-            "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "CONNECT", "TRACE"],
+            "methods": methods,
             "subdomain": "<subdomain>",
         }
     )
+
 else:
-    urls.append(
-        {
-            "path": "/<string:workspace>/<path:path>",
-            "view": StartFlow,
-            "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "CONNECT", "TRACE"],
-            "subdomain": None,
-        }
-    )
+    if WORKSPACE_STORAGE_MODE == "local":
+        urls.append(
+            {
+                "path": "/<string:workspace>/<path:path>",
+                "view": StartFlow,
+                "methods": methods,
+            }
+        )
+
+    if WORKSPACE_STORAGE_MODE == "redis":
+        urls.append(
+            {
+                "path": "/<string:subdomain>/<string:workspace>/<path:path>",
+                "view": StartFlow,
+                "methods": methods,
+            }
+        )
