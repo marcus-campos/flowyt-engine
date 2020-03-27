@@ -18,7 +18,7 @@ class WorkspaceLoad:
         return self.__load_redis(workspace, subdomain)
 
     def __load_redis(self, worksace, subdomain):
-        raw_data = redis.get(worksace)
+        raw_data = redis.get("{0}.{1}".format(subdomain, worksace))
 
         if not raw_data:
             return None
