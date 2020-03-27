@@ -112,7 +112,7 @@ class StartFlow(Resource):
         if request_data["headers"].get("content_type") == "application/xml":
             request_data["data"] = xmltodict.parse(request.data, xml_attribs=False)
 
-        request_data["debug"] = request_data["headers"].get("x_orchestryzi_debug", "false")
+        request_data["debug"] = request_data["headers"].get("x_flowyt_debug", "false")
 
         return request_data
 
