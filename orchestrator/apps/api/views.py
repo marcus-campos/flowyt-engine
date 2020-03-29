@@ -11,6 +11,7 @@ from orchestrator.settings import SECRET_KEY, SERVER_NAME
 from apps.api.serializers import StartSerializer
 from apps.api.services.routes import Router
 from apps.api.services.workspace_load import WorkspaceLoad
+from apps.api.services.quotas import Quota
 from utils.middlewares import secret_key_required
 
 
@@ -38,11 +39,20 @@ class Workspaces(Resource):
 class StartFlow(Resource):
     engine_class = Engine()
     serializer_class = StartSerializer()
+    workspace_load_class = WorkspaceLoad()
 
     def handle(self, workspace, method, path, *args, **kwargs):
         subdomain = kwargs.get("subdomain", "")
+        
+        # Check quota
+        quota_class = Quota(subdomain)
+        is_exceeded = quota_class.exceeded_limit()
+
+        if is_exceeded:
+            return {"message": "The request limit has been reached."}, 429
+
         # Load workspace
-        workspace_data = WorkspaceLoad().load(workspace, subdomain)
+        workspace_data = self.workspace_load_class.load(workspace, subdomain)
 
         if not workspace_data:
             return {"message": "The requested workspace was not found on the server."}, 404
@@ -53,6 +63,9 @@ class StartFlow(Resource):
         # Start engine
         request_data = self.__get_request_data(*args, **kwargs)
         response_data = self.engine_class.start(workspace_data, request_data, workspace, flow)
+
+        # Update quota
+        quota_class.update()
 
         # Response
         response = self.__make_response(response_data, request_data)

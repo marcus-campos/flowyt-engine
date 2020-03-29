@@ -5,7 +5,7 @@ import os
 from orchestrator.settings import WORKSPACE_STORAGE_MODE, WORKSPACES_PATH
 
 from utils.json_parser import parse_json_file
-from utils.redis import redis
+from utils.redis import Redis
 
 
 class WorkspaceLoad:
@@ -18,6 +18,7 @@ class WorkspaceLoad:
         return self.__load_redis(workspace, subdomain)
 
     def __load_redis(self, worksace, subdomain):
+        redis = Redis().workspace
         raw_data = redis.get("{0}.{1}".format(subdomain, worksace))
 
         if not raw_data:
