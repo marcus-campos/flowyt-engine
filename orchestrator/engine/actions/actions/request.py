@@ -1,5 +1,5 @@
 import xmltodict
-from apps.engine.actions.action import GenericAction
+from engine.actions.action import GenericAction
 from utils.http import HttpRequest
 
 

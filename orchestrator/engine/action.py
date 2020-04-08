@@ -1,7 +1,7 @@
 import re
 
-from apps.engine.actions.register import get_action
-from utils.eval import contexted_run_pipeline
+from engine.actions.register import get_action
+from engine.eval import contexted_run_pipeline
 
 
 class Actions:

@@ -1,27 +1,73 @@
 import json
-import psutil
 from functools import wraps
 
+import psutil
 import xmltodict
+from engine.manager import Engine
 from flask import Response, request
 from flask_restful import Resource
-from orchestrator.settings import SECRET_KEY
+from orchestrator.settings import SECRET_KEY, SERVER_NAME
 
 from apps.api.serializers import StartSerializer
-from apps.engine.pipeline import Pipeline
+from apps.api.services.routes import Router
+from apps.api.services.workspace_load import WorkspaceLoad
+from apps.api.services.quotas import Quota
 from utils.middlewares import secret_key_required
 
 
+class Workspaces(Resource):
+    def __init__(self, workspaces_urls):
+        self.workspaces_urls = workspaces_urls
+
+    @secret_key_required
+    def get(self):
+        urls = []
+
+        for url in self.workspaces_urls:
+            urls.append(
+                {
+                    "path": url.get("path"),
+                    "methods": url.get("methods"),
+                    "workspace": url.get("kwargs").get("workspace"),
+                    "flow": url.get("kwargs").get("flow"),
+                    "subdomain": url.get("subdomain"),
+                }
+            )
+        return urls
+
+
 class StartFlow(Resource):
-
+    engine_class = Engine()
     serializer_class = StartSerializer()
+    workspace_load_class = WorkspaceLoad()
 
-    def __init__(self, workspace, flow, *args, **kwargs):
-        self.pipeline_class = Pipeline(workspace, flow)
+    def handle(self, workspace, method, path, *args, **kwargs):
+        subdomain = kwargs.get("subdomain", "")
+        
+        # Check quota
+        quota_class = Quota(subdomain)
+        is_exceeded = quota_class.exceeded_limit()
 
-    def handle(self, *args, **kwargs):
+        if is_exceeded:
+            return {"message": "The request limit has been reached."}, 429
+
+        # Load workspace
+        workspace_data = self.workspace_load_class.load(workspace, subdomain)
+
+        if not workspace_data:
+            return {"message": "The requested workspace was not found on the server."}, 404
+
+        # Check route
+        flow = Router(SERVER_NAME, subdomain, workspace_data["routes"]).match(path, workspace, method)
+
+        # Start engine
         request_data = self.__get_request_data(*args, **kwargs)
-        response_data = self.pipeline_class.start(request_data=request_data)
+        response_data = self.engine_class.start(workspace_data, request_data, workspace, flow)
+
+        # Update quota
+        quota_class.update()
+
+        # Response
         response = self.__make_response(response_data, request_data)
 
         return response
@@ -79,64 +125,30 @@ class StartFlow(Resource):
         if request_data["headers"].get("content_type") == "application/xml":
             request_data["data"] = xmltodict.parse(request.data, xml_attribs=False)
 
-        request_data["debug"] = request_data["headers"].get("x_orchestryzi_debug", "false")
+        request_data["debug"] = request_data["headers"].get("x_flowyt_debug", "false")
 
         return request_data
 
     def get(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="GET", *args, **kwargs)
 
     def post(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="POST", *args, **kwargs)
 
     def put(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="PUT", *args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        return self.handle(*args, **kwargs)
+        return self.handle(method="DELETE", *args, **kwargs)
 
+    def patch(self, *args, **kwargs):
+        return self.handle(method="PATCH", *args, **kwargs)
 
-class Workspaces(Resource):
-    def __init__(self, workspaces_urls):
-        self.workspaces_urls = workspaces_urls
+    def trace(self, *args, **kwargs):
+        return self.handle(method="TRACE", *args, **kwargs)
 
-    @secret_key_required
-    def get(self):
-        urls = []
+    def options(self, *args, **kwargs):
+        return self.handle(method="OPTIONS", *args, **kwargs)
 
-        for url in self.workspaces_urls:
-            urls.append(
-                {
-                    "path": url.get("path"),
-                    "methods": url.get("methods"),
-                    "workspace": url.get("kwargs").get("workspace"),
-                    "flow": url.get("kwargs").get("flow"),
-                    "subdomain": url.get("subdomain"),
-                }
-            )
-        return urls
-
-
-class Ping(Resource):
-    def get(self):
-        return {"msg": "It's all good!", "curious?": "https://www.youtube.com/watch?v=c4nunES9DyI"}
-
-
-class Info(Resource):
-    @secret_key_required
-    def get(self):
-        cpu = {
-            "cpu{0}".format(index): percent
-            for index, percent in enumerate(psutil.cpu_percent(interval=1, percpu=True))
-        }
-        memory = psutil.virtual_memory()
-        return {
-            "cpu": cpu,
-            "memory": {
-                "total": round((memory.total / 1024) / 1024),
-                "used": round((memory.used / 1024) / 1024),
-                "available": round((memory.available / 1024) / 1024),
-                "free": round((memory.free / 1024) / 1024),
-                "percent": memory.percent,
-            },
-        }
+    def connect(self, *args, **kwargs):
+        return self.handle(method="CONNECT", *args, **kwargs)

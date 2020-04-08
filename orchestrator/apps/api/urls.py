@@ -1,41 +1,40 @@
 import os
 
-from orchestrator.settings import SUBDOMAIN_MODE, WORKSPACES_PATH
+from orchestrator.settings import SUBDOMAIN_MODE, WORKSPACES_PATH, WORKSPACE_STORAGE_MODE
 
-from .views import StartFlow, Workspaces, Ping, Info
+from .views import StartFlow, Workspaces
 from utils.json_parser import parse_json_file
+
 
 urls = []
 
-path = WORKSPACES_PATH
-dirlist = [item for item in os.listdir(path) if os.path.isdir(os.path.join(path, item))]
+methods = ["GET", "POST", "PUT", "DELETE", "PATCH", "CONNECT", "TRACE"]
 
-for workspace_name in dirlist:
-    workspace_routes = parse_json_file("{0}/{1}/routes.json".format(path, workspace_name))
-
-    for url in workspace_routes:
-        url_to_append = {
-            "path": url.get("path"),
+if SUBDOMAIN_MODE:
+    urls.append(
+        {
+            "path": "/<string:workspace>/<path:path>",
             "view": StartFlow,
-            "methods": [url.get("method").upper()],
-            "kwargs": {"workspace": workspace_name, "flow": url.get("flow")},
-            "subdomain": workspace_name,
+            "methods": methods,
+            "subdomain": "<subdomain>",
         }
+    )
 
-        if not SUBDOMAIN_MODE:
-            url_to_append["path"] = "/" + workspace_name + url.get("path")
-            del url_to_append["subdomain"]
+else:
+    if WORKSPACE_STORAGE_MODE == "local":
+        urls.append(
+            {
+                "path": "/<string:workspace>/<path:path>",
+                "view": StartFlow,
+                "methods": methods,
+            }
+        )
 
-        urls.append(url_to_append)
-
-urls.append(
-    {
-        "path": "/_engine/workspaces/routes",
-        "view": Workspaces,
-        "methods": ["GET"],
-        "kwargs": {"workspaces_urls": urls.copy()},
-    }
-)
-
-urls.append({"path": "/_engine/ping", "view": Ping, "methods": ["GET"]})
-urls.append({"path": "/_engine/info", "view": Info, "methods": ["GET"]})
+    if WORKSPACE_STORAGE_MODE == "redis":
+        urls.append(
+            {
+                "path": "/<string:subdomain>/<string:workspace>/<path:path>",
+                "view": StartFlow,
+                "methods": methods,
+            }
+        )
