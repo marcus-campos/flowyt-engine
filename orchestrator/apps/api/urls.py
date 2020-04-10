@@ -23,11 +23,7 @@ if SUBDOMAIN_MODE:
 else:
     if WORKSPACE_STORAGE_MODE == "local":
         urls.append(
-            {
-                "path": "/<string:workspace>/<path:path>",
-                "view": StartFlow,
-                "methods": methods,
-            }
+            {"path": "/<string:workspace>/<path:path>", "view": StartFlow, "methods": methods,}
         )
 
     if WORKSPACE_STORAGE_MODE == "redis":

@@ -18,7 +18,7 @@ class Quota:
             exceeded = False
         elif used > limit:
             exceeded = True
-        
+
         return exceeded
 
     def update(self):
@@ -28,17 +28,13 @@ class Quota:
             return True
         except:
             return False
-        
+
     def get_data(self, subdomain):
         raw_data = self.redis.get(subdomain)
 
         if not raw_data:
-            return {
-                "used": 0,
-                "limit": 10000
-            }
+            return {"used": 0, "limit": 10000}
 
         data = json.loads(raw_data)
         self.data = data
         return data
-

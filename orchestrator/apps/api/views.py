@@ -43,7 +43,7 @@ class StartFlow(Resource):
 
     def handle(self, workspace, method, path, *args, **kwargs):
         subdomain = kwargs.get("subdomain", "")
-        
+
         # Check quota
         quota_class = Quota(subdomain)
         is_exceeded = quota_class.exceeded_limit()

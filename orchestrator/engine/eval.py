@@ -4,23 +4,23 @@ import js2py
 
 from dotmap import DotMap
 
+
 def __run_python(source, run_context):
     try:
-        result = eval(
-            "{0}".format(source),
-            run_context,
-            {"json": json},
-        )
+        result = eval("{0}".format(source), run_context, {"json": json},)
     except SyntaxError:
         pass
 
     return result
 
+
 def __run_javascript(source, run_context):
     try:
         wrapper = """
             const result = {0}
-        """.format(source)
+        """.format(
+            source
+        )
         context = js2py.EvalJs(run_context, enable_require=False)
         context.execute(wrapper)
 

@@ -9,7 +9,7 @@ from .actions.validation import Validation
 from .actions.workspace_var import WorkspaceVar
 from .actions.sql_db import SqlDatabase
 from .actions.loop import Loop
-from .actions.action import Action
+from .actions.run import Run
 
 __actions = {
     "start": Start,
@@ -22,7 +22,7 @@ __actions = {
     "jump": Jump,
     "sql_db": SqlDatabase,
     "loop": Loop,
-    "action": Action,
+    "run": Run,
 }
 
 
