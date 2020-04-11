@@ -29,13 +29,13 @@ class Request(GenericAction):
                 response_data = {}
 
         context.public.response = {
-            "status_code": response.status_code,
+            "status": response.status_code,
             "data": response_data,
             "headers": dict(response.headers),
             "elapsed": {"total_seconds": response.elapsed.total_seconds()},
         }
 
-        status_code = context.public.response.get("status_code")
+        status_code = context.public.response.get("status")
         pipeline_context = {}
 
         if status_code < HTTP_STATUS_OK_200 or status_code >= HTTP_STATUS_MULTIPLE_CHOICES_300:
