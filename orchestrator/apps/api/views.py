@@ -42,7 +42,7 @@ class StartFlow(Resource):
     workspace_load_class = WorkspaceLoad()
 
     def handle(self, workspace, method, path, *args, **kwargs):
-        subdomain = kwargs.get("subdomain", "")
+        subdomain = kwargs.get("__subdomain__", "")
 
         # Check quota
         quota_class = Quota(subdomain)
@@ -121,6 +121,10 @@ class StartFlow(Resource):
             "data": request.get_json(),
             # "files": request.file,
         }
+
+        # Remove
+        if "__subdomain__" in request_data["params"]:
+            del request_data["params"]["__subdomain__"]
 
         if request_data["headers"].get("content_type") == "application/xml":
             request_data["data"] = xmltodict.parse(request.data, xml_attribs=False)

@@ -16,7 +16,7 @@ if SUBDOMAIN_MODE:
             "path": "/<string:workspace>/<path:path>",
             "view": StartFlow,
             "methods": methods,
-            "subdomain": "<subdomain>",
+            "subdomain": "<__subdomain__>",
         }
     )
 
@@ -29,7 +29,7 @@ else:
     if WORKSPACE_STORAGE_MODE == "redis":
         urls.append(
             {
-                "path": "/<string:subdomain>/<string:workspace>/<path:path>",
+                "path": "/<string:__subdomain__>/<string:workspace>/<path:path>",
                 "view": StartFlow,
                 "methods": methods,
             }
