@@ -1,6 +1,6 @@
 import xmltodict
 from engine.actions.action import GenericAction
-from utils.http import HttpRequest
+from engine.utils.http import HttpRequest
 
 
 HTTP_STATUS_OK_200 = 200
