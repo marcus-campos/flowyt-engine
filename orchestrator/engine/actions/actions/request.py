@@ -8,7 +8,7 @@ HTTP_STATUS_MULTIPLE_CHOICES_300 = 300
 
 
 class Request(GenericAction):
-    def handle(self, action_data, context):
+    def handle(self, action_data, action_context, pipeline_context):
         response_data = {}
         request = HttpRequest(action_data.get("url"))
         request_data = {
@@ -28,25 +28,23 @@ class Request(GenericAction):
             except:
                 response_data = {}
 
-        context.public.response = {
+        action_context.public.response = {
             "status": response.status_code,
             "data": response_data,
             "headers": dict(response.headers),
             "elapsed": {"total_seconds": response.elapsed.total_seconds()},
         }
 
-        status_code = context.public.response.get("status")
-        pipeline_context = {}
+        status_code = action_context.public.response.get("status")
 
         if status_code < HTTP_STATUS_OK_200 or status_code >= HTTP_STATUS_MULTIPLE_CHOICES_300:
             pipeline_context["next_action"] = self.action_data.get("next_action_fail")
         else:
             pipeline_context["next_action"] = self.action_data.get("next_action_success")
 
-        return context, pipeline_context
+        return action_context, pipeline_context
 
     def get(self, request, request_data):
-        request_data["params"] = request_data["data"]
         del request_data["data"]
         return request.get(**request_data)
 

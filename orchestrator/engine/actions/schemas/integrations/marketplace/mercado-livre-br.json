@@ -1,0 +1,12 @@
+{
+    "base_url": "https://api.mercadolibre.com/sites/MLB",
+    "endpoints": [
+        {
+            "path": "/search",
+            "method": "GET",
+            "headers": {},
+            "params": {},
+            "data": {}
+        }
+    ]
+}

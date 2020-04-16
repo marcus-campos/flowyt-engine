@@ -3,7 +3,8 @@ import re
 from dotmap import DotMap
 
 from engine.eval import contexted_run
-from utils.http import HttpRequest
+from engine.utils.http import HttpRequest
+from engine.utils.json_parser import parse_json_file
 
 
 class GenericAction:
@@ -11,15 +12,25 @@ class GenericAction:
         self.action_data = action_data
         self.context = None
 
-    def start(self, context):
-        self.action_data = self.load_action_data(self.action_data, context)
-        context, pipeline_context = self.handle(self.action_data, context)
-        return self.next_action(context, pipeline_context)
-
-    def handle(self, action_data, context):
+    def before_handle(self, action_data, context):
         return context, None
 
-    def next_action(self, context, pipeline_context=None):
+    def after_handle(self, action_data, action_context, pipeline_context):
+        return context, pipeline_context
+
+    def start(self, context):
+        self.action_data = self._load_action_data(self.action_data, context)
+
+        context, pipeline_context = self.before_handle(self.action_data, context)
+        context, pipeline_context = self.handle(self.action_data, context, pipeline_context)
+        context, pipeline_context = self.after_handle(self.action_data, context, pipeline_context)
+
+        return self._next_action(context, pipeline_context)
+
+    def handle(self, action_data, action_context, pipeline_context):
+        return context, pipeline_context
+
+    def _next_action(self, context, pipeline_context=None):
         context.pipeline_context = {}
         if pipeline_context:
             context.pipeline_context = {
@@ -30,14 +41,14 @@ class GenericAction:
 
         return context
 
-    def load_action_data(self, action_data, context):
+    def _load_action_data(self, action_data, context):
         for key in action_data:
             if isinstance(action_data[key], dict):
-                self.load_action_data(action_data[key], context)
+                self._load_action_data(action_data[key], context)
 
             if type(action_data[key]) is list:
                 for item in action_data[key]:
-                    self.load_action_data(item, context)
+                    self._load_action_data(item, context)
 
             elements = []
             language = context.private.development_language
@@ -71,12 +82,17 @@ class GenericAction:
 class HttpAction(GenericAction):
     HTTP_STATUS_OK_200 = 200
     HTTP_STATUS_MULTIPLE_CHOICES_300 = 300
-    SCHEMA = ""
+    SCHEMA = None
 
     def start(self, context):
-        self.action_data = self.load_action_data(self.action_data, context)
+        self.action_data = self._load_action_data(self.action_data, context)
         context, pipeline_context = self.handle(self.action_data, context)
-        return self.next_action(context, pipeline_context)
+        return self._next_action(context, pipeline_context)
+
+    def __load_scheme(self):
+        schema_path = "schemas/{0}.json".format(self.SCHEMA)
+        
+        schema = parse_json_file(schema_path)
 
     def handle(self, action_data, context):
         response_data = {}

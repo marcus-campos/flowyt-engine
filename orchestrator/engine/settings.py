@@ -1,4 +1,6 @@
-from orchestrator.settings import WORKSPACES_PATH, WORKSPACE_STORAGE_MODE
+from orchestrator.settings import (PROJECT_DIR, WORKSPACE_STORAGE_MODE,
+                                   WORKSPACES_PATH)
 
 WORKSPACES_PATH = WORKSPACES_PATH
 WORKSPACE_STORAGE_MODE = WORKSPACE_STORAGE_MODE
+ENGINE_PATH = PROJECT_DIR + "engine/"

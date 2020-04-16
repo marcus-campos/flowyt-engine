@@ -4,12 +4,12 @@ from redis.exceptions import DataError
 
 
 class Redis(GenericAction):
-    def handle(self, action_data, context):
+    def handle(self, action_data, action_context, pipeline_context):
         response = None
         key = action_data.get("key")
         data = action_data.get("data", None)
 
-        config = context.private.integrations.redis
+        config = action_context.private.integrations.redis
         redis = self.__connect(config)
 
         try:
@@ -24,8 +24,8 @@ class Redis(GenericAction):
         except:
             raise "Something went wrong and it was not possible to perform this action"
 
-        context.public.response = {"data": response}
-        return context, None
+        action_context.public.response = {"data": response}
+        return action_context, pipeline_context
 
     def __connect(self, config):
         try:
