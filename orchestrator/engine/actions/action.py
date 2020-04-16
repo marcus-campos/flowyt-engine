@@ -12,23 +12,23 @@ class GenericAction:
         self.action_data = action_data
         self.context = None
 
-    def before_handle(self, action_data, context):
-        return context, None
-
-    def after_handle(self, action_data, action_context, pipeline_context):
-        return context, pipeline_context
-
     def start(self, context):
         self.action_data = self._load_action_data(self.action_data, context)
 
-        context, pipeline_context = self.before_handle(self.action_data, context)
+        context, pipeline_context = self._before_handle(self.action_data, context)
         context, pipeline_context = self.handle(self.action_data, context, pipeline_context)
-        context, pipeline_context = self.after_handle(self.action_data, context, pipeline_context)
+        context, pipeline_context = self._after_handle(self.action_data, context, pipeline_context)
 
         return self._next_action(context, pipeline_context)
 
+    def _before_handle(self, action_data, action_context):
+        return action_context, {}
+
+    def _after_handle(self, action_data, action_context, pipeline_context):
+        return action_context, pipeline_context
+
     def handle(self, action_data, action_context, pipeline_context):
-        return context, pipeline_context
+        return action_context, pipeline_context
 
     def _next_action(self, context, pipeline_context=None):
         context.pipeline_context = {}
