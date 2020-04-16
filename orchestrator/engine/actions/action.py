@@ -12,19 +12,23 @@ class GenericAction:
         self.action_data = action_data
         self.context = None
 
+    """
+        Action life cycle: 
+        _load_action_data -> before_handle -> handle -> after_handle -> _next_action
+    """
     def start(self, context):
         self.action_data = self._load_action_data(self.action_data, context)
-
-        context, pipeline_context = self._before_handle(self.action_data, context)
+        
+        context, pipeline_context = self.before_handle(self.action_data, context)
         context, pipeline_context = self.handle(self.action_data, context, pipeline_context)
-        context, pipeline_context = self._after_handle(self.action_data, context, pipeline_context)
+        context, pipeline_context = self.after_handle(self.action_data, context, pipeline_context)
 
         return self._next_action(context, pipeline_context)
 
-    def _before_handle(self, action_data, action_context):
+    def before_handle(self, action_data, action_context):
         return action_context, {}
 
-    def _after_handle(self, action_data, action_context, pipeline_context):
+    def after_handle(self, action_data, action_context, pipeline_context):
         return action_context, pipeline_context
 
     def handle(self, action_data, action_context, pipeline_context):
@@ -84,17 +88,18 @@ class HttpAction(GenericAction):
     HTTP_STATUS_MULTIPLE_CHOICES_300 = 300
     SCHEMA = None
 
-    def start(self, context):
-        self.action_data = self._load_action_data(self.action_data, context)
-        context, pipeline_context = self.handle(self.action_data, context)
-        return self._next_action(context, pipeline_context)
+    def before_handle(self, action_data, action_context):
+        if not self.SCHEMA:
+            return action_context, {}
 
-    def __load_scheme(self):
-        schema_path = "schemas/{0}.json".format(self.SCHEMA)
+        schema_data = self._load_scheme()
         
-        schema = parse_json_file(schema_path)
+        endpoint_data = schema_data[action_data["path"]]
+        # url, method, headers, params, data, next_action_success, next_action_fail
+        
+        return action_context, {}
 
-    def handle(self, action_data, context):
+    def handle(self, action_data, action_context, pipeline_context):
         response_data = {}
         request = HttpRequest(action_data.get("url"))
         request_data = {
@@ -114,25 +119,28 @@ class HttpAction(GenericAction):
             except:
                 response_data = {}
 
-        context.public.response = {
+        action_context.public.response = {
             "status": response.status_code,
             "data": response_data,
             "headers": dict(response.headers),
             "elapsed": {"total_seconds": response.elapsed.total_seconds()},
         }
 
-        status_code = context.public.response.get("status")
-        pipeline_context = {}
+        status_code = action_context.public.response.get("status")
 
-        if status_code < HTTP_STATUS_OK_200 or status_code >= HTTP_STATUS_MULTIPLE_CHOICES_300:
+        if status_code < self.HTTP_STATUS_OK_200 or status_code >= self.HTTP_STATUS_MULTIPLE_CHOICES_300:
             pipeline_context["next_action"] = self.action_data.get("next_action_fail")
         else:
             pipeline_context["next_action"] = self.action_data.get("next_action_success")
 
-        return context, pipeline_context
+        return action_context, pipeline_context
+
+    def _load_scheme(self):
+        schema_path = "actions/schemas/{0}.json".format(self.SCHEMA)
+        schema = parse_json_file(schema_path)
+        return schema
 
     def get(self, request, request_data):
-        request_data["params"] = request_data["data"]
         del request_data["data"]
         return request.get(**request_data)
 
