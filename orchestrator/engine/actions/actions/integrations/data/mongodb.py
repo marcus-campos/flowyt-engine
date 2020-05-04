@@ -4,6 +4,6 @@ from redis.exceptions import DataError
 
 
 class MongoDB(GenericAction):
-    def handle(self, action_data, action_context, pipeline_context):
-        #TODO
-        return action_context, pipeline_context
+    def handle(self, action_data, execution_context, pipeline_context):
+        # TODO
+        return execution_context, pipeline_context

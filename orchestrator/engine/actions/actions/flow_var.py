@@ -2,6 +2,6 @@ from engine.actions.action import GenericAction
 
 
 class FlowVar(GenericAction):
-    def handle(self, action_data, action_context, pipeline_context):
-        action_context.public.flow = {**action_context.public.flow, **action_data}
-        return action_context, pipeline_context
+    def handle(self, action_data, execution_context, pipeline_context):
+        execution_context.public.flow = {**execution_context.public.flow, **action_data}
+        return execution_context, pipeline_context

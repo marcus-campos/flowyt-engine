@@ -6,14 +6,18 @@
     "base_params": {
         "access_token": "${ACCESS_TOKEN}"
     },
-    "endpoints": [
-        {
-            "path": "/search",
-            "path_params": {},
-            "method": "GET",
-            "headers": {},
-            "params": {},
-            "data": {}
-        }
-    ]
+    "endpoints": {
+        "get": {
+            "/search": {
+                "path_params": {},
+                "headers": {},
+                "params": {},
+                "data": {}
+            }
+        },
+        "post": {},
+        "put": {},
+        "delete": {},
+        "path": {}
+    }
 }
