@@ -1,8 +1,8 @@
 import ast
-import re
-from dotmap import DotMap
 import copy
+import re
 
+from dotmap import DotMap
 from engine.eval import contexted_run
 from engine.utils.http import HttpRequest
 from engine.utils.json_parser import parse_json_file
