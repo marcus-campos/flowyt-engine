@@ -1,15 +1,14 @@
 {
-    "base_url": "https://api.mercadolibre.com/sites/MLB",
+    "base_url": "https://api.mercadolibre.com/sites/${site_id}",
     "base_headers": {
         "Content-Type": "application/json"
     },
     "base_params": {
-        "access_token": "${ACCESS_TOKEN}"
+        "access_token": "${access_token}"
     },
     "endpoints": {
         "get": {
-            "/search": {
-                "path_params": {},
+            "/search/${p.teste}": {
                 "headers": {},
                 "params": {},
                 "data": {}

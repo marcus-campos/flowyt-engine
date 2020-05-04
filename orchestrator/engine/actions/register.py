@@ -12,14 +12,14 @@ from .actions.switch import Switch
 from .actions.validation import Validation
 from .actions.workspace_var import WorkspaceVar
 
-from .actions.integrations.marketplace.mercado_livre_br import MercadoLivreBR
+from .actions.integrations.marketplace.mercado_livre import MercadoLivre
 
 
 __actions = {
     "start": Start,
     "flow_var": FlowVar,
     "workspace_var": WorkspaceVar,
-    "request": MercadoLivreBR,
+    "request": MercadoLivre,
     "switch": Switch,
     "response": Response,
     "validation": Validation,

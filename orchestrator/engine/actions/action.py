@@ -1,6 +1,7 @@
 import ast
 import re
 from dotmap import DotMap
+import copy
 
 from engine.eval import contexted_run
 from engine.utils.http import HttpRequest
@@ -20,14 +21,14 @@ class GenericAction:
     def start(self, context):
         self.action_data = self._load_action_data(self.action_data, context)
 
-        context, pipeline_context = self.before_handle(self.action_data, context)
+        self.action_data, context, pipeline_context = self.before_handle(self.action_data, context)
         context, pipeline_context = self.handle(self.action_data, context, pipeline_context)
         context, pipeline_context = self.after_handle(self.action_data, context, pipeline_context)
 
         return self._next_action(context, pipeline_context)
 
     def before_handle(self, action_data, execution_context):
-        return execution_context, {}
+        return action_data, execution_context, {}
 
     def after_handle(self, action_data, execution_context, pipeline_context):
         return execution_context, pipeline_context
@@ -89,20 +90,32 @@ class HttpAction(GenericAction):
     HTTP_STATUS_OK_200 = 200
     HTTP_STATUS_MULTIPLE_CHOICES_300 = 300
     SCHEMA = None
-    HTTP_CONTEXT = None
+    ACTION_CONTEXT = None
 
     def before_handle(self, action_data, execution_context):
         if not self.SCHEMA:
             return execution_context, {}
 
-        http_context = DotMap({"public": self.HTTP_CONTEXT})
+        action_context = copy.deepcopy(execution_context)
+        action_context.public = {**action_context.public.toDict(), **self.ACTION_CONTEXT, **{"p": action_data.get("path_params", {"teste": "123"})}}
+        action_context = DotMap(action_context)
 
         schema = self._load_scheme()
+        schema = self._load_action_data(schema, action_context)
 
-        endpoint_schema = schema["endpoints"]["get"]["/search"]
+        endpoint_schema = schema["endpoints"][action_data["method"]].get([action_data["path"]], None)
+        
+        if not endpoint_schema:
+            return execution_context, {}
+        
+        action_data["url"] = "{0}{1}".format(schema["base_url"], action_data["path"])
+        action_data["headers"] = {**schema["base_headers"], **endpoint_schema["headers"], **action_data["headers"]}
+        action_data["data"] = {**schema["base_data"], **endpoint_schema["data"], **action_data["data"]}
+        action_data["params"] = {**schema["base_params"], **endpoint_schema["params"], **action_data["params"]}
+        del action_data["path"]
         # url, method, headers, params, data, next_action_success, next_action_fail
 
-        return execution_context, {}
+        return action_data, execution_context, {}
 
     def handle(self, action_data, execution_context, pipeline_context):
         response_data = {}
