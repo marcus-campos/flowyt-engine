@@ -2,30 +2,34 @@ import copy
 
 
 class PipelineDebug:
-    WORKSPACE_LOGS = {
-        "workspace": {
+    def __init__(self):
+        self.__load_models()
+
+    def __load_models(self):
+        self.WORKSPACE_LOGS = {
+            "workspace": {
+                "id": None,
+                "name": None,
+                "elapsed_time": None,
+                "flows": [],
+            }
+        }
+
+        self.CURRENT_FLOW = None
+
+        self.FLOW_LOGS = {
             "id": None,
             "name": None,
             "elapsed_time": None,
-            "flows": [],
+            "actions": [],
         }
-    }
 
-    CURRENT_FLOW = None
-
-    FLOW_LOGS = {
-        "id": None,
-        "name": None,
-        "elapsed_time": None,
-        "actions": [],
-    }
-
-    ACTION_LOGS = {
-        "id": None,
-        "name": None,
-        "data": None,
-        "time_spent": None,
-    }
+        self.ACTION_LOGS = {
+            "id": None,
+            "name": None,
+            "data": None,
+            "time_spent": None,
+        }
 
     def workspace(self, workspace_id, workspace_name, workspace_elapsed_time):
         self.WORKSPACE_LOGS["workspace"]["id"] = workspace_id
@@ -48,8 +52,11 @@ class PipelineDebug:
         self.CURRENT_FLOW["actions"].append(logs)
 
     def append(self):
-        self.WORKSPACE_LOGS["workspace"]["flows"].append(self.CURRENT_FLOW)
+        self.WORKSPACE_LOGS["workspace"]["flows"].append(
+            copy.deepcopy(self.CURRENT_FLOW))
         self.CURRENT_FLOW = None
 
     def get(self):
-        return copy.deepcopy(self.WORKSPACE_LOGS)
+        workspace_logs = copy.deepcopy(self.WORKSPACE_LOGS)
+        self.__load_models()
+        return workspace_logs
