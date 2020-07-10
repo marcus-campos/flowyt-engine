@@ -233,4 +233,10 @@ class PipelineActions:
             self.pipeline_response = self.context.pipeline_context.get(
                 "response")
             return True
+
+        if self.context.pipeline_context.get("end"):
+            self.process_pipeline = False
+            self.has_actions = False
+            return True
+            
         return False

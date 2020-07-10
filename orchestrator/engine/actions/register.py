@@ -10,6 +10,7 @@ from .actions.workspace_var import WorkspaceVar
 from .actions.sql_db import SqlDatabase
 from .actions.loop import Loop
 from .actions.run import Run
+from .actions.end import End
 
 __actions = {
     "start": Start,
@@ -23,6 +24,7 @@ __actions = {
     "sql_db": SqlDatabase,
     "loop": Loop,
     "run": Run,
+    "end": End,
 }
 
 
