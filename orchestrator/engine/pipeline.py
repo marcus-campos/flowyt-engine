@@ -18,7 +18,7 @@ class Pipeline:
             self.workspace_data["config"]["settings"])
         self.execution_error = False
 
-    def start(self, request_data):
+    def start(self, request_data=None, input_data=None):
         # Get start workspace process time
         start_time = time.time()
 
@@ -37,6 +37,7 @@ class Pipeline:
                 "env": self.workspace_class.env,
                 "workspace": {},
                 "request": request_data,
+                "input": input_data,
                 "function": self.workspace_data["functions"],
                 "response": {},
             },

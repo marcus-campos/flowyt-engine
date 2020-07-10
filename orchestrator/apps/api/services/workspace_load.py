@@ -11,7 +11,7 @@ from utils.redis import Redis
 class WorkspaceLoad:
     base_model = {"config": {}, "flows": {}, "functions": {}, "routes": []}
 
-    def load(self, workspace, subdomain):
+    def load(self, workspace, subdomain=None):
         if WORKSPACE_STORAGE_MODE == "local":
             return self.__load_local(workspace)
 
