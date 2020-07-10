@@ -18,5 +18,8 @@ if __name__ == "__main__":
     
     if args.workspace and args.flow:
         workspace_data = WorkspaceLoad().load(args.workspace)
+        
         if args.data:
-            response_data = engine_class.start(workspace_data, None, args.data, args.workspace, args.flow)
+            engine_class.start(workspace_data, {}, args.data, args.workspace, args.flow)
+        else:
+            engine_class.start(workspace_data, {}, {}, args.workspace, args.flow)

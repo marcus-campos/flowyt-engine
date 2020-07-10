@@ -4,7 +4,7 @@ from .functions import FunctionLoader
 
 
 class Engine:
-    def start(self, workspace_data, request_data, input_data=None, workspace, flow):
+    def start(self, workspace_data={}, request_data={}, input_data=None, workspace="", flow=""):
         # Load functions
         workspace_data = self.__load_functions(workspace, workspace_data)
         return Pipeline(workspace_data, flow).start(request_data, input_data)

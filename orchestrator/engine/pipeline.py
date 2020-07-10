@@ -18,7 +18,7 @@ class Pipeline:
             self.workspace_data["config"]["settings"])
         self.execution_error = False
 
-    def start(self, request_data=None, input_data=None):
+    def start(self, request_data={}, input_data=None):
         # Get start workspace process time
         start_time = time.time()
 
@@ -109,8 +109,8 @@ class PipelineActions:
     def process(self, start_at):
         while self.has_actions:
             # Safe check
-            if self.safe_mode["enable"]:
-                self.safe_check(start_at)
+            # if self.safe_mode["enable"]:
+            #     self.safe_check(start_at)
 
             # Get start action process time
             start_time = time.time()
