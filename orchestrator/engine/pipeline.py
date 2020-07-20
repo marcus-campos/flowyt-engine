@@ -23,7 +23,7 @@ class Pipeline:
         start_time = time.time()
 
         # Config context
-        request_debug = request_data.get("debug") == "true"
+        request_debug = request_data.get("debug") == "true" or input_data.get("debug") == "true"
         pipeline_debug = True if self.workspace_class.debug and request_debug else False
         context = {
             "public": {
