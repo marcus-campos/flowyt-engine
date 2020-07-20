@@ -16,18 +16,27 @@ if __name__ == "__main__":
     parser.add_argument("-w", "--workspace", help="Indicates the name of the workspace")
     parser.add_argument("-f", "--flow", help="Indicates the name of the flow")
     parser.add_argument("-i", "--input", help="Indicates input to be used in workspace")
+    parser.add_argument("-d", "--debug", help="Indicates whether to display debug data")
     args = parser.parse_args()
     
     if args.workspace and args.flow:
-        workspace_data = WorkspaceLoad().load(args.workspace)
+        workspace_data = WorkspaceLoad().load(args.workspace.strip())
         result = None
+        debug = "false"
         
+        if args.debug:
+            debug = "true"
+
         if args.input:
-            result = engine_class.start(workspace_data, {}, args.input, args.workspace, args.flow)
+            result = engine_class.start(workspace_data, {}, {**args.input, "debug": debug}, args.workspace.strip(), args.flow.strip())
         else:
-            result = engine_class.start(workspace_data, {}, {}, args.workspace, args.flow)
+            result = engine_class.start(workspace_data, {}, {"debug": debug}, args.workspace.strip(), args.flow.strip())
 
         if result:
+            if not debug:
+                del result["__debug__"]
+                del result["exception"]
+
             result = json.dumps(result, indent=2)
             colorful_json = highlight(result, lexers.JsonLexer(), formatters.TerminalFormatter())
             print(colorful_json)
