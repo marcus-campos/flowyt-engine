@@ -26,4 +26,4 @@ js2py = "*"
 pygments = "*"
 
 [requires]
-python_full_version = "3.8.2"
+python_full_version = "3.8.1"
