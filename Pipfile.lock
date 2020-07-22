@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b83c81879cdc86766eac205066aa0d14e1744cceb492a0f80e83f81cad4a8b21"
+            "sha256": "ff53fd21f0980c3d77baeccc33aaeb180048ca1d642cca55ff76c1fbd1fd3a39"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.8.*"
+            "python_full_version": "3.8.1"
         },
         "sources": [
             {
@@ -33,10 +33,10 @@
         },
         "awsebcli": {
             "hashes": [
-                "sha256:a44fb91b3f6b35ea1166200df1954f8dde2228e0e1b37267b2ca6b8fa66809b5"
+                "sha256:70c247f9d54b8071d7550127e665a42a837f72812c5a1749ddb17104fbdba8db"
             ],
             "index": "pypi",
-            "version": "==3.18.1"
+            "version": "==3.18.2"
         },
         "bcrypt": {
             "hashes": [
@@ -221,7 +221,7 @@
                 "sha256:9e4d7ecfc600058e07ba661411a2b7de2fd0fafa17d1a7f7361cd47b1175c827",
                 "sha256:a2aeea129088da402665e92e0b25b04b073c04b2dce4ab65caaa38b7ce2e1a99"
             ],
-            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==0.15.2"
         },
         "dotmap": {
@@ -290,7 +290,7 @@
                 "sha256:b85d0567b8666149a93172712e68920734333c0ce7e89b78b3e987f71e5ed4f9",
                 "sha256:cdf6525904cc597730141d61b36f2e4b8ecc257c420fa2f4549bac2c2d0cb72f"
             ],
-            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==0.10.0"
         },
         "js2py": {
@@ -433,7 +433,7 @@
                 "sha256:7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb",
                 "sha256:c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==2.8.0"
         },
         "python-dotenv": {
