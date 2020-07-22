@@ -1,7 +1,9 @@
 from engine.actions.action import GenericAction
+import redis as red
+from redis.exceptions import DataError
 
 
-class FlowVar(GenericAction):
+class MongoDB(GenericAction):
     def handle(self, action_data, execution_context, pipeline_context):
-        execution_context.public.flow = {**execution_context.public.flow, **action_data}
+        # TODO
         return execution_context, pipeline_context

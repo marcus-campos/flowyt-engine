@@ -34,19 +34,19 @@ class Database:
 
 
 class SqlDatabase(GenericAction):
-    def handle(self, action_data, context):
-        database = Database(context.private.integrations.sql_database)
+    def handle(self, action_data, execution_context, pipeline_context):
+        database = Database(execution_context.private.integrations.sql_database)
 
-        context.public.response = database
+        execution_context.public.response = database
 
         if not action_data.get("sql"):
-            return context, None
+            return execution_context, None
 
         result = database.raw(action_data.get("sql"))
 
-        context.public.response = {"db": database}
+        execution_context.public.response = {"db": database}
 
-        return context, None
+        return execution_context, pipeline_context
 
     def to_list(self, rows):
         data = []

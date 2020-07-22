@@ -23,7 +23,7 @@ sqlalchemy = "*"
 psutil = "*"
 redis = "*"
 js2py = "*"
-pygments = "*"
+pymongo = "*"
 
 [requires]
 python_full_version = "3.8.1"

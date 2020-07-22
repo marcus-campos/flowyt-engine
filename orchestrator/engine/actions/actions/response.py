@@ -3,7 +3,7 @@ from engine.actions.action import GenericAction
 
 
 class Response(GenericAction):
-    def handle(self, action_data, context):
+    def handle(self, action_data, execution_context, pipeline_context):
         pipeline_context = {
             "response": {
                 "status": self.action_data.get("status", 200),
@@ -11,7 +11,7 @@ class Response(GenericAction):
                 "data": self.action_data.get("data", {}),
             }
         }
-        return context, pipeline_context
+        return execution_context, pipeline_context
 
     def __get_headers(self, headers):
         default_headers = {"Content-Type": "application/json"}

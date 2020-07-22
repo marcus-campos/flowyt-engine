@@ -3,10 +3,10 @@ from cerberus import Validator
 
 
 class Validation(GenericAction):
-    def handle(self, action_data, context):
+    def handle(self, action_data, execution_context, pipeline_context):
         validate = Validator()
 
-        if validate(document=context.public.request.data, schema=action_data.get("schema")):
+        if validate(document=execution_context.public.request.data, schema=action_data.get("schema")):
             pipeline_context = {"next_action": action_data.get("next_action_success")}
         else:
             pipeline_context = {
@@ -14,4 +14,4 @@ class Validation(GenericAction):
                 "response": {"errors": validate.errors},
             }
 
-        return context, pipeline_context
+        return execution_context, pipeline_context

@@ -1,23 +1,26 @@
 from .actions.default import Default
 from .actions.end import End
 from .actions.flow_var import FlowVar
+from .actions.integrations.data.redis import Redis
+from .actions.integrations.data.sql_db import SqlDatabase
 from .actions.handle import Handle
 from .actions.jump import Jump
 from .actions.loop import Loop
 from .actions.request import Request
 from .actions.response import Response
 from .actions.run import Run
-from .actions.sql_db import SqlDatabase
 from .actions.start import Start
 from .actions.switch import Switch
 from .actions.validation import Validation
 from .actions.workspace_var import WorkspaceVar
+from .actions.integrations.marketplace.mercado_livre import MercadoLivre
+
 
 __actions = {
     "start": Start,
     "flow_var": FlowVar,
     "workspace_var": WorkspaceVar,
-    "request": Request,
+    "request": MercadoLivre,
     "switch": Switch,
     "response": Response,
     "validation": Validation,
@@ -25,6 +28,7 @@ __actions = {
     "sql_db": SqlDatabase,
     "loop": Loop,
     "run": Run,
+    "redis": Redis,
     "end": End,
     "handle": Handle,
 }

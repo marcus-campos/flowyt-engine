@@ -2,7 +2,7 @@ from engine.actions.action import GenericAction
 
 
 class Loop(GenericAction):
-    def handle(self, action_data, context):
+    def handle(self, action_data, execution_context, pipeline_context):
         loop_type = action_data.get("type")
         data = action_data.get("data")
         action = action_data.get("action")
@@ -21,6 +21,6 @@ class Loop(GenericAction):
                 if result:
                     results.append(result)
 
-        context.public.response = {"data": results}
+        execution_context.public.response = {"data": results}
 
-        return context, None
+        return execution_context, pipeline_context
