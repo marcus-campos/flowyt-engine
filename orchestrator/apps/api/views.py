@@ -91,8 +91,7 @@ class StartFlow(Resource):
 
         # Start engine
         request_data = self.__get_request_data(*args, **kwargs)
-        response_data = self.engine_class.start(
-            workspace_data, request_data, workspace, flow)
+        response_data = self.engine_class.start(workspace_data, request_data, None, workspace, flow)
 
         # Update quota
         quota_class.update()

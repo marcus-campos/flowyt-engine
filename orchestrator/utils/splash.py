@@ -1,7 +1,7 @@
 from flask import request
 
 
-def loading(config):
+def loading(config=None):
     ascii_art = (
         "    _____ _                     _       \n"
         "   |  ___| | _____      ___   _| |_     \n"
@@ -13,11 +13,12 @@ def loading(config):
         "                              Engine      "
     )
     print(ascii_art + "\n")
-    print(
-        " * Check available routes at {0}/_engine/workspaces/routes".format(
-            __host_name(config.get("HOST"), config.get("PORT"), config.get("PREFERRED_URL_SCHEME", "http"))
+    if config:
+        print(
+            " * Check available routes at {0}/_engine/workspaces/routes".format(
+                __host_name(config.get("HOST"), config.get("PORT"), config.get("PREFERRED_URL_SCHEME", "http"))
+            )
         )
-    )
 
 
 def __host_name(host, port, preferred_url_scheme):
