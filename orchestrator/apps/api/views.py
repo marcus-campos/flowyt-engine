@@ -13,6 +13,8 @@ from apps.api.services.routes import Router
 from apps.api.services.workspace_load import WorkspaceLoad
 from apps.api.services.quotas import Quota
 from utils.middlewares import secret_key_required
+import asyncio
+from pymongo import MongoClient
 
 
 class Workspaces(Resource):
@@ -34,6 +36,32 @@ class Workspaces(Resource):
                 }
             )
         return urls
+
+
+class Monitoring:
+    LOG = {
+        "request": None,
+        "response": {},
+        "trace": {}
+    }
+
+    def __init__(self, request, response, trace):
+        self.LOG["request"] = request
+        self.LOG["response"] = response
+        self.LOG["trace"] = trace
+
+    def save(self, log_config):
+        if log_config:
+            asyncio.run(self.__store_logs(log_config))
+
+    async def __store_logs(self, log_config):
+        config = log_config
+        client = MongoClient(
+            'mongodb://{0}:{1}@{2}:{3}/'.format(config["user"], config["password"], config["host"], config["port"]))
+
+        db = client[config["database"]]
+        logs = db["flowyt_logs"]
+        log = logs.insert_one(self.LOG)
 
 
 class StartFlow(Resource):
@@ -58,17 +86,22 @@ class StartFlow(Resource):
             return {"message": "The requested workspace was not found on the server."}, 404
 
         # Check route
-        flow = Router(SERVER_NAME, subdomain, workspace_data["routes"]).match(path, workspace, method)
+        flow = Router(SERVER_NAME, subdomain, workspace_data["routes"]).match(
+            path, workspace, method)
 
         # Start engine
         request_data = self.__get_request_data(*args, **kwargs)
-        response_data = self.engine_class.start(workspace_data, request_data, workspace, flow)
+        response_data = self.engine_class.start(workspace_data, request_data, None, workspace, flow)
 
         # Update quota
         quota_class.update()
 
         # Response
-        response = self.__make_response(response_data, request_data)
+        response, monitor = self.__make_response(response_data, request_data)
+
+        # Save logs
+        log_config = workspace_data["config"].get("logs", None)
+        monitor.save(log_config)
 
         return response
 
@@ -109,8 +142,19 @@ class StartFlow(Resource):
             result = xmltodict.unparse(response_data)
             response_headers["Content-Type"] = "application/xml"
 
-        result = Response(headers=response_headers, response=result, status=response_status)
-        return result
+        # Monitoring logs
+        response_log = {
+            "status": response_status,
+            "headers": response_headers,
+            "response": response_data
+        }
+        monitor = Monitoring(request, response_log,
+                             response.get("__debug__", {}))
+
+        # Response
+        result = Response(headers=response_headers,
+                          response=result, status=response_status)
+        return result, monitor
 
     def __get_request_data(self, *args, **kwargs):
         request_data = {
@@ -127,9 +171,11 @@ class StartFlow(Resource):
             del request_data["params"]["__subdomain__"]
 
         if request_data["headers"].get("content_type") == "application/xml":
-            request_data["data"] = xmltodict.parse(request.data, xml_attribs=False)
+            request_data["data"] = xmltodict.parse(
+                request.data, xml_attribs=False)
 
-        request_data["debug"] = request_data["headers"].get("x_flowyt_debug", "false")
+        request_data["debug"] = request_data["headers"].get(
+            "x_flowyt_debug", "false")
 
         return request_data
 

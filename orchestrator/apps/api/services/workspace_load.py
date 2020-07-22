@@ -11,7 +11,7 @@ from utils.redis import Redis
 class WorkspaceLoad:
     base_model = {"config": {}, "flows": {}, "functions": {}, "routes": []}
 
-    def load(self, workspace, subdomain):
+    def load(self, workspace, subdomain=None):
         if WORKSPACE_STORAGE_MODE == "local":
             return self.__load_local(workspace)
 
@@ -39,9 +39,10 @@ class WorkspaceLoad:
         # Flows
         flows_path = "{0}/flows".format(workspace_path)
         flows = {}
+        model["flows"] = flows
 
         for flow in os.listdir(flows_path):
             flow_name = flow[:-5]
             flows[flow_name] = parse_json_file("{0}/{1}".format(flows_path, flow))
-
+        
         return model
