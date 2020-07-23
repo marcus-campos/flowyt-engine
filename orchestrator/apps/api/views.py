@@ -39,11 +39,7 @@ class Workspaces(Resource):
 
 
 class Monitoring:
-    LOG = {
-        "request": None,
-        "response": {},
-        "trace": {}
-    }
+    LOG = {"request": None, "response": {}, "trace": {}}
 
     def __init__(self, request, response, trace):
         self.LOG["request"] = request
@@ -57,7 +53,10 @@ class Monitoring:
     async def __store_logs(self, log_config):
         config = log_config
         client = MongoClient(
-            'mongodb://{0}:{1}@{2}:{3}/'.format(config["user"], config["password"], config["host"], config["port"]))
+            "mongodb://{0}:{1}@{2}:{3}/".format(
+                config["user"], config["password"], config["host"], config["port"]
+            )
+        )
 
         db = client[config["database"]]
         logs = db["flowyt_logs"]
@@ -86,8 +85,7 @@ class StartFlow(Resource):
             return {"message": "The requested workspace was not found on the server."}, 404
 
         # Check route
-        flow = Router(SERVER_NAME, subdomain, workspace_data["routes"]).match(
-            path, workspace, method)
+        flow = Router(SERVER_NAME, subdomain, workspace_data["routes"]).match(path, workspace, method)
 
         # Start engine
         request_data = self.__get_request_data(*args, **kwargs)
@@ -143,17 +141,11 @@ class StartFlow(Resource):
             response_headers["Content-Type"] = "application/xml"
 
         # Monitoring logs
-        response_log = {
-            "status": response_status,
-            "headers": response_headers,
-            "response": response_data
-        }
-        monitor = Monitoring(request, response_log,
-                             response.get("__debug__", {}))
+        response_log = {"status": response_status, "headers": response_headers, "response": response_data}
+        monitor = Monitoring(request, response_log, response.get("__debug__", {}))
 
         # Response
-        result = Response(headers=response_headers,
-                          response=result, status=response_status)
+        result = Response(headers=response_headers, response=result, status=response_status)
         return result, monitor
 
     def __get_request_data(self, *args, **kwargs):
@@ -171,11 +163,9 @@ class StartFlow(Resource):
             del request_data["params"]["__subdomain__"]
 
         if request_data["headers"].get("content_type") == "application/xml":
-            request_data["data"] = xmltodict.parse(
-                request.data, xml_attribs=False)
+            request_data["data"] = xmltodict.parse(request.data, xml_attribs=False)
 
-        request_data["debug"] = request_data["headers"].get(
-            "x_flowyt_debug", "false")
+        request_data["debug"] = request_data["headers"].get("x_flowyt_debug", "false")
 
         return request_data
 

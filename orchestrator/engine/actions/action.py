@@ -97,21 +97,33 @@ class HttpAction(GenericAction):
             return execution_context, {}
 
         action_context = copy.deepcopy(execution_context)
-        action_context.public = {**action_context.public.toDict(), **self.ACTION_CONTEXT, **{"p": action_data.get("path_params", {"teste": "123"})}}
+        action_context.public = {
+            **action_context.public.toDict(),
+            **self.ACTION_CONTEXT,
+            **{"p": action_data.get("path_params", {"teste": "123"})},
+        }
         action_context = DotMap(action_context)
 
         schema = self._load_scheme()
         schema = self._load_action_data(schema, action_context)
 
         endpoint_schema = schema["endpoints"][action_data["method"]].get([action_data["path"]], None)
-        
+
         if not endpoint_schema:
             return execution_context, {}
-        
+
         action_data["url"] = "{0}{1}".format(schema["base_url"], action_data["path"])
-        action_data["headers"] = {**schema["base_headers"], **endpoint_schema["headers"], **action_data["headers"]}
+        action_data["headers"] = {
+            **schema["base_headers"],
+            **endpoint_schema["headers"],
+            **action_data["headers"],
+        }
         action_data["data"] = {**schema["base_data"], **endpoint_schema["data"], **action_data["data"]}
-        action_data["params"] = {**schema["base_params"], **endpoint_schema["params"], **action_data["params"]}
+        action_data["params"] = {
+            **schema["base_params"],
+            **endpoint_schema["params"],
+            **action_data["params"],
+        }
         del action_data["path"]
         # url, method, headers, params, data, next_action_success, next_action_fail
 

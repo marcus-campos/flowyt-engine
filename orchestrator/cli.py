@@ -18,19 +18,23 @@ if __name__ == "__main__":
     parser.add_argument("-i", "--input", help="Indicates input to be used in workspace")
     parser.add_argument("-d", "--debug", help="Indicates whether to display debug data")
     args = parser.parse_args()
-    
+
     if args.workspace and args.flow:
         workspace_data = WorkspaceLoad().load(args.workspace.strip())
         result = None
         debug = "false"
-        
+
         if args.debug:
             debug = "true"
 
         if args.input:
-            result = engine_class.start(workspace_data, {}, {**args.input, "debug": debug}, args.workspace.strip(), args.flow.strip())
+            result = engine_class.start(
+                workspace_data, {}, {**args.input, "debug": debug}, args.workspace.strip(), args.flow.strip()
+            )
         else:
-            result = engine_class.start(workspace_data, {}, {"debug": debug}, args.workspace.strip(), args.flow.strip())
+            result = engine_class.start(
+                workspace_data, {}, {"debug": debug}, args.workspace.strip(), args.flow.strip()
+            )
 
         if result:
             if not debug:

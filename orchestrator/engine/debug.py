@@ -6,14 +6,7 @@ class PipelineDebug:
         self.__load_models()
 
     def __load_models(self):
-        self.WORKSPACE_LOGS = {
-            "workspace": {
-                "id": None,
-                "name": None,
-                "elapsed_time": None,
-                "flows": [],
-            }
-        }
+        self.WORKSPACE_LOGS = {"workspace": {"id": None, "name": None, "elapsed_time": None, "flows": [],}}
 
         self.CURRENT_FLOW = None
 
@@ -52,8 +45,7 @@ class PipelineDebug:
         self.CURRENT_FLOW["actions"].append(logs)
 
     def append(self):
-        self.WORKSPACE_LOGS["workspace"]["flows"].append(
-            copy.deepcopy(self.CURRENT_FLOW))
+        self.WORKSPACE_LOGS["workspace"]["flows"].append(copy.deepcopy(self.CURRENT_FLOW))
         self.CURRENT_FLOW = None
 
     def get(self):

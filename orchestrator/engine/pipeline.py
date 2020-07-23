@@ -4,7 +4,7 @@ import time
 from dotmap import DotMap
 from engine.flow import Flow
 from engine.workspace import Workspace
-from engine.debug import PipelineDebug 
+from engine.debug import PipelineDebug
 
 
 class Pipeline:
@@ -12,8 +12,7 @@ class Pipeline:
         self.start_pipeline_time = time.time()
         self.flow = flow
         self.workspace_data = workspace_data
-        self.workspace_class = Workspace(
-            self.workspace_data["config"]["settings"])
+        self.workspace_class = Workspace(self.workspace_data["config"]["settings"])
         self.execution_error = False
 
     def start(self, request_data={}, input_data=None):
@@ -44,16 +43,17 @@ class Pipeline:
                 "development_language": self.workspace_class.development_language,
                 "pipeline_debug": pipeline_debug,
                 "pipeline_class": self,
-                "debug_class": PipelineDebug()
+                "debug_class": PipelineDebug(),
             },
             "pipeline_context": {},
         }
 
-        context['private']["debug_class"].workspace(
-            self.workspace_class.id, self.workspace_class.name, time.time() - start_time)
+        context["private"]["debug_class"].workspace(
+            self.workspace_class.id, self.workspace_class.name, time.time() - start_time
+        )
 
         result = self.process(context)
-        result["__debug__"] = context['private']["debug_class"].get()
+        result["__debug__"] = context["private"]["debug_class"].get()
 
         return result
 
@@ -72,12 +72,12 @@ class Pipeline:
             flow_class = Flow(self.workspace_data, current_flow)
 
             # Debug logs
-            context['private']["debug_class"].flow(flow_id=flow_class.id, flow_name=flow_class.name,
-                             flow_elapsed_time=(time.time() - start_time))
+            context["private"]["debug_class"].flow(
+                flow_id=flow_class.id, flow_name=flow_class.name, flow_elapsed_time=(time.time() - start_time)
+            )
 
             # Execute actions
-            pipeline_actions = PipelineActions(
-                current_flow, flow_class, context)
+            pipeline_actions = PipelineActions(current_flow, flow_class, context)
             pipeline_response = pipeline_actions.process(start_time)
 
             # Updates
@@ -86,7 +86,7 @@ class Pipeline:
             current_flow = pipeline_actions.current_flow
             self.execution_error = pipeline_actions.execution_error
 
-            context['private']["debug_class"].append()
+            context["private"]["debug_class"].append()
 
         return pipeline_response
 
@@ -213,8 +213,9 @@ class PipelineActions:
         if not action:
             return
 
-        self.context['private']["debug_class"].action(action.id, action.action_name,
-                           action.data, time.time() - start_time)
+        self.context["private"]["debug_class"].action(
+            action.id, action.action_name, action.data, time.time() - start_time
+        )
 
     def jump_flow(self):
         if self.context.pipeline_context.get("next_flow"):
@@ -230,13 +231,12 @@ class PipelineActions:
         if self.context.pipeline_context.get("response"):
             self.process_pipeline = False
             self.has_actions = False
-            self.pipeline_response = self.context.pipeline_context.get(
-                "response")
+            self.pipeline_response = self.context.pipeline_context.get("response")
             return True
 
         if self.context.pipeline_context.get("end"):
             self.process_pipeline = False
             self.has_actions = False
             return True
-            
+
         return False

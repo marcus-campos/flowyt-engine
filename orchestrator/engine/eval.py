@@ -51,7 +51,7 @@ def contexted_run(context, source, language):
     source = source.replace("$(js){", "")
     result = None
 
-    run_context = { **context.public }
+    run_context = {**context.public}
 
     if language == "python":
         result = __run_python(source, run_context)
