@@ -42,11 +42,7 @@ class Pipeline:
                 "integrations": self.workspace_class.integrations,
                 "development_language": self.workspace_class.development_language,
             },
-            "pipeline_context": {
-                "logs": PipelineDebug(),
-                "debug": pipeline_debug,
-                "__class": self
-            },
+            "pipeline_context": {"logs": PipelineDebug(), "debug": pipeline_debug, "self_class": self},
         }
 
         context["pipeline_context"]["logs"].workspace(

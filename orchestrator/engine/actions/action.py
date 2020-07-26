@@ -37,13 +37,14 @@ class GenericAction:
         return execution_context, pipeline_context
 
     def _next_action(self, context, pipeline_context=None):
-        context.pipeline_context = {}
+        context.pipeline_context["response"] = None
+        context.pipeline_context["next_flow"] = None
+        context.pipeline_context["next_action"] = None
+
         if pipeline_context:
-            context.pipeline_context = {
-                "response": pipeline_context.get("response", None),
-                "next_flow": pipeline_context.get("next_flow", None),
-                "next_action": pipeline_context.get("next_action", None),
-            }
+            context.pipeline_context["response"] = pipeline_context.get("response", None)
+            context.pipeline_context["next_flow"] = pipeline_context.get("next_flow", None)
+            context.pipeline_context["next_action"] = pipeline_context.get("next_action", None)
 
         return context
 
