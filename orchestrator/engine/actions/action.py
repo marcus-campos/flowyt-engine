@@ -94,7 +94,7 @@ class HttpAction(GenericAction):
 
     def before_handle(self, action_data, execution_context):
         if not self.SCHEMA:
-            return execution_context, {}
+            return action_data, execution_context, {}
 
         action_context = copy.deepcopy(execution_context)
         action_context.public = {

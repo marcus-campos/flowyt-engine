@@ -41,19 +41,20 @@ class Pipeline:
             "private": {
                 "integrations": self.workspace_class.integrations,
                 "development_language": self.workspace_class.development_language,
-                "pipeline_debug": pipeline_debug,
-                "pipeline_class": self,
-                "debug_class": PipelineDebug(),
             },
-            "pipeline_context": {},
+            "pipeline_context": {
+                "logs": PipelineDebug(),
+                "debug": pipeline_debug,
+                "__class": self
+            },
         }
 
-        context["private"]["debug_class"].workspace(
+        context["pipeline_context"]["logs"].workspace(
             self.workspace_class.id, self.workspace_class.name, time.time() - start_time
         )
 
         result = self.process(context)
-        result["__debug__"] = context["private"]["debug_class"].get()
+        result["__debug__"] = context["pipeline_context"]["logs"].get()
 
         return result
 
@@ -72,7 +73,7 @@ class Pipeline:
             flow_class = Flow(self.workspace_data, current_flow)
 
             # Debug logs
-            context["private"]["debug_class"].flow(
+            context["pipeline_context"]["logs"].flow(
                 flow_id=flow_class.id, flow_name=flow_class.name, flow_elapsed_time=(time.time() - start_time)
             )
 
@@ -86,7 +87,7 @@ class Pipeline:
             current_flow = pipeline_actions.current_flow
             self.execution_error = pipeline_actions.execution_error
 
-            context["private"]["debug_class"].append()
+            context["pipeline_context"]["logs"].append()
 
         return pipeline_response
 
@@ -131,7 +132,7 @@ class PipelineActions:
             self.jump_flow()
 
             # Debug logs
-            if self.context.private.pipeline_debug:
+            if self.context.pipeline_context.debug:
                 self.debug_log(action, start_time)
 
             # Stop pipeline
@@ -181,14 +182,14 @@ class PipelineActions:
             if hasattr(e, "message"):
                 self.pipeline_response = {"status": 500, "exception": {}}
 
-                if self.context.private.pipeline_debug:
+                if self.context.pipeline_context.debug:
                     self.pipeline_response["exception"] = {
                         "message": e.message,
                         "action": {"id": action.id, "name": action.action_name, "data": action.data},
                     }
             else:
                 self.pipeline_response = {"status": 500, "exception": {}}
-                if self.context.private.pipeline_debug:
+                if self.context.pipeline_context.debug:
                     self.pipeline_response["exception"] = {
                         "message": str(e),
                         "action": {"id": action.id, "name": action.action_name, "data": action.data},
@@ -213,7 +214,7 @@ class PipelineActions:
         if not action:
             return
 
-        self.context["private"]["debug_class"].action(
+        self.context["pipeline_context"]["logs"].action(
             action.id, action.action_name, action.data, time.time() - start_time
         )
 

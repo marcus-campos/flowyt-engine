@@ -3,11 +3,11 @@ from engine.actions.action import GenericAction
 
 
 class Handle(GenericAction):
-    def handle(self, action_data, context):
-        pipeline_class = context.private.pipeline_class
+    def handle(self, action_data, execution_context, pipeline_context):
+        pipeline_class = execution_context.pipeline_context.__class
         pipeline_class.flow = action_data["flow"]
 
-        dict_context = copy.deepcopy(context.toDict())
+        dict_context = copy.copy(execution_context.toDict())
         result = pipeline_class.process(dict_context)
-        context.public.response = result
-        return context, None
+        execution_context.public.response = result
+        return execution_context, None
