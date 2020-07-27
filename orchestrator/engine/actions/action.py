@@ -9,7 +9,14 @@ from engine.utils.json_parser import parse_json_file
 
 
 class GenericAction:
+    initial_action_data = None
+    action_data = None
+    context = None
+
     def __init__(self, action_data=None):
+        if not self.initial_action_data:
+            self.initial_action_data = copy.deepcopy(action_data)
+
         self.action_data = action_data
         self.context = None
 
@@ -19,7 +26,7 @@ class GenericAction:
     """
 
     def start(self, context):
-        self.action_data = self._load_action_data(self.action_data, context)
+        self.action_data = self._load_action_data(copy.deepcopy(self.initial_action_data), context)
 
         self.action_data, context, pipeline_context = self.before_handle(self.action_data, context)
         context, pipeline_context = self.handle(self.action_data, context, pipeline_context)

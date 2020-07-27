@@ -25,7 +25,7 @@ if __name__ == "__main__":
         debug = "false"
 
         if args.debug:
-            debug = "true"
+            debug = args.debug.strip()
 
         if args.input:
             result = engine_class.start(
@@ -37,7 +37,7 @@ if __name__ == "__main__":
             )
 
         if result:
-            if not debug:
+            if debug == "false":
                 del result["__debug__"]
                 del result["exception"]
 
