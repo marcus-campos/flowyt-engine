@@ -39,7 +39,8 @@ if __name__ == "__main__":
         if result:
             if debug == "false":
                 del result["__debug__"]
-                del result["exception"]
+                if "exception" in result:
+                    del result["exception"]
 
             result = json.dumps(result, indent=2)
             colorful_json = highlight(result, lexers.JsonLexer(), formatters.TerminalFormatter())
