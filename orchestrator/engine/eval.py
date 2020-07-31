@@ -8,7 +8,7 @@ from dotmap import DotMap
 def __run_python(source, run_context):
     try:
         result = eval("{0}".format(source), run_context, {"json": json},)
-    except SyntaxError:
+    except SyntaxError as e:
         pass
 
     return result
@@ -36,21 +36,12 @@ def __run_javascript(source, run_context):
 
 
 def contexted_run(context, source, language):
-    # env = context.public.env
-    # flow = context.public.flow
-    # request = context.public.request
-    # session = context.public.session
-    # workspace = context.public.workspace
-    # workspace_info = context.public.workspace_info
-    # function = context.public.function
-    # response = context.public.response
-
     # Remove ${} from string
     source = source.replace("${", "")[:-1]
     source = source.replace("$(py){", "")
     source = source.replace("$(js){", "")
     result = None
-
+    
     run_context = {**context.public}
 
     if language == "python":

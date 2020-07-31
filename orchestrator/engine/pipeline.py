@@ -1,10 +1,12 @@
 import json
+import os
 import time
 
 from dotmap import DotMap
+from engine.debug import PipelineDebug
 from engine.flow import Flow
 from engine.workspace import Workspace
-from engine.debug import PipelineDebug
+from .settings import WORKSPACE_STORAGE_MODE
 
 
 class Pipeline:
@@ -22,6 +24,16 @@ class Pipeline:
         # Config context
         incoming_debug = request_data.get("debug") == "true" or input_data.get("debug") == "true"
         pipeline_debug = True if self.workspace_class.debug and incoming_debug else False
+        local_context = {}
+
+
+        if WORKSPACE_STORAGE_MODE == "local":
+            local_context = {
+                "os": {
+                    "env": os.environ
+                }
+            }
+
         context = {
             "public": {
                 "workspace_info": {
@@ -37,6 +49,7 @@ class Pipeline:
                 "input": input_data,
                 "function": self.workspace_data["functions"],
                 "response": {},
+                **local_context
             },
             "private": {
                 "integrations": self.workspace_class.integrations,
