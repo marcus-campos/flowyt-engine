@@ -1,3 +1,4 @@
+import asyncio
 import json
 from functools import wraps
 
@@ -6,15 +7,14 @@ import xmltodict
 from engine.manager import Engine
 from flask import Response, request
 from flask_restful import Resource
-from orchestrator.settings import SECRET_KEY, SERVER_NAME
+from orchestrator.settings import SECRET_KEY, SERVER_NAME, WORKSPACE_STORAGE_MODE
+from pymongo import MongoClient
 
 from apps.api.serializers import StartSerializer
+from apps.api.services.quotas import Quota
 from apps.api.services.routes import Router
 from apps.api.services.workspace_load import WorkspaceLoad
-from apps.api.services.quotas import Quota
 from utils.middlewares import secret_key_required
-import asyncio
-from pymongo import MongoClient
 
 
 class Workspaces(Resource):
@@ -70,10 +70,12 @@ class StartFlow(Resource):
 
     def handle(self, workspace, method, path, *args, **kwargs):
         subdomain = kwargs.get("__subdomain__", "")
+        is_exceeded = False
 
         # Check quota
-        quota_class = Quota(subdomain)
-        is_exceeded = quota_class.exceeded_limit()
+        if WORKSPACE_STORAGE_MODE != "local":
+            quota_class = Quota(subdomain)
+            is_exceeded = quota_class.exceeded_limit()
 
         if is_exceeded:
             return {"message": "The request limit has been reached."}, 429
