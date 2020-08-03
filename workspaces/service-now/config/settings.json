@@ -1,0 +1,31 @@
+{
+    "id": "servicenow-worker",
+    "name": "Servicenow Worker",
+    "debug": true,
+    "release": {
+        "id": "1",
+        "name": "v0.0.1"
+    },
+    "integrations": {
+        "mongodb": {
+            "host": "${os.env['MONGODB_HOST']}",
+            "port": "${os.env['MONGODB_PORT']}",
+            "user": "${os.env['MONGODB_USER']}",
+            "password": "${os.env['MONGODB_PASSWORD']}",
+            "database": "${os.env['MONGODB_DATABASE']}"
+        }
+    },
+    "env": {
+        "base_url": "${os.env['SERVICENOW_BASE_URL']}",
+        "client_id": "${os.env['SERVICENOW_CLIENT_ID']}",
+        "client_secret": "${os.env['SERVICENOW_CLIENT_SECRET']}",
+        "client_username": "${os.env['SERVICENOW_USERNAME']}",
+        "client_password": "${os.env['SERVICENOW_PASSWORD']}"
+    },
+    "safe_mode": {
+        "active": true,
+        "safe_time": 10
+    }
+}
+
+
