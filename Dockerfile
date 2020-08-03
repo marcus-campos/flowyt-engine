@@ -5,13 +5,14 @@ ENV TERM xterm
 # Let the conatiner know that there is no tty
 ENV DEBIAN_FRONTEND noninteractive
 
+# Packets
 RUN apt-get update -qqy && apt-get install -qqy software-properties-common nano cron tzdata locales vim lsof inetutils-ping unzip
 
 # Set the locale
 RUN locale-gen pt_BR.UTF-8  
 ENV LANG pt_BR.UTF-8  
 ENV LANGUAGE pt_BR:en  
-ENV LC_ALL pt_BR.UTF-8  
+RUN rm /etc/localtime && ln -s /usr/share/zoneinfo/Etc/GMT+3 /etc/localtime 
 
 # Add colours to bashrc
 RUN  sed -i -e "s/#force_color_prompt=yes/force_color_prompt=yes/g" /root/.bashrc
