@@ -11,6 +11,3 @@ RUN pip install --upgrade pip
 RUN pip install pipenv
 RUN pipenv lock --requirements > requirements.txt
 RUN pip install -r requirements.txt
-
-EXPOSE 80
-CMD sh /usr/src/app/run_web.sh
