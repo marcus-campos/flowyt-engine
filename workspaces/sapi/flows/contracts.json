@@ -1,0 +1,108 @@
+{
+    "id": "get_contracts",
+    "name": "Get contracts",
+    "pipeline": [
+        {
+            "action": "start",
+            "data": {},
+            "id": "start",
+            "next_action": "handle_auth"
+        },
+        {
+            "id": "flow_var_envs",
+            "action": "flow_var",
+            "data": {
+                "env": "${function.flow.env.get()}"
+            },
+            "next_action": "request_get_contracts"
+        },
+        {
+            "id": "handle_auth",
+            "action": "handle",
+            "data": {
+                "flow": "auth"
+            },
+            "next_action": "flow_var_servicenow"
+        },
+        {
+            "id": "flow_var_servicenow",
+            "action": "flow_var",
+            "data": {
+                "url": "${flow.env.base_url}/api/now/table/ast_contract?sysparm_fields=number,starts,ends,sys_created_on,contract_composite,short_description,description,vendor,vendor_contract,u_horas_contratadas,u_contract_operation",
+                "auth": "${response.data.tokens}"
+            },
+            "next_action": "request_get_contracts"
+        },
+        {
+            "id": "request_get_contracts",
+            "action": "request",
+            "data": {
+                "url": "${flow.url}",
+                "method": "GET",
+                "headers": {
+                    "Authorization": "Bearer ${flow.auth.access_token}"
+                },
+                "data": {},
+                "next_action_success": "flow_var_contract",
+                "next_action_fail": "response_contracts_fail"
+            },
+            "next_action": "${pipeline.next_action}"
+        },
+        {
+            "id": "flow_var_contract",
+            "action": "flow_var",
+            "data": {
+                "contracts": "${response.data.result}"
+            },
+            "next_action": "check_var_contract"
+        },
+        {
+            "id": "check_var_contract",
+            "action": "switch",
+            "data": {
+                "conditions": [
+                    {
+                        "operator": "greater_than",
+                        "first_expression": "${len(flow.contracts)}",
+                        "second_expression": "${1}",
+                        "next_action": "find_update"
+                    }
+                ],
+                "next_action_else": "response_success"
+            },
+            "next_action": "${pipeline.next_action}"
+        },
+        {
+            "id": "find_update",
+            "action": "mongodb",
+            "data": {
+                "collection": "contracts",
+                "action": "find_and_modify",
+                "args": {
+                    "query": {"contract": "${flow.contracts[0].vendor_contract}"},
+                    "update": {"$set": "${flow.contracts[0]}"},
+                    "upsert": true
+                }
+            }, 
+            "next_action": "flow_var_contract_update"
+        },
+        {
+            "id": "flow_var_contract_update",
+            "action": "flow_var",
+            "data": {
+                "contracts": "${function.contracts.remove_from_dict(flow.contracts)}"
+            },
+            "next_action": "check_var_contract"
+        },
+        {
+            "id": "response_success",
+            "action": "response",
+            "data": {
+                "data": {
+                    "msg": "Contratos importados com sucesso!"
+                }
+            },
+            "next_action": null
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "id": "servicenow-worker",
+    "name": "Servicenow Worker",
+    "debug": true,
+    "release": {
+        "id": "1",
+        "name": "v0.0.1"
+    },
+    "integrations": {
+        "mongodb": {
+            "host": "${os.env.MONGODB_HOST}",
+            "port": 27017,
+            "user": "root",
+            "password": "root",
+            "database": "socportal"
+        }
+    },
+    "env": {
+        "base_url": "https://ish.service-now.com",
+        "client_id": "69b12ad69feb08949459270d6da4f7fa",
+        "client_secret": "S3ns3d@t@",
+        "client_username": "Owl",
+        "client_password": "blk186"
+    },
+    "safe_mode": {
+        "active": true,
+        "safe_time": 10
+    }
+}
+
+
