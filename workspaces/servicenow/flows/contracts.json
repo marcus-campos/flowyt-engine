@@ -82,7 +82,7 @@
             "id": "flow_var_contract_update",
             "action": "flow_var",
             "data": {
-                "contracts": "${function.contracts.remove_from_dict(flow.contracts)}"
+                "contracts": "${function.util.remove_from_dict(flow.contracts)}"
             },
             "next_action": "check_var_contract"
         },

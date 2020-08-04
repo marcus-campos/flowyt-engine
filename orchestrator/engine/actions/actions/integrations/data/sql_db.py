@@ -1,4 +1,5 @@
 import sqlalchemy
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 from engine.actions.action import GenericAction
 
@@ -15,7 +16,7 @@ class Database:
             "{0}://{1}:{2}@{3}/{4}".format(config.sgbd, config.user, config.password, host, config.database)
         )
 
-        self.session = sqlalchemy.orm.scoped_session(sqlalchemy.orm.sessionmaker(bind=self.engine))
+        self.session = scoped_session(sessionmaker(bind=self.engine))
 
     def raw(self, sql):
         sql = sqlalchemy.text(sql)
@@ -35,8 +36,9 @@ class Database:
 
 class SqlDatabase(GenericAction):
     def handle(self, action_data, execution_context, pipeline_context):
-        database = Database(execution_context.private.integrations.sql_database)
+        conn_name = action_data.get("conn_name")
 
+        database = Database(execution_context.private.integrations.sql_database.get(conn_name, {}))
         execution_context.public.response = database
 
         if not action_data.get("sql"):
