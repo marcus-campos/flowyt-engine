@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 import time
@@ -6,6 +7,7 @@ from dotmap import DotMap
 from engine.debug import PipelineDebug
 from engine.flow import Flow
 from engine.workspace import Workspace
+
 from .settings import WORKSPACE_STORAGE_MODE
 
 
@@ -224,7 +226,7 @@ class PipelineActions:
             return
 
         self.context["pipeline_context"]["logs"].action(
-            action.id, action.action_name, action.data, time.time() - start_time
+            action.id, action.action_name, copy.deepcopy(action.data), time.time() - start_time
         )
 
     def jump_flow(self):

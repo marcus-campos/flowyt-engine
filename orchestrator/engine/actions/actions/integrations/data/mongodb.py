@@ -7,7 +7,10 @@ from pymongo import MongoClient
 class MongoDB(GenericAction):
     def handle(self, action_data, execution_context, pipeline_context):
         config = execution_context.private.integrations.mongodb
-        collection = self.__collection(config, action_data["collection"])
+        
+        conn_name = action_data.get("conn_name")
+        collection = self.__collection(config.get(conn_name), action_data["collection"])
+        
         result = self.perform_action(collection, action_data["action"], action_data["args"])
         execution_context.public.response = result
         return execution_context, pipeline_context

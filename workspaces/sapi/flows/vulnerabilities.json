@@ -12,7 +12,7 @@
             "id": "flow_var_sql",
             "action": "flow_var",
             "data": {
-                "sql": "SELECT cliente.nomefantasia, cliente.numcontratoservicenow, v.* FROM sapi.vulnerabilidades as v INNER JOIN sapi.tbauditoria as audit ON v.id_audit = audit.id_audit INNER JOIN sapi.tbcliente as cliente ON audit.id_cliente = cliente.id_cliente WHERE cliente.id_cliente = 203 AND cliente.numcontrato <> '';"
+                "sql": "SELECT cliente.nomefantasia, cliente.numcontratoservicenow, v.* FROM vulnerabilidades as v INNER JOIN tbauditoria as audit ON v.id_audit = audit.id_audit INNER JOIN tbcliente as cliente ON audit.id_cliente = cliente.id_cliente WHERE cliente.numcontratoservicenow <> '' AND v.created_at >= concat((CURDATE() - INTERVAL 1 DAY), ' 00:00:00');"
             },
             "next_action": "sql_db_sapi_select_vulnerabilities"
         },
@@ -55,6 +55,7 @@
             "data": {
                 "collection": "vulnerabilities",
                 "action": "find_and_modify",
+                "conn_name": "socportal",
                 "args": {
                     "query": {"id_vuln": "${flow.vulnerabilities[0].id_vuln}"},
                     "update": {"$set": "${flow.vulnerabilities[0]}"},
@@ -76,7 +77,7 @@
             "action": "response",
             "data": {
                 "data": {
-                    "data": "${response.db.to_list()}"
+                    "msg": "Vulnerabilidades importadas com sucesso!"
                 }
             },
             "next_action": null

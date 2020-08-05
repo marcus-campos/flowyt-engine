@@ -70,6 +70,7 @@
             "data": {
                 "collection": "contracts",
                 "action": "find_and_modify",
+                "conn_name": "socportal",
                 "args": {
                     "query": {"contract": "${flow.contracts[0].vendor_contract}"},
                     "update": {"$set": "${flow.contracts[0]}"},
