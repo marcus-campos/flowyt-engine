@@ -1,22 +1,12 @@
 {
-    "id": "sapi-worker",
-    "name": "SAPI Worker",
+    "id": "servicenow-worker",
+    "name": "Servicenow Worker",
     "debug": true,
     "release": {
         "id": "1",
         "name": "v0.0.1"
     },
     "integrations": {
-        "sql_database": {
-            "sapi": {
-                "sgbd": "mysql+pymysql",
-                "host": "${os.env['SAPI_HOST']}",
-                "port": "${os.env['SAPI_PORT']}",
-                "user": "${os.env['SAPI_USER']}",
-                "password": "${os.env['SAPI_PASSWORD']}",
-                "database": "${os.env['SAPI_DATABASE']}"
-            }
-        },
         "mongodb": {
             "socportal": {
                 "host": "${os.env['MONGODB_HOST']}",

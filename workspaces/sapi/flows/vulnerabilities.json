@@ -1,6 +1,6 @@
 {
-    "id": "get_contracts",
-    "name": "Get contracts",
+    "id": "get_vulnerabilities",
+    "name": "Get vulnerabilities",
     "pipeline": [
         {
             "action": "start",

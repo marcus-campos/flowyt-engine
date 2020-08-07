@@ -28,8 +28,9 @@ if __name__ == "__main__":
             debug = args.debug.strip()
 
         if args.input:
+            args_data = json.loads(args.input)
             result = engine_class.start(
-                workspace_data, {}, {**args.input, "debug": debug}, args.workspace.strip(), args.flow.strip()
+                workspace_data, {}, {**args_data, "debug": debug}, args.workspace.strip(), args.flow.strip()
             )
         else:
             result = engine_class.start(

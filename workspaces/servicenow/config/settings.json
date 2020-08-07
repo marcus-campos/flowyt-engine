@@ -25,7 +25,7 @@
         "client_password": "${os.env['SERVICENOW_PASSWORD']}"
     },
     "safe_mode": {
-        "active": true,
+        "active": false,
         "safe_time": 10
     }
 }

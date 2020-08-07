@@ -121,8 +121,8 @@ class PipelineActions:
     def process(self, start_at):
         while self.has_actions:
             # Safe check
-            # if self.safe_mode["enable"]:
-            #     self.safe_check(start_at)
+            if self.safe_mode["enable"]:
+                self.safe_check(start_at)
 
             # Get start action process time
             start_time = time.time()
