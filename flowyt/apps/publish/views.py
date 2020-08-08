@@ -9,7 +9,7 @@ from flask_restful import Resource, abort
 from werkzeug.utils import secure_filename
 
 from apps.publish.serializers import PublishSerializer
-from orchestrator.settings import STORAGE_FOLDER_TEMP_UPLOADS, WORKSPACES_PATH
+from flowyt.settings import STORAGE_FOLDER_TEMP_UPLOADS, WORKSPACES_PATH
 from utils.middlewares import secret_key_required, secret_key_maybe_required
 
 

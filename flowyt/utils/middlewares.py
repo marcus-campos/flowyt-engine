@@ -1,7 +1,7 @@
 from functools import wraps
 
 from flask import request
-from orchestrator.settings import SECRET_KEY, WORKSPACE_STORAGE_MODE
+from flowyt.settings import SECRET_KEY, WORKSPACE_STORAGE_MODE
 
 
 def secret_key_required(f):

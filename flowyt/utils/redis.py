@@ -1,5 +1,5 @@
 import redis as red
-from orchestrator.settings import REDIS
+from flowyt.settings import REDIS
 
 
 class Redis:

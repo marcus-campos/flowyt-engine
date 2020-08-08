@@ -9,6 +9,6 @@ include_trailing_comma = true
 force_grid_wrap = 0
 use_parentheses = true
 known_first_party = ""
-known_localfolder = "apps,integration_orchestrator,tests,utils"
+known_localfolder = "apps,integration_flowyt,tests,utils"
 sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
 default_section = "THIRDPARTY"

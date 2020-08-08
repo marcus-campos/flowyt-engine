@@ -2,7 +2,7 @@ import copy
 import json
 import os
 
-from orchestrator.settings import WORKSPACE_STORAGE_MODE, WORKSPACES_PATH
+from flowyt.settings import WORKSPACE_STORAGE_MODE, WORKSPACES_PATH
 
 from utils.json_parser import parse_json_file
 from utils.redis import Redis

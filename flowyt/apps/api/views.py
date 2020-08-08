@@ -7,7 +7,7 @@ import xmltodict
 from engine.manager import Engine
 from flask import Response, request
 from flask_restful import Resource
-from orchestrator.settings import SECRET_KEY, SERVER_NAME, WORKSPACE_STORAGE_MODE
+from flowyt.settings import SECRET_KEY, SERVER_NAME, WORKSPACE_STORAGE_MODE
 from pymongo import MongoClient
 
 from apps.api.serializers import StartSerializer

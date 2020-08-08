@@ -3,14 +3,14 @@ import sys
 
 from flask import Flask
 from flask_restful import Api
-from orchestrator.urls import load_urls
+from flowyt.urls import load_urls
 
 from utils.splash import loading
 
 app = Flask(__name__)
 
 # App config
-app.config.from_object("orchestrator.settings")
+app.config.from_object("flowyt.settings")
 
 api = Api(app)
 

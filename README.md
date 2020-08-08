@@ -25,7 +25,7 @@ Now that you're within your empty project folder, clone the project and make a c
 ```bash
 $ git clone git@github.com:marcus-campos/orchestryzi-engine.git
 $ cd orchestryzi-engine
-$ cp orchestrator/.env.example orchestrator/.env
+$ cp flowyt/.env.example flowyt/.env
 ```
 
 ### Start your virtual environment
@@ -69,7 +69,7 @@ $ pipenv install
 We're telling pipenv to install a specific version of requirements.
 
 
-## Start your Orchestrator engine
+## Start your flowyt engine
 
 Want to see if everything worked? In your terminal, head over to your top level
 orchestryzi-engine folder (make sure you're in the folder with *Makefile*) and run

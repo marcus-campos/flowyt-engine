@@ -22,11 +22,11 @@ pip-install:
 	pipenv install --dev
 
 runserver:
-	python ./orchestrator/app.py
+	python ./flowyt/app.py
 
 installer:
 	make clean-build && \
-	cd orchestrator/ && \
+	cd flowyt/ && \
 	python installer.py build && \
 	mv build ../ && \
 	cd .. && \
@@ -35,7 +35,7 @@ installer:
 
 installer_and_zip:
 	make clean-build && \
-	cd orchestrator/ && \
+	cd flowyt/ && \
 	python installer.py build && \
 	mv build ../ && \
 	cd .. && \

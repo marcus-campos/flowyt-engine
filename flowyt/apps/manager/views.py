@@ -6,7 +6,7 @@ from shutil import copyfile
 
 from flask import request
 from flask_restful import Resource, abort
-from orchestrator.settings import ENV_PATH, SECRET_KEY
+from flowyt.settings import ENV_PATH, SECRET_KEY
 
 from utils.middlewares import secret_key_required
 
