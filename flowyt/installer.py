@@ -10,7 +10,7 @@ from cx_Freeze import setup, Executable
 buildOptions = {
     "packages": ["os", "sys"],
     "excludes": [],
-    "includes": ["psutil", "pymongo"],
+    "includes": [],
     "build_exe": "build/flowyt",
 }
 
@@ -19,14 +19,17 @@ if sys.platform == "darwin":  # macOS
 
 base = "Console"
 
-executables = [Executable("app.py", base=base, targetName="flowyt")]
+executables = [
+    Executable("cli.py", base=base, targetName="app"),
+    Executable("wsgi.py", base=base, targetName="wsgi"),
+    Executable("cli.py", base=base, targetName="cli")
+]
 
 ###############
 # CLI
 ###############
 
-#version = input("Enter build version: ")
-version = "v0.0.1"
+version = input("Enter build version: ")
 print("")
 print("")
 print("===================================")
