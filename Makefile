@@ -24,6 +24,19 @@ pip-install:
 runserver:
 	python ./flowyt/app.py
 
+prepare_build:
+	mkdir build/flowyt/bin && \
+	mkdir build/flowyt/bin/lib && \
+	cp .wsgi.build build/flowyt/bin/wsgi.py && \
+	mv build/flowyt/lib/library.zip build/flowyt/bin/lib && \
+	mv build/flowyt/lib/apps build/flowyt/bin && \
+	mv build/flowyt/lib/engine build/flowyt/bin && \
+	mv build/flowyt/lib/flowyt build/flowyt/bin && \
+	mv build/flowyt/lib/utils build/flowyt/bin && \
+	mv build/flowyt/app build/flowyt/bin && \
+	mv build/flowyt/cli build/flowyt/bin && \
+	rm -rf build/flowyt/lib
+
 installer:
 	make clean-build && \
 	cd flowyt/ && \
@@ -31,7 +44,8 @@ installer:
 	mv build ../ && \
 	cd .. && \
 	mkdir build/flowyt/workspaces && \
-	cp .env.example.build build/flowyt/.env.example
+	cp .env.example.build build/flowyt/.env.example && \
+	make prepare_build
 
 installer_and_zip:
 	make clean-build && \
@@ -39,6 +53,7 @@ installer_and_zip:
 	python installer.py build && \
 	mv build ../ && \
 	cd .. && \
+	make prepare_build && \
 	cp -r docs/examples/workspaces build/flowyt/workspaces && \
 	cp -r docs build/flowyt/docs && \
 	cp .env.example.build build/flowyt/.env.example && \

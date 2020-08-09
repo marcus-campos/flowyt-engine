@@ -20,8 +20,7 @@ if sys.platform == "darwin":  # macOS
 base = "Console"
 
 executables = [
-    Executable("cli.py", base=base, targetName="app"),
-    Executable("wsgi.py", base=base, targetName="wsgi"),
+    Executable("app.py", base=base, targetName="app"),
     Executable("cli.py", base=base, targetName="cli")
 ]
 
