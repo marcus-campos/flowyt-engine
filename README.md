@@ -1,4 +1,4 @@
-# Orchestryzi engine
+# Flowyt engine
 
 You've installed Python and the other utilities (pip, virtualenv, and git) on
 your computer, right? If not, [head here to
@@ -23,8 +23,8 @@ of a folder.
 Now that you're within your empty project folder, clone the project and make a copy of the `.env.example` file.
 
 ```bash
-$ git clone git@github.com:marcus-campos/orchestryzi-engine.git
-$ cd orchestryzi-engine
+$ git clone git@github.com:marcus-campos/flowyt-engine.git
+$ cd flowyt-engine
 $ cp flowyt/.env.example flowyt/.env
 ```
 
@@ -46,7 +46,7 @@ You should see something like this in your command line before the folder
 structure - the (venv) indicates you're in the virtual environment:
 
 ```
-(venv) root@MBP ~/projects/orchestryzi-engine $
+(venv) root@MBP ~/projects/flowyt-engine $
 ```
 
 (MBP is my computer's name and root is my username - your exact setup
@@ -72,14 +72,14 @@ We're telling pipenv to install a specific version of requirements.
 ## Start your flowyt engine
 
 Want to see if everything worked? In your terminal, head over to your top level
-orchestryzi-engine folder (make sure you're in the folder with *Makefile*) and run
+flowyt-engine folder (make sure you're in the folder with *Makefile*) and run
 this command:
 
 ```
 $ make runserver
 ```
 
-...and you'll see the local orchestryzi development server starting, which'll serve
+...and you'll see the local flowyt development server starting, which'll serve
 your project to your computer.
 
 ```

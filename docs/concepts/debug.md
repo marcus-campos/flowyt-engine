@@ -1,5 +1,5 @@
 # Debug
-Caso você necessite de mais informações sobre a execução do seu workspace, você pode adicionar o header `x-orchestryzi-debug` com o valor `true` em seus requests.
+Caso você necessite de mais informações sobre a execução do seu workspace, você pode adicionar o header `x-flowyt-debug` com o valor `true` em seus requests.
 
 Mas para isso funcionar, você precisa trocar valor da key `debug` para `true`no seu arquivo de configurações do workspace
 ```
@@ -44,7 +44,7 @@ Depois é só fazer um request e você terá um resultado semelhante a este:
   "__debug__": {
     "workspace": {
       "id": "025d4f46-ca68-4da5-ae8d-c7d8cc64b737",
-      "name": "Orchestryzi Studio",
+      "name": "Flowyt Studio",
       "elapsed_time": 0.0006542205810546875,
       "flows": [
         {
@@ -95,7 +95,7 @@ Você também conseguirá capturar erros de sintaxe durante a execução, veja o
   "__debug__": {
     "workspace": {
       "id": "025d4f46-ca68-4da5-ae8d-c7d8cc64b737",
-      "name": "Orchestryzi Studio",
+      "name": "Flowyt Studio",
       "elapsed_time": 0.0017752647399902344,
       "flows": [
         {
@@ -127,7 +127,7 @@ Você também conseguirá capturar erros de sintaxe durante a execução, veja o
 }
 ```
 
-Caso o workspace esteja com as configurações de debug igual a `false`e não tiver o header `x-orchestryzi-debug` com o valor `true`, você terá um resultado semelhante a este:
+Caso o workspace esteja com as configurações de debug igual a `false`e não tiver o header `x-flowyt-debug` com o valor `true`, você terá um resultado semelhante a este:
 
 ```json
 {

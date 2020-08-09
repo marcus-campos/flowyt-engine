@@ -1,4 +1,7 @@
 import sys
+import os
+from pathlib import Path
+
 
 from cx_Freeze import setup, Executable
 
@@ -7,8 +10,8 @@ from cx_Freeze import setup, Executable
 buildOptions = {
     "packages": ["os", "sys"],
     "excludes": [],
-    "includes": [],
-    "build_exe": "build/orchestryzi",
+    "includes": ["psutil", "pymongo"],
+    "build_exe": "build/flowyt",
 }
 
 if sys.platform == "darwin":  # macOS
@@ -16,13 +19,14 @@ if sys.platform == "darwin":  # macOS
 
 base = "Console"
 
-executables = [Executable("app.py", base=base, targetName="orchestryzi")]
+executables = [Executable("app.py", base=base, targetName="flowyt")]
 
 ###############
 # CLI
 ###############
 
-version = input("Enter build version: ")
+#version = input("Enter build version: ")
+version = "v0.0.1"
 print("")
 print("")
 print("===================================")
@@ -30,7 +34,7 @@ print("Generating the version {0}".format(version))
 print("===================================")
 
 setup(
-    name="Orchestryzi",
+    name="Flowyt",
     version=version,
     description="",
     options=dict(build_exe=buildOptions),

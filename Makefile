@@ -30,8 +30,8 @@ installer:
 	python installer.py build && \
 	mv build ../ && \
 	cd .. && \
-	mkdir build/orchestryzi/workspaces && \
-	cp .env.example.build build/orchestryzi/.env.example
+	mkdir build/flowyt/workspaces && \
+	cp .env.example.build build/flowyt/.env.example
 
 installer_and_zip:
 	make clean-build && \
@@ -39,15 +39,15 @@ installer_and_zip:
 	python installer.py build && \
 	mv build ../ && \
 	cd .. && \
-	cp -r docs/examples/workspaces build/orchestryzi/workspaces && \
-	cp -r docs build/orchestryzi/docs && \
-	cp .env.example.build build/orchestryzi/.env.example && \
+	cp -r docs/examples/workspaces build/flowyt/workspaces && \
+	cp -r docs build/flowyt/docs && \
+	cp .env.example.build build/flowyt/.env.example && \
 	cd build/ && \
-	zip -r orchestryzi.zip orchestryzi && \
+	zip -r flowyt.zip flowyt && \
 	cd ..
 
 runbuild:
-	./build/orchestryzi/orchestryzi
+	./build/flowyt/flowyt
 
 copydocs:
-	cp -r docs/* ../orchestryzi-engine-demo
+	cp -r docs/* ../flowyt-engine-demo

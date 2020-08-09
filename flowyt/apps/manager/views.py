@@ -29,7 +29,7 @@ class Setup(Resource):
                 open(ENV_PATH, "w").write("\n".join(lines))
                 return (
                     {
-                        "msg": "Initial settings added successfully. Restart Orchestryzi to apply the changes.",
+                        "msg": "Initial settings added successfully. Restart Flowyt to apply the changes.",
                         "secret": secret_token,
                     },
                     200,
@@ -47,7 +47,7 @@ class Setup(Resource):
             os.remove(ENV_PATH)
         return (
             {
-                "msg": "The environment settings have been removed successfully! Restart Orchestryzi to apply the changes."
+                "msg": "The environment settings have been removed successfully! Restart Flowyt to apply the changes."
             },
             400,
         )
