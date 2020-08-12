@@ -28,9 +28,7 @@ class Workspace:
     def __execute_contextered(self, data):
         context = DotMap({
             "public": {
-                "os": {
-                    "env": os.environ
-                }
+                "env": lambda env_var, default_env_var = "": os.environ.get(env_var, default_env_var)
             }
         })
         

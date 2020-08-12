@@ -9,23 +9,23 @@
     "integrations": {
         "mongodb": {
             "socportal": {
-                "host": "${os.env['MONGODB_HOST']}",
-                "port": "${os.env['MONGODB_PORT']}",
-                "user": "${os.env['MONGODB_USER']}",
-                "password": "${os.env['MONGODB_PASSWORD']}",
-                "database": "${os.env['MONGODB_DATABASE']}"
+                "host": "${env('MONGODB_HOST')}",
+                "port": "${env('MONGODB_PORT')}",
+                "user": "${env('MONGODB_USER')}",
+                "password": "${env('MONGODB_PASSWORD')}",
+                "database": "${env('MONGODB_DATABASE')}"
             }
         }
     },
     "env": {
-        "base_url": "${os.env['SERVICENOW_BASE_URL']}",
-        "client_id": "${os.env['SERVICENOW_CLIENT_ID']}",
-        "client_secret": "${os.env['SERVICENOW_CLIENT_SECRET']}",
-        "client_username": "${os.env['SERVICENOW_USERNAME']}",
-        "client_password": "${os.env['SERVICENOW_PASSWORD']}"
+        "base_url": "${env('SERVICENOW_BASE_URL')}",
+        "client_id": "${env('SERVICENOW_CLIENT_ID')}",
+        "client_secret": "${env('SERVICENOW_CLIENT_SECRET')}",
+        "client_username": "${env('SERVICENOW_USERNAME')}",
+        "client_password": "${env('SERVICENOW_PASSWORD')}"
     },
     "safe_mode": {
-        "active": false,
+        "enable": false,
         "safe_time": 10
     }
 }
