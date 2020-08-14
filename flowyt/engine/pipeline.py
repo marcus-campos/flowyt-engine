@@ -170,7 +170,7 @@ class PipelineActions:
         action = None
 
         try:
-            # Get next action
+        # Get next action
             action = self.actions.next_action(self.context.pipeline_context)
 
             if not action:

@@ -12,7 +12,9 @@ class MongoDB(GenericAction):
         collection = self.__collection(config.get(conn_name), action_data["collection"])
         
         result = self.perform_action(collection, action_data["action"], action_data["args"])
-        execution_context.public.response = result
+        execution_context.public.response = {
+            "data": result
+        }
         return execution_context, pipeline_context
 
     def __collection(self, config, collection):
@@ -29,5 +31,13 @@ class MongoDB(GenericAction):
 
     def perform_action(self, collection, action, args):
         result = None
-        result = getattr(collection, action)(**args)
+        
+        if type(args) is list:
+            result = getattr(collection, action)(*args)
+        else:
+            result = getattr(collection, action)(**args)
+
+        if type(result) != list:
+            result = list(result)
+
         return result

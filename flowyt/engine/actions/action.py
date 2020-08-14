@@ -60,9 +60,10 @@ class GenericAction:
             if isinstance(action_data[key], dict):
                 self._load_action_data(action_data[key], context)
 
-            if type(action_data[key]) is list:
+            if isinstance(action_data[key], list):
                 for item in action_data[key]:
-                    self._load_action_data(item, context)
+                    if isinstance(item, list) or isinstance(item, dict):
+                        self._load_action_data(item, context)
 
             elements = []
             language = context.private.development_language

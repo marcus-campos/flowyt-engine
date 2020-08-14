@@ -46,7 +46,14 @@ class SqlDatabase(GenericAction):
 
         result = database.raw(action_data.get("sql"))
 
-        execution_context.public.response = {"db": database}
+        # Try get data
+        data = None
+        try:
+            data = database.to_list()
+        except:
+            pass
+
+        execution_context.public.response = {"db": database, "data": data}
 
         return execution_context, pipeline_context
 

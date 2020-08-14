@@ -1,0 +1,49 @@
+{
+    "id": "Massificate_vulnerabilities",
+    "name": "Massificate vulnerabilities",
+    "pipeline": [
+        {
+            "action": "start",
+            "data": {},
+            "id": "start",
+            "next_action": "mongodb_find_update"
+        },
+        {
+            "id": "mongodb_find_update",
+            "action": "mongodb",
+            "data": {
+                "collection": "vulnerabilities",
+                "action": "aggregate",
+                "conn_name": "socportal",
+                "args": {
+                    "pipeline": [
+                        {
+                            "$match": {
+                                "numcontratoservicenow": null
+                            }
+                        },
+                        {
+                            "$group": {
+                                "_id": "$nomevuln",
+                                "count": {
+                                    "$sum": 1
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "next_action": "response_success"
+        },
+        {
+            "id": "response_success",
+            "action": "response",
+            "data": {
+                "data": {
+                    "data": "${response.data}"
+                }
+            },
+            "next_action": null
+        }
+    ]
+}

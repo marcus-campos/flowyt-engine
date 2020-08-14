@@ -29,9 +29,9 @@
             "id": "flow_var_vulnerabilities_data",
             "action": "flow_var",
             "data": {
-                "vulnerabilities": "${response.db.to_list()}"
+                "vulnerabilities": "${response.data}"
             },
-            "next_action": "mongodb_find_update"
+            "next_action": "check_var_vulnerabilities"
         },
         {
             "id": "check_var_vulnerabilities",
@@ -58,7 +58,7 @@
                 "conn_name": "socportal",
                 "args": {
                     "query": {"id_vuln": "${flow.vulnerabilities[0].id_vuln}"},
-                    "update": {"$set": "${flow.vulnerabilities[0]}"},
+                    "update": {"$set": "${function.util.add_sys_date(flow.vulnerabilities[0])}"},
                     "upsert": true
                 }
             }, 
