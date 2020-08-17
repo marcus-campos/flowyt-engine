@@ -23,6 +23,10 @@ if SUBDOMAIN_MODE:
 else:
     if WORKSPACE_STORAGE_MODE == "local":
         urls.append(
+            {"path": "/_engine/routes", "view": Workspaces, "methods": ["GET"],}
+        )
+
+        urls.append(
             {"path": "/<string:workspace>/<path:path>", "view": StartFlow, "methods": methods,}
         )
 

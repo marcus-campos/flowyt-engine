@@ -7,14 +7,12 @@ from pymongo import MongoClient
 class MongoDB(GenericAction):
     def handle(self, action_data, execution_context, pipeline_context):
         config = execution_context.private.integrations.mongodb
-        
+
         conn_name = action_data.get("conn_name")
         collection = self.__collection(config.get(conn_name), action_data["collection"])
-        
+
         result = self.perform_action(collection, action_data["action"], action_data["args"])
-        execution_context.public.response = {
-            "data": result
-        }
+        execution_context.public.response = {"data": result}
         return execution_context, pipeline_context
 
     def __collection(self, config, collection):
@@ -31,7 +29,7 @@ class MongoDB(GenericAction):
 
     def perform_action(self, collection, action, args):
         result = None
-        
+
         if type(args) is list:
             result = getattr(collection, action)(*args)
         else:

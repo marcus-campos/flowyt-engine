@@ -28,13 +28,8 @@ class Pipeline:
         pipeline_debug = True if self.workspace_class.debug and incoming_debug else False
         local_context = {}
 
-
         if WORKSPACE_STORAGE_MODE == "local":
-            local_context = {
-                "os": {
-                    "env": os.environ
-                }
-            }
+            local_context = {"os": {"env": os.environ}}
 
         context = {
             "public": {
@@ -51,7 +46,7 @@ class Pipeline:
                 "input": input_data,
                 "function": self.workspace_data["functions"],
                 "response": {},
-                **local_context
+                **local_context,
             },
             "private": {
                 "integrations": self.workspace_class.integrations,
@@ -170,7 +165,7 @@ class PipelineActions:
         action = None
 
         try:
-        # Get next action
+            # Get next action
             action = self.actions.next_action(self.context.pipeline_context)
 
             if not action:

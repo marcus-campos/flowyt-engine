@@ -17,21 +17,19 @@ class Workspace:
         self.release = self.workspace_settings.get("release", {})
         self.integrations = self.workspace_settings.get("integrations", {})
         self.env = self.workspace_settings.get("env", {})
-        
+
         if WORKSPACE_STORAGE_MODE == "local":
             self.integrations = self.__execute_contextered(self.integrations)
             self.env = self.__execute_contextered(self.env)
 
         self.safe_mode = self.workspace_settings.get("safe_mode", True)
         self.development_language = self.workspace_settings.get("development_language", "python")
-    
+
     def __execute_contextered(self, data):
-        context = DotMap({
-            "public": {
-                "env": lambda env_var, default_env_var = "": os.environ.get(env_var, default_env_var)
-            }
-        })
-        
+        context = DotMap(
+            {"public": {"env": lambda env_var, default_env_var="": os.environ.get(env_var, default_env_var)}}
+        )
+
         for key in data:
             elements = {}
 

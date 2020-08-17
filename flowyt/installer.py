@@ -21,7 +21,7 @@ base = "Console"
 
 executables = [
     Executable("app.py", base=base, targetName="app"),
-    Executable("cli.py", base=base, targetName="cli")
+    Executable("cli.py", base=base, targetName="cli"),
 ]
 
 ###############
