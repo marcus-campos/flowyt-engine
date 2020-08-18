@@ -6,6 +6,8 @@ from engine.debug import PipelineDebug
 
 
 class Handle(GenericAction):
+    can_execute_async = True
+    
     def handle(self, action_data, execution_context, pipeline_context):
         start_time = time.time()
 

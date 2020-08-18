@@ -12,6 +12,7 @@ class GenericAction:
     initial_action_data = None
     action_data = None
     context = None
+    can_execute_async = False
 
     def __init__(self, action_data=None):
         if not self.initial_action_data:
@@ -24,6 +25,8 @@ class GenericAction:
         Action life cycle: 
         _load_action_data -> before_handle -> handle -> after_handle -> _next_action
     """
+    async def start_async(self, context):
+        return self.start(context)
 
     def start(self, context):
         self.action_data = self._load_action_data(copy.deepcopy(self.initial_action_data), context)

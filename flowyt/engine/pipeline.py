@@ -7,6 +7,7 @@ from dotmap import DotMap
 from engine.debug import PipelineDebug
 from engine.flow import Flow
 from engine.workspace import Workspace
+from engine.utils.asyncio_pool import AsyncioPool
 
 from .settings import WORKSPACE_STORAGE_MODE
 
@@ -52,7 +53,12 @@ class Pipeline:
                 "integrations": self.workspace_class.integrations,
                 "development_language": self.workspace_class.development_language,
             },
-            "pipeline_context": {"logs": PipelineDebug(), "debug": pipeline_debug, "self_class": self},
+            "pipeline_context": {
+                "logs": PipelineDebug(),
+                "debug": pipeline_debug,
+                "self_class": self,
+                "async_pool": AsyncioPool(),
+            },
         }
 
         context["pipeline_context"]["logs"].workspace(
@@ -92,6 +98,9 @@ class Pipeline:
             process_pipeline = pipeline_actions.process_pipeline
             current_flow = pipeline_actions.current_flow
             self.execution_error = pipeline_actions.execution_error
+
+            # Execute aync pool
+            context.pipeline_context.async_pool.run()
 
             context["pipeline_context"]["logs"].append()
 
@@ -179,7 +188,10 @@ class PipelineActions:
                 return None
 
             # Execute action
-            self.context = action.action.start(self.context)
+            if action.execute_async:
+                self.context.pipeline_context["async_pool"].add(action.action.start_async(self.context))
+            else:
+                self.context = action.action.start(self.context)
         except Exception as e:
             self.process_pipeline = False
             self.has_actions = False

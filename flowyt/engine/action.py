@@ -51,6 +51,15 @@ class Action:
     def __load_action(self, action_settings):
         self.id = action_settings["id"]
         self.action_name = action_settings["action"]
+        self.execute_async = action_settings.get("execute_async", False)
         self.data = action_settings.get("data", {})
         self.action = get_action(self.action_name)(action_data=self.data)
         self.next_action = action_settings["next_action"]
+
+        # Checks whether action can be performed asynchronously
+        self.__check_execute_async()
+
+    def __check_execute_async(self):
+        if self.execute_async:
+            if not self.action.can_execute_async:
+                raise Exception("You cannot perform this action asynchronously")

@@ -5,6 +5,8 @@ from pymongo import MongoClient
 
 
 class MongoDB(GenericAction):
+    can_execute_async = True
+
     def handle(self, action_data, execution_context, pipeline_context):
         config = execution_context.private.integrations.mongodb
 
@@ -13,6 +15,7 @@ class MongoDB(GenericAction):
 
         result = self.perform_action(collection, action_data["action"], action_data["args"])
         execution_context.public.response = {"data": result}
+
         return execution_context, pipeline_context
 
     def __collection(self, config, collection):

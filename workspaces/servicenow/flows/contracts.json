@@ -67,6 +67,7 @@
         {
             "id": "find_update",
             "action": "mongodb",
+            "execute_async": true,
             "data": {
                 "collection": "contracts",
                 "action": "find_and_modify",

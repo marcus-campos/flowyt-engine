@@ -55,3 +55,5 @@ REDIS = {
         "DB": os.getenv("REDIS_QUOTA_DB", 0),
     },
 }
+
+ASYNC_MAX_CONCURRENCE = os.getenv("ASYNC_MAX_CONCURRENCE", 10)

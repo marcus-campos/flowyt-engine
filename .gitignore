@@ -59,6 +59,7 @@ coverage.xml
 [Ss]cripts
 pyvenv.cfg
 .env
+.env.workers
 .venv
 env/
 venv/
