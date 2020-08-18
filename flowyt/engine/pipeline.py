@@ -99,7 +99,7 @@ class Pipeline:
             current_flow = pipeline_actions.current_flow
             self.execution_error = pipeline_actions.execution_error
 
-            # Execute aync pool
+            # Execute async pool
             context.pipeline_context.async_pool.run()
 
             context["pipeline_context"]["logs"].append()
