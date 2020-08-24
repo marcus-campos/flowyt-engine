@@ -2,6 +2,8 @@ import copy
 
 from engine.actions.action import GenericAction
 from pymongo import MongoClient
+from  bson import json_util
+import json
 
 
 class MongoDB(GenericAction):
@@ -25,8 +27,8 @@ class MongoDB(GenericAction):
             )
             db = client[config.database]
             collection = db[collection]
-        except Exception as e:
-            raise "Something went wrong when establishing the connection with Mongo"
+        except Exception:
+            raise Exception("Something went wrong when establishing the connection with Mongo")
 
         return collection
 
@@ -39,6 +41,7 @@ class MongoDB(GenericAction):
             result = getattr(collection, action)(**args)
 
         if type(result) != list:
-            result = list(result)
+            if result:
+                result = list(result)
 
         return result

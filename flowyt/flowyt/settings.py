@@ -2,6 +2,7 @@ import os
 
 # Load env
 from dotenv import load_dotenv
+from distutils import util
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -31,7 +32,7 @@ if os.getenv("APP_HOST", None) and os.getenv("APP_PORT", None):
 ########################################
 ##          SETTINGS APP           ##
 ########################################
-SUBDOMAIN_MODE = os.getenv("SUBDOMAIN_MODE", "false").lower() == "true"
+SUBDOMAIN_MODE = bool(util.strtobool(os.getenv("SUBDOMAIN_MODE", "false")))
 WORKSPACE_STORAGE_MODE = os.getenv("WORKSPACE_STORAGE_MODE", "local")  # local, redis
 
 # Workspace storage mode local

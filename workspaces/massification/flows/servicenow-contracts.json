@@ -1,0 +1,33 @@
+{
+    "id": "massificate_contracts",
+    "name": "Massificate contracts",
+    "pipeline": [
+        {
+            "action": "start",
+            "data": {},
+            "id": "start",
+            "next_action": "mongodb_find"
+        },
+        {
+            "id": "mongodb_find",
+            "action": "mongodb",
+            "data": {
+                "collection": "contracts",
+                "action": "find",
+                "conn_name": "socportal",
+                "args": {}
+            },
+            "next_action": "response_success"
+        },
+        {
+            "id": "response_success",
+            "action": "response",
+            "data": {
+                "data": {
+                    "data": "${response.data}"
+                }
+            },
+            "next_action": null
+        }
+    ]
+}

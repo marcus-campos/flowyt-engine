@@ -5,12 +5,15 @@ from engine.manager import Engine
 from utils.splash import loading
 from apps.api.services.workspace_load import WorkspaceLoad
 from pygments import highlight, lexers, formatters
+import time
 
 
 engine_class = Engine()
 
 if __name__ == "__main__":
+    start_time = time.time()
     loading()
+    print("Running...")
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-w", "--workspace", help="Indicates the name of the workspace")
@@ -46,3 +49,6 @@ if __name__ == "__main__":
             result = json.dumps(result, indent=2)
             colorful_json = highlight(result, lexers.JsonLexer(), formatters.TerminalFormatter())
             print(colorful_json)
+
+        end_time = time.time()
+        print("Elapsed time: {0}".format(end_time - start_time))
