@@ -61,11 +61,10 @@ class Pipeline:
             },
         }
 
+        result = self.process(context)
         context["pipeline_context"]["logs"].workspace(
             self.workspace_class.id, self.workspace_class.name, time.time() - start_time
         )
-
-        result = self.process(context)
         result["__debug__"] = context["pipeline_context"]["logs"].get()
 
         return result
@@ -233,7 +232,7 @@ class PipelineActions:
             return
 
         self.context["pipeline_context"]["logs"].action(
-            action.id, action.action_name, copy.deepcopy(action.data), time.time() - start_time
+            action.id, action.action_name, copy.deepcopy(action.action.action_data), time.time() - start_time
         )
 
     def jump_flow(self):

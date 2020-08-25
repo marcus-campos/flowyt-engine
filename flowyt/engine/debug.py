@@ -6,7 +6,7 @@ class PipelineDebug:
         self.__load_models()
 
     def __load_models(self):
-        self.WORKSPACE_LOGS = {"workspace": {"id": None, "name": None, "elapsed_time": None, "flows": [],}}
+        self.WORKSPACE_LOGS = {"workspace": {"id": None, "name": None, "flows": [], "elapsed_time": None}}
 
         self.CURRENT_FLOW = None
 

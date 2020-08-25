@@ -11,7 +11,6 @@ import time
 engine_class = Engine()
 
 if __name__ == "__main__":
-    start_time = time.time()
     loading()
     print("Running...")
 
@@ -28,7 +27,7 @@ if __name__ == "__main__":
         debug = "false"
 
         if args.debug:
-            debug = args.debug.strip()
+            debug = "true" if args.debug.strip() != "false" else "false"
 
         if args.input:
             args_data = json.loads(args.input)
@@ -45,10 +44,13 @@ if __name__ == "__main__":
                 del result["__debug__"]
                 if "exception" in result:
                     del result["exception"]
+            
+            if args.debug.strip() == "simplified":
+                for flow in range(len(result["__debug__"]["workspace"]["flows"])):
+                    for action in range(len(result["__debug__"]["workspace"]["flows"][flow]["actions"])):
+                        del result["__debug__"]["workspace"]["flows"][flow]["actions"][action]["data"]
 
             result = json.dumps(result, indent=2)
             colorful_json = highlight(result, lexers.JsonLexer(), formatters.TerminalFormatter())
+            print("")
             print(colorful_json)
-
-        end_time = time.time()
-        print("Elapsed time: {0}".format(end_time - start_time))
