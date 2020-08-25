@@ -44,8 +44,11 @@ class PipelineDebug:
         logs["time_spent"] = action_time_spent
         self.CURRENT_FLOW["actions"].append(logs)
 
-    def append(self):
-        self.WORKSPACE_LOGS["workspace"]["flows"].append(copy.deepcopy(self.CURRENT_FLOW))
+    def append(self, flow=None):
+        current_flow = copy.deepcopy(self.CURRENT_FLOW)
+        if flow:
+            current_flow = copy.deepcopy(flow)
+        self.WORKSPACE_LOGS["workspace"]["flows"].append(current_flow)
         self.CURRENT_FLOW = None
 
     def get(self):

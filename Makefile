@@ -15,7 +15,8 @@ clean-build:
 	@rm -fr dist/
 	@rm -fr *.egg-info
 
-black:
+format:
+	pipenv run isort . && \
 	pipenv run black .
 
 pip-install:

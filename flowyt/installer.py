@@ -1,9 +1,8 @@
-import sys
 import os
+import sys
 from pathlib import Path
 
-
-from cx_Freeze import setup, Executable
+from cx_Freeze import Executable, setup
 
 # Dependencies are automatically detected, but it might need
 # fine tuning.

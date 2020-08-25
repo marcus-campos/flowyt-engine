@@ -1,10 +1,9 @@
 import os
 
-from flowyt.settings import SUBDOMAIN_MODE, WORKSPACES_PATH, WORKSPACE_STORAGE_MODE
+from flowyt.settings import SUBDOMAIN_MODE, WORKSPACE_STORAGE_MODE, WORKSPACES_PATH
 
 from .views import StartFlow, Workspaces
 from utils.json_parser import parse_json_file
-
 
 urls = []
 

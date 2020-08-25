@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 
 import js2py
-
 from engine.settings import WORKSPACES_PATH
 
 

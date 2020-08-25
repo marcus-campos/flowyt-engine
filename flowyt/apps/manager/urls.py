@@ -1,5 +1,4 @@
-from .views import Setup, Ping, Info
-
+from .views import Info, Ping, Setup
 
 urls = [
     {"path": "/_engine/setup", "view": Setup},

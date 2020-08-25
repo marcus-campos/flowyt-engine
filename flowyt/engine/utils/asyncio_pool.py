@@ -1,5 +1,6 @@
 import asyncio
 from collections import deque
+
 from engine.settings import ASYNC_MAX_CONCURRENCE
 
 
@@ -8,7 +9,7 @@ class AsyncioPool:
         """
         @param loop: asyncio loop
         @param concurrency: Maximum number of concurrently running tasks
-        """        
+        """
         self.__loop = asyncio.new_event_loop()
         self.__concurrency = ASYNC_MAX_CONCURRENCE
         self.__coros = deque([])  # All coroutines queued for execution
@@ -33,7 +34,9 @@ class AsyncioPool:
         print(" Status: coros:%s - futures:%s" % (len(self.__coros), len(self.__futures)))
 
     def __start_futures(self):
-        self.__concurrency = len(self.__coros) if self.__concurrency >= len(self.__coros) else self.__concurrency
+        self.__concurrency = (
+            len(self.__coros) if self.__concurrency >= len(self.__coros) else self.__concurrency
+        )
         num_to_start = self.__concurrency - len(self.__futures)
         num_to_start = min(num_to_start, len(self.__coros))
 
@@ -63,4 +66,3 @@ class AsyncioPool:
 
             for future in futures_completed:
                 self.__futures.remove(future)
-           

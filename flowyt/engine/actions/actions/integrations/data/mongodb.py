@@ -1,9 +1,9 @@
 import copy
+import json
 
+from bson import json_util
 from engine.actions.action import GenericAction
 from pymongo import MongoClient
-from  bson import json_util
-import json
 
 
 class MongoDB(GenericAction):

@@ -6,8 +6,8 @@ import time
 from dotmap import DotMap
 from engine.debug import PipelineDebug
 from engine.flow import Flow
-from engine.workspace import Workspace
 from engine.utils.asyncio_pool import AsyncioPool
+from engine.workspace import Workspace
 
 from .settings import WORKSPACE_STORAGE_MODE
 
@@ -61,11 +61,11 @@ class Pipeline:
             },
         }
 
-        result = self.process(context)
+        result, logs = self.process(context)
         context["pipeline_context"]["logs"].workspace(
             self.workspace_class.id, self.workspace_class.name, time.time() - start_time
         )
-        result["__debug__"] = context["pipeline_context"]["logs"].get()
+        result["__debug__"] = logs
 
         return result
 
@@ -103,7 +103,9 @@ class Pipeline:
 
             context["pipeline_context"]["logs"].append()
 
-        return pipeline_response
+        logs = context["pipeline_context"]["logs"].get()
+
+        return pipeline_response, logs
 
 
 class PipelineActions:
@@ -231,8 +233,14 @@ class PipelineActions:
         if not action:
             return
 
+        data = copy.deepcopy(action.action.action_data)
+
+        if self.context.pipeline_context.extra:
+            if "extra_logs" in self.context.pipeline_context.extra:
+                data = {**data, **self.context.pipeline_context.extra["extra_logs"]}
+
         self.context["pipeline_context"]["logs"].action(
-            action.id, action.action_name, copy.deepcopy(action.action.action_data), time.time() - start_time
+            action.id, action.action_name, data, time.time() - start_time
         )
 
     def jump_flow(self):

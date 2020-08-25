@@ -6,22 +6,23 @@
             "action": "start",
             "data": {},
             "id": "start",
-            "next_action": "handle_auth"
+            "next_action": "flow_var_servicenow_params"
         },
         {
-            "id": "handle_auth",
-            "action": "handle",
-            "data": {
-                "flow": "auth"
-            },
-            "next_action": "flow_var_servicenow"
-        },
-        {
-            "id": "flow_var_servicenow",
+            "id": "flow_var_servicenow_params",
             "action": "flow_var",
             "data": {
-                "url": "${env.base_url}/api/now/table/ast_contract?sysparm_fields=number,starts,ends,sys_created_on,contract_composite,short_description,description,vendor,vendor_contract,u_horas_contratadas,u_contract_operation",
-                "auth": "${response.data.tokens}"
+                "sysparm_query": "u_contract_operationSTARTSWITHsoc^expiration.sys_nameNOT LIKEExpired",
+                "sysparm_fields": "number,starts,ends,sys_created_on,contract_composite,short_description,description,vendor,vendor_contract,u_horas_contratadas,u_contract_operation,expiration",
+                "sysparm_display_value": "true"
+            },
+            "next_action": "flow_var_servicenow_url"
+        },
+        {
+            "id": "flow_var_servicenow_url",
+            "action": "flow_var",
+            "data": {
+                "url": "${env.base_url}/api/now/table/ast_contract?sysparm_query=${flow.sysparm_query}&sysparm_fields=${flow.sysparm_fields}&sysparm_display_value=${flow.sysparm_display_value}"
             },
             "next_action": "request_get_contracts"
         },
@@ -32,7 +33,7 @@
                 "url": "${flow.url}",
                 "method": "GET",
                 "headers": {
-                    "Authorization": "Bearer ${flow.auth.access_token}"
+                    "Authorization": "Bearer ${workspace.auth.access_token}"
                 },
                 "data": {},
                 "next_action_success": "flow_var_contract",

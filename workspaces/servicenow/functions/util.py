@@ -7,5 +7,6 @@ def remove_from_dict(data):
         del new_data[0]
     return new_data
 
+
 def test_async():
-     print("Passou aqui 123")
+    print("Passou aqui 123")

@@ -1,5 +1,5 @@
-from engine.actions.action import GenericAction
 import redis as red
+from engine.actions.action import GenericAction
 from redis.exceptions import DataError
 
 

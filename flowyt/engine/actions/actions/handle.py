@@ -7,7 +7,7 @@ from engine.debug import PipelineDebug
 
 class Handle(GenericAction):
     can_execute_async = True
-    
+
     def handle(self, action_data, execution_context, pipeline_context):
         start_time = time.time()
 
@@ -24,6 +24,7 @@ class Handle(GenericAction):
             time.time() - start_time,
         )
 
-        result = pipeline_class.process(dict_context)
+        result, logs = pipeline_class.process(dict_context)
         execution_context.public.response = result
-        return execution_context, None
+
+        return execution_context, {"extra": {"extra_logs": {"trace": {"flows": logs["workspace"]["flows"]}}}}

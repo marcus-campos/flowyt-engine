@@ -1,7 +1,7 @@
 import json
 import time
-import js2py
 
+import js2py
 from dotmap import DotMap
 
 

@@ -3,6 +3,7 @@ import sys
 
 from flask import Flask
 from flask_restful import Api
+
 from flowyt.urls import load_urls
 
 from utils.splash import loading

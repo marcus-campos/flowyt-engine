@@ -1,6 +1,6 @@
+from .functions import FunctionLoader
 from .pipeline import Pipeline
 from .settings import WORKSPACE_STORAGE_MODE
-from .functions import FunctionLoader
 
 
 class Engine:

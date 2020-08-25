@@ -8,6 +8,7 @@ black = "*"
 flake8 = "*"
 pylint = "*"
 cx-freeze = "*"
+isort = "*"
 
 [packages]
 flask = "*"
@@ -26,6 +27,7 @@ js2py = "*"
 pymongo = "*"
 pygments = "*"
 pymysql = "*"
+
 
 [requires]
 python_full_version = "3.8.1"

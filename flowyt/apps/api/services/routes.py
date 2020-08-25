@@ -1,4 +1,4 @@
-from werkzeug.routing import Map, Rule, NotFound, RequestRedirect
+from werkzeug.routing import Map, NotFound, RequestRedirect, Rule
 
 
 class Router:

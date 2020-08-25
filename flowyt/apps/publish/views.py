@@ -1,16 +1,17 @@
 import os
 import sys
+import threading
 import uuid
 import zipfile
-import threading
 
 from flask import request
 from flask_restful import Resource, abort
 from werkzeug.utils import secure_filename
 
-from apps.publish.serializers import PublishSerializer
 from flowyt.settings import STORAGE_FOLDER_TEMP_UPLOADS, WORKSPACES_PATH
-from utils.middlewares import secret_key_required, secret_key_maybe_required
+
+from apps.publish.serializers import PublishSerializer
+from utils.middlewares import secret_key_maybe_required, secret_key_required
 
 
 class Reload(Resource):

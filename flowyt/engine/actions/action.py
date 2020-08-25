@@ -25,6 +25,7 @@ class GenericAction:
         Action life cycle: 
         _load_action_data -> before_handle -> handle -> after_handle -> _next_action
     """
+
     async def start_async(self, context):
         return self.start(context)
 
@@ -50,11 +51,13 @@ class GenericAction:
         context.pipeline_context["response"] = None
         context.pipeline_context["next_flow"] = None
         context.pipeline_context["next_action"] = None
+        context.pipeline_context["extra"] = None
 
         if pipeline_context:
             context.pipeline_context["response"] = pipeline_context.get("response", None)
             context.pipeline_context["next_flow"] = pipeline_context.get("next_flow", None)
             context.pipeline_context["next_action"] = pipeline_context.get("next_action", None)
+            context.pipeline_context["extra"] = pipeline_context.get("extra", None)
 
         return context
 

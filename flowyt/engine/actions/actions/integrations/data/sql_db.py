@@ -1,7 +1,6 @@
 import sqlalchemy
-from sqlalchemy.orm import sessionmaker, scoped_session
-
 from engine.actions.action import GenericAction
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 
 class Database:

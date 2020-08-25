@@ -1,4 +1,5 @@
 import redis as red
+
 from flowyt.settings import REDIS
 
 

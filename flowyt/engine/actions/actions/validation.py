@@ -1,5 +1,5 @@
-from engine.actions.action import GenericAction
 from cerberus import Validator
+from engine.actions.action import GenericAction
 
 
 class Validation(GenericAction):

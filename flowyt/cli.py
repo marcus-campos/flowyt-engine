@@ -1,12 +1,12 @@
 import argparse
 import json
-
-from engine.manager import Engine
-from utils.splash import loading
-from apps.api.services.workspace_load import WorkspaceLoad
-from pygments import highlight, lexers, formatters
 import time
 
+from engine.manager import Engine
+from pygments import formatters, highlight, lexers
+
+from apps.api.services.workspace_load import WorkspaceLoad
+from utils.splash import loading
 
 engine_class = Engine()
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
                 del result["__debug__"]
                 if "exception" in result:
                     del result["exception"]
-            
+
             if args.debug.strip() == "simplified":
                 for flow in range(len(result["__debug__"]["workspace"]["flows"])):
                     for action in range(len(result["__debug__"]["workspace"]["flows"][flow]["actions"])):
