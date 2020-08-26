@@ -21,10 +21,8 @@ class Pipeline:
         self.execution_error = False
 
     def start(self, request_data={}, input_data=None):
-        # Get start workspace process time
-        start_time = time.time()
-
         # Config context
+        running_mode = "http" if request_data.get("debug", None) else "cli"
         incoming_debug = request_data.get("debug") == "true" or input_data.get("debug") == "true"
         pipeline_debug = True if self.workspace_class.debug and incoming_debug else False
         local_context = {}
@@ -58,18 +56,19 @@ class Pipeline:
                 "debug": pipeline_debug,
                 "self_class": self,
                 "async_pool": AsyncioPool(),
+                "running_mode": running_mode,
             },
         }
 
-        result, logs = self.process(context)
-        context["pipeline_context"]["logs"].workspace(
-            self.workspace_class.id, self.workspace_class.name, time.time() - start_time
-        )
+        result, context, logs = self.process(context)
         result["__debug__"] = logs
 
         return result
 
     def process(self, context):
+        # Get start process time
+        start_time = time.time()
+
         # Current flow
         current_flow = self.flow
         pipeline_response = {}
@@ -103,9 +102,13 @@ class Pipeline:
 
             context["pipeline_context"]["logs"].append()
 
+        context["pipeline_context"]["logs"].workspace(
+            self.workspace_class.id, self.workspace_class.name, time.time() - start_time
+        )
+
         logs = context["pipeline_context"]["logs"].get()
 
-        return pipeline_response, logs
+        return pipeline_response, context, logs
 
 
 class PipelineActions:
@@ -137,9 +140,6 @@ class PipelineActions:
 
             # Execute action
             action = self.execute_action()
-
-            # Add flow vars
-            self.flow_class.vars = self.context.public.flow
 
             # Remove action response if exists
             self.clean_action_response()
@@ -199,7 +199,7 @@ class PipelineActions:
             self.execution_error = True
 
             if hasattr(e, "message"):
-                self.pipeline_response = {"status": 500, "exception": {}}
+                self.pipeline_response = {"exception": {}}
 
                 if self.context.pipeline_context.debug:
                     self.pipeline_response["exception"] = {
@@ -207,7 +207,7 @@ class PipelineActions:
                         "action": {"id": action.id, "name": action.action_name, "data": action.data},
                     }
             else:
-                self.pipeline_response = {"status": 500, "exception": {}}
+                self.pipeline_response = {"exception": {}}
                 if self.context.pipeline_context.debug:
                     self.pipeline_response["exception"] = {
                         "message": str(e),
@@ -217,7 +217,6 @@ class PipelineActions:
         return action
 
     def contexted_action_vars(self):
-        self.context["public"]["flow"] = self.flow_class.vars
         self.context["public"]["response"] = self.action_response
         self.context = DotMap(self.context)
 

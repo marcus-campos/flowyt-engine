@@ -120,6 +120,7 @@ class StartFlow(Resource):
             response_data["__debug__"] = response.get("__debug__", {})
 
         if "exception" in response:
+            response_status = 500
             response_data["exception"] = response.get("exception")
             if not response_data.get("exception"):
                 response_data["exception"] = "Something went wrong. Enable debug mode to see more details."
