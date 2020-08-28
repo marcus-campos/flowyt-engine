@@ -6,22 +6,23 @@
             "action": "start",
             "data": {},
             "id": "start",
-            "next_action": "handle_auth"
+            "next_action": "flow_var_servicenow_params"
         },
         {
-            "id": "handle_auth",
-            "action": "handle",
-            "data": {
-                "flow": "auth"
-            },
-            "next_action": "flow_var_servicenow"
-        },
-        {
-            "id": "flow_var_servicenow",
+            "id": "flow_var_servicenow_params",
             "action": "flow_var",
             "data": {
-                "url": "${env.base_url}/api/now/table/sn_customerservice_case?sysparm_fields=sys_updated_on,first_response_time,assigned_on,impact,short_description,sys_created_on,closed_at,resolved_at,urgency,number",
-                "auth": "${response.data.tokens}"
+                "sysparm_query": "sys_created_on>=javascript:gs.dateGenerate('2020-08-27','00:00:00')^assignment_group.nameSTARTSWITHSOC^contract.vendor_contract=201912041",
+                "sysparm_fields": "number,starts,ends,sys_created_on,contract_composite,short_description,description,vendor,vendor_contract,u_horas_contratadas,u_contract_operation,expiration",
+                "sysparm_display_value": "true"
+            },
+            "next_action": "flow_var_servicenow_url"
+        },
+        {
+            "id": "flow_var_servicenow_url",
+            "action": "flow_var",
+            "data": {
+                "url": "${env.base_url}/api/now/table/ast_contract?sysparm_query=${flow.sysparm_query}&sysparm_fields=${flow.sysparm_fields}&sysparm_display_value=${flow.sysparm_display_value}"
             },
             "next_action": "request_get_tickets"
         },

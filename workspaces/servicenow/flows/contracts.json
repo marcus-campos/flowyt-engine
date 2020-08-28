@@ -12,7 +12,7 @@
             "id": "flow_var_servicenow_params",
             "action": "flow_var",
             "data": {
-                "sysparm_query": "u_contract_operationSTARTSWITHsoc^expiration.sys_nameNOT LIKEExpired",
+                "sysparm_query": "u_contract_operationSTARTSWITHsoc^ends>=javascript:gs.daysAgoEnd(0)",
                 "sysparm_fields": "number,starts,ends,sys_created_on,contract_composite,short_description,description,vendor,vendor_contract,u_horas_contratadas,u_contract_operation,expiration",
                 "sysparm_display_value": "true"
             },
@@ -57,7 +57,7 @@
                     {
                         "operator": "greater_than",
                         "first_expression": "${len(flow.contracts)}",
-                        "second_expression": "${1}",
+                        "second_expression": "${0}",
                         "next_action": "find_update"
                     }
                 ],
