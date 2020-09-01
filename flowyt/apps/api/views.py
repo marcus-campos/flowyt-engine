@@ -130,7 +130,9 @@ class StartFlow(Resource):
                     del response_data["__debug__"]
 
         # Default json
-        result = json.dumps(response_data)
+        result = json.dumps(
+            response_data, indent=2, default=lambda o: f"<non-serializable: {type(o).__qualname__}>"
+        )
 
         # Change response
         if request_headers.get("accept") == "application/json":

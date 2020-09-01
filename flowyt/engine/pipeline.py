@@ -232,7 +232,10 @@ class PipelineActions:
         if not action:
             return
 
-        data = copy.deepcopy(action.action.action_data)
+        try:
+            data = copy.deepcopy(action.action.action_data)
+        except:
+            data = "<non-serializable: {0}>".format(type(action.action.action_data))
 
         if self.context.pipeline_context.extra:
             if "extra_logs" in self.context.pipeline_context.extra:

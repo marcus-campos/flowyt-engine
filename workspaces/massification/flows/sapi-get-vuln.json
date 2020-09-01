@@ -1,15 +1,15 @@
 {
-    "id": "massificate_vulnerabilities",
-    "name": "Massificate vulnerabilities",
+    "id": "sapi-get-vuln",
+    "name": "Get vulnerabilities",
     "pipeline": [
         {
             "action": "start",
             "data": {},
             "id": "start",
-            "next_action": "mongodb_find_update"
+            "next_action": "mongodb_find"
         },
         {
-            "id": "mongodb_find_update",
+            "id": "mongodb_find",
             "action": "mongodb",
             "data": {
                 "collection": "vulnerabilities",
@@ -33,16 +33,20 @@
                     ]
                 }
             },
-            "next_action": "response_success"
+            "next_action": "workspace_var_vulnerabilities"
         },
         {
-            "id": "response_success",
-            "action": "response",
+            "id": "workspace_var_vulnerabilities",
+            "action": "workspace_var",
             "data": {
-                "data": {
-                    "data": "${response.data}"
-                }
+                "vulnerabilities": "${response.data}"
             },
+            "next_action": "end"
+        },
+        {
+            "id": "end",
+            "action": "end",
+            "data": {},
             "next_action": null
         }
     ]

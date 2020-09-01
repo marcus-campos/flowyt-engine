@@ -27,7 +27,7 @@ js2py = "*"
 pymongo = "*"
 pygments = "*"
 pymysql = "*"
-
+psycopg2-binary = "*"
 
 [requires]
 python_full_version = "3.8.1"

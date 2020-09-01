@@ -5,7 +5,7 @@ from engine.actions.action import GenericAction
 
 class Response(GenericAction):
     def handle(self, action_data, execution_context, pipeline_context):
-        running_mode = execution_context['pipeline_context']['running_mode']
+        running_mode = execution_context["pipeline_context"]["running_mode"]
         pipeline_context["response"] = {
             "data": self.action_data.get("data", {}),
         }

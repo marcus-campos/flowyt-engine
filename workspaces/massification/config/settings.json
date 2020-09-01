@@ -15,6 +15,14 @@
                 "user": "${env('SAPI_USER')}",
                 "password": "${env('SAPI_PASSWORD')}",
                 "database": "${env('SAPI_DATABASE')}"
+            },
+            "socportal": {
+                "sgbd": "postgresql",
+                "host": "${env('SOCPORTAL_HOST')}",
+                "port": "${env('SOCPORTAL_PORT')}",
+                "user": "${env('SOCPORTAL_USER')}",
+                "password": "${env('SOCPORTAL_PASSWORD')}",
+                "database": "${env('SOCPORTAL_DATABASE')}"
             }
         },
         "mongodb": {

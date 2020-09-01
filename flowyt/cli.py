@@ -50,7 +50,9 @@ if __name__ == "__main__":
                     for action in range(len(result["__debug__"]["workspace"]["flows"][flow]["actions"])):
                         del result["__debug__"]["workspace"]["flows"][flow]["actions"][action]["data"]
 
-            result = json.dumps(result, indent=2)
+            result = json.dumps(
+                result, indent=2, default=lambda o: f"<non-serializable: {type(o).__qualname__}>"
+            )
             colorful_json = highlight(result, lexers.JsonLexer(), formatters.TerminalFormatter())
             print("")
             print(colorful_json)

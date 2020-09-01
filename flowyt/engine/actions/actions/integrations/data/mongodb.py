@@ -34,14 +34,14 @@ class MongoDB(GenericAction):
 
     def perform_action(self, collection, action, args):
         result = None
-
+        # Execute
         if type(args) is list:
             result = getattr(collection, action)(*args)
         else:
             result = getattr(collection, action)(**args)
 
-        if type(result) != list:
-            if result:
-                result = list(result)
+        # Response
+        if result:
+            result = list(result)
 
         return result

@@ -2,6 +2,7 @@ import ast
 import copy
 import re
 
+from cerberus import Validator
 from dotmap import DotMap
 from engine.eval import contexted_run
 from engine.utils.http import HttpRequest
@@ -13,6 +14,7 @@ class GenericAction:
     action_data = None
     context = None
     can_execute_async = False
+    action_schema = {"type": "dict"}
 
     def __init__(self, action_data=None):
         if not self.initial_action_data:
@@ -21,16 +23,17 @@ class GenericAction:
         self.action_data = action_data
         self.context = None
 
-    """
-        Action life cycle: 
-        _load_action_data -> before_handle -> handle -> after_handle -> _next_action
-    """
-
     async def start_async(self, context):
         return self.start(context)
 
     def start(self, context):
-        self.action_data = self._load_action_data(copy.deepcopy(self.initial_action_data), context)
+        """
+            Action life cycle: 
+            __validate_schema -> __load_action_data -> before_handle -> handle -> after_handle -> _next_action
+        """
+        initial_action_data = copy.deepcopy(self.initial_action_data)
+        # self.__validate_schema(initial_action_data)
+        self.action_data = self.__load_action_data(initial_action_data, context)
 
         self.action_data, context, pipeline_context = self.before_handle(self.action_data, context)
         context, pipeline_context = self.handle(self.action_data, context, pipeline_context)
@@ -38,13 +41,28 @@ class GenericAction:
 
         return self._next_action(context, pipeline_context)
 
+    def __validate_schema(self, action_data):
+        action_schema = {
+            "id": {"type": "string"},
+            "execute_async": self.can_execute_async,
+            "action": {"type": "string"},
+            "data": self.action_data,
+            "next_action": {"type": "string"},
+        }
+
+        validator = Validator(action_schema)
+        is_valid = validator.validate(action_data)
+
+        if not is_valid:
+            raise Exception("The action scheme is incorrect")
+
     def before_handle(self, action_data, execution_context):
         return action_data, execution_context, {}
 
-    def after_handle(self, action_data, execution_context, pipeline_context):
+    def handle(self, action_data, execution_context, pipeline_context):
         return execution_context, pipeline_context
 
-    def handle(self, action_data, execution_context, pipeline_context):
+    def after_handle(self, action_data, execution_context, pipeline_context):
         return execution_context, pipeline_context
 
     def _next_action(self, context, pipeline_context=None):
@@ -61,15 +79,15 @@ class GenericAction:
 
         return context
 
-    def _load_action_data(self, action_data, context):
+    def __load_action_data(self, action_data, context):
         for key in action_data:
             if isinstance(action_data[key], dict):
-                self._load_action_data(action_data[key], context)
+                self.__load_action_data(action_data[key], context)
 
             if isinstance(action_data[key], list):
                 for item in action_data[key]:
                     if isinstance(item, list) or isinstance(item, dict):
-                        self._load_action_data(item, context)
+                        self.__load_action_data(item, context)
 
             elements = []
             language = context.private.development_language
@@ -102,40 +120,46 @@ class GenericAction:
 
 
 class HttpAction(GenericAction):
-    HTTP_STATUS_OK_200 = 200
-    HTTP_STATUS_MULTIPLE_CHOICES_300 = 300
-    SCHEMA = None
-    ACTION_CONTEXT = None
+    http_status_ok_200 = 200
+    http_status_multiple_choices_300 = 300
+    integration_schema = None
+    action_context = None
 
     def before_handle(self, action_data, execution_context):
-        if not self.SCHEMA:
+        if not self.integration_schema:
             return action_data, execution_context, {}
 
         action_context = copy.deepcopy(execution_context)
         action_context.public = {
             **action_context.public.toDict(),
-            **self.ACTION_CONTEXT,
+            **self.action_context,
             **{"p": action_data.get("path_params", {"teste": "123"})},
         }
         action_context = DotMap(action_context)
 
-        schema = self._load_scheme()
-        schema = self._load_action_data(schema, action_context)
+        integration_schema = self._load_scheme()
+        integration_schema = self.__load_action_data(integration_schema, action_context)
 
-        endpoint_schema = schema["endpoints"][action_data["method"]].get([action_data["path"]], None)
+        endpoint_schema = integration_schema["endpoints"][action_data["method"]].get(
+            [action_data["path"]], None
+        )
 
         if not endpoint_schema:
             return execution_context, {}
 
-        action_data["url"] = "{0}{1}".format(schema["base_url"], action_data["path"])
+        action_data["url"] = "{0}{1}".format(integration_schema["base_url"], action_data["path"])
         action_data["headers"] = {
-            **schema["base_headers"],
+            **integration_schema["base_headers"],
             **endpoint_schema["headers"],
             **action_data["headers"],
         }
-        action_data["data"] = {**schema["base_data"], **endpoint_schema["data"], **action_data["data"]}
+        action_data["data"] = {
+            **integration_schema["base_data"],
+            **endpoint_schema["data"],
+            **action_data["data"],
+        }
         action_data["params"] = {
-            **schema["base_params"],
+            **integration_schema["base_params"],
             **endpoint_schema["params"],
             **action_data["params"],
         }
@@ -173,7 +197,7 @@ class HttpAction(GenericAction):
 
         status_code = execution_context.public.response.get("status")
 
-        if status_code < self.HTTP_STATUS_OK_200 or status_code >= self.HTTP_STATUS_MULTIPLE_CHOICES_300:
+        if status_code < self.http_status_ok_200 or status_code >= self.http_status_multiple_choices_300:
             pipeline_context["next_action"] = self.action_data.get("next_action_fail")
         else:
             pipeline_context["next_action"] = self.action_data.get("next_action_success")
@@ -181,7 +205,7 @@ class HttpAction(GenericAction):
         return execution_context, pipeline_context
 
     def _load_scheme(self):
-        schema_path = "actions/schemas/{0}.json".format(self.SCHEMA)
+        schema_path = "actions/schemas/{0}.json".format(self.schema)
         schema = parse_json_file(schema_path)
         return schema
 

@@ -1,6 +1,6 @@
 {
-    "id": "massificate_contracts",
-    "name": "Massificate contracts",
+    "id": "servicenow-get-contracts",
+    "name": "Get contracts",
     "pipeline": [
         {
             "action": "start",
@@ -17,16 +17,20 @@
                 "conn_name": "socportal",
                 "args": {}
             },
-            "next_action": "response_success"
+            "next_action": "workspace_var_contracts"
         },
         {
-            "id": "response_success",
-            "action": "response",
+            "id": "workspace_var_contracts",
+            "action": "workspace_var",
             "data": {
-                "data": {
-                    "data": "${response.data}"
-                }
+                "contracts": "${response.data}"
             },
+            "next_action": "end"
+        },
+        {
+            "id": "end",
+            "action": "end",
+            "data": {},
             "next_action": null
         }
     ]
