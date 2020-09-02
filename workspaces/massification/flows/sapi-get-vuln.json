@@ -19,7 +19,7 @@
                     "pipeline": [
                         {
                             "$match": {
-                                "numcontratoservicenow": null
+                                "numcontratoservicenow": "${workspace.contract}"
                             }
                         },
                         {

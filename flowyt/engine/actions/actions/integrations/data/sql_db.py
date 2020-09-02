@@ -64,4 +64,4 @@ class SqlDatabase(GenericAction):
         except:
             pass
 
-        return result
+        return data

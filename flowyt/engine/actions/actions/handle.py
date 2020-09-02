@@ -26,7 +26,6 @@ class Handle(GenericAction):
 
         result, dict_context, logs = pipeline_class.process(dict_context)
 
-        execution_context.public.flow = {**execution_context.public.flow, **dict_context.public.flow}
         execution_context.public.workspace = {
             **execution_context.public.workspace,
             **dict_context.public.workspace,
@@ -34,5 +33,4 @@ class Handle(GenericAction):
 
         pipeline_context["extra"] = {"extra_logs": {"trace": {"flows": logs["workspace"]["flows"]}}}
         execution_context.public.response = result
-
         return (execution_context, pipeline_context)

@@ -22,22 +22,6 @@
             "data": {
                 "flow": "servicenow-insert-contracts-postgres"
             },
-            "next_action": "handle_sapi_get_vuln"
-        },
-        {
-            "id": "handle_sapi_get_vuln",
-            "action": "handle",
-            "data": {
-                "flow": "sapi-get-vuln"
-            },
-            "next_action": "handle_sapi_insert_vuln_postgres"
-        },
-        {
-            "id": "handle_sapi_insert_vuln_postgres",
-            "action": "handle",
-            "data": {
-                "flow": "sapi-insert-vuln-postgres"
-            },
             "next_action": "handle_sapi_insert_vuln_count_postgres"
         },
         {

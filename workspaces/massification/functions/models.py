@@ -50,11 +50,10 @@ class VulnerabilitiesCount(Base):
     __tablename__ = "vulnerabilities_vulnerabilitycount"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
-    name = Column(String(255), unique=True, nullable=False)
     total = Column(Integer, unique=True, nullable=False)
     contract_id = Column(UUID(as_uuid=True), ForeignKey("contracts_contract.id"))
     vulnerability_id = Column(UUID(as_uuid=True), ForeignKey("vulnerabilities_vulnerability.id"))
-    created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+    created_at = Column(DateTime(timezone=True), nullable=False, default=func.now())
     updated_at = Column(DateTime(timezone=True), nullable=False, onupdate=func.now())
 
     def __repr__(self):

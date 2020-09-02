@@ -45,7 +45,7 @@ class VulnerabilitiesCount:
         if not (contract and vuln):
             return False
         
-        result = vuln_count_model()
+        result = vuln_count_model(contract_id=str(contract.id), total=total, vulnerability_id=str(vuln.id))
         self.session.add(result)
         self.session.commit()
         return result
