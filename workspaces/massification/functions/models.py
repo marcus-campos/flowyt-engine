@@ -58,3 +58,13 @@ class VulnerabilitiesCount(Base):
 
     def __repr__(self):
         return "<VulnerabilitiesCount %r>" % self.id
+
+
+class WorkerFrequency(Base):
+    __tablename__ = "core_workerfrequency"
+
+    worker_name = Column(String(20), unique=True, nullable=False, primary_key=True)
+    last_run_at = Column(DateTime(timezone=True), nullable=False, default=func.now())
+
+    def __repr__(self):
+        return "<WorkerFrequency %r>" % self.worker_name

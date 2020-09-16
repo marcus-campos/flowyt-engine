@@ -22,13 +22,21 @@
             "data": {
                 "flow": "contracts"
             },
-            "next_action": "response"
+            "next_action": "handle_worker_frequency"
         },
         {
             "id": "handle_tickets",
             "action": "handle",
             "data": {
                 "flow": "tickets"
+            },
+            "next_action": "handle_worker_frequency"
+        },
+        {
+            "id": "handle_worker_frequency",
+            "action": "handle",
+            "data": {
+                "flow": "worker-frequency"
             },
             "next_action": "response"
         },

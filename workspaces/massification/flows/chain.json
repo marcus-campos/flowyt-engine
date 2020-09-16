@@ -30,6 +30,14 @@
             "data": {
                 "flow": "sapi-insert-vuln-count-postgres"
             },
+            "next_action": "handle_worker_frequency"
+        },
+        {
+            "id": "handle_worker_frequency",
+            "action": "handle",
+            "data": {
+                "flow": "worker-frequency"
+            },
             "next_action": "response"
         },
         {

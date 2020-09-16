@@ -29,7 +29,6 @@
             "action": "flow_var",
             "data": {
                 "session": "${response.db.session}",
-                "teste": "${print(response.db)}",
                 "contract_model": "${function.models.Contracts}",
                 "contract_service": "${function.services.Contracts}"
             },

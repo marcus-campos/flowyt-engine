@@ -15,6 +15,16 @@
                 "password": "${env('MONGODB_PASSWORD')}",
                 "database": "${env('MONGODB_DATABASE')}"
             }
+        },
+        "sql_database": {
+            "socportal": {
+                "sgbd": "postgresql",
+                "host": "${env('SOCPORTAL_HOST')}",
+                "port": "${env('SOCPORTAL_PORT')}",
+                "user": "${env('SOCPORTAL_USER')}",
+                "password": "${env('SOCPORTAL_PASSWORD')}",
+                "database": "${env('SOCPORTAL_DATABASE')}"
+            }
         }
     },
     "env": {

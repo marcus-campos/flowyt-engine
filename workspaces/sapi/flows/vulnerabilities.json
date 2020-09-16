@@ -45,7 +45,7 @@
                         "next_action": "mongodb_find_update"
                     }
                 ],
-                "next_action_else": "response_success"
+                "next_action_else": "handle_worker_frequency"
             },
             "next_action": "${pipeline.next_action}"
         },
@@ -70,10 +70,18 @@
             "data": {
                 "vulnerabilities": "${function.util.remove_from_dict(flow.vulnerabilities)}"
             },
-            "next_action": "check_var_vulnerabilities"
+            "next_action": "handle_worker_frequency"
         },
         {
-            "id": "response_success",
+            "id": "handle_worker_frequency",
+            "action": "handle",
+            "data": {
+                "flow": "worker-frequency"
+            },
+            "next_action": "response"
+        },
+        {
+            "id": "response",
             "action": "response",
             "data": {
                 "data": {
