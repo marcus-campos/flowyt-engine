@@ -7,7 +7,7 @@ from dotmap import DotMap
 from engine.eval import contexted_run
 from engine.utils.http import HttpRequest
 from engine.utils.json_parser import parse_json_file
-
+from engine.utils.util import can_cast
 
 class GenericAction:
     initial_action_data = None
@@ -103,9 +103,7 @@ class GenericAction:
             for element in elements:
                 result = contexted_run(context=context, source=element, language=language)
 
-                if type(result) is str:
-                    action_data[key] = action_data[key].replace(element, str(result))
-                elif type(result) is list:
+                if type(result) is list:
                     for index in range(len(result)):
                         item = result[index]
                         if type(item) is DotMap:
@@ -113,6 +111,8 @@ class GenericAction:
                     action_data[key] = result
                 elif type(result) is DotMap:
                     action_data[key] = result.toDict()
+                elif can_cast(result, str):
+                    action_data[key] = action_data[key].replace(element, str(result))
                 else:
                     action_data[key] = result
 

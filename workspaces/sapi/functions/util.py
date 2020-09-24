@@ -16,3 +16,7 @@ def add_sys_date(data):
     dt = datetime.now(pytz.timezone("America/Sao_Paulo"))
     new_data["sys_created_at"] = dt
     return new_data
+
+def add_key(data, key, key_data):
+    data[key] = key_data
+    return data

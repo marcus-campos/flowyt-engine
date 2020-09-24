@@ -12,7 +12,7 @@
             "id": "flow_var_sql",
             "action": "flow_var",
             "data": {
-                "sql": "SELECT cliente.nomefantasia, cliente.numcontratoservicenow, v.* FROM vulnerabilidades as v INNER JOIN tbauditoria as audit ON v.id_audit = audit.id_audit INNER JOIN tbcliente as cliente ON audit.id_cliente = cliente.id_cliente WHERE cliente.numcontratoservicenow <> '' AND v.created_at >= concat((CURDATE() - INTERVAL 1 DAY), ' 00:00:00');"
+                "sql_vuln": "SELECT cliente.nomefantasia, cliente.numcontratoservicenow, v.* FROM vulnerabilidades as v INNER JOIN tbauditoria as audit ON v.id_audit = audit.id_audit INNER JOIN tbcliente as cliente ON audit.id_cliente = cliente.id_cliente limit 100;"
             },
             "next_action": "sql_db_sapi_select_vulnerabilities"
         },
@@ -21,7 +21,7 @@
             "action": "sql_db",
             "data": {
                 "conn_name": "sapi",
-                "sql": "${flow.sql}"
+                "sql": "${flow.sql_vuln}"
             },
             "next_action": "flow_var_vulnerabilities_data"
         },
@@ -42,12 +42,45 @@
                         "operator": "greater_than",
                         "first_expression": "${len(flow.vulnerabilities)}",
                         "second_expression": "${1}",
-                        "next_action": "mongodb_find_update"
+                        "next_action": "flow_var_sql_lb"
                     }
                 ],
                 "next_action_else": "handle_worker_frequency"
             },
             "next_action": "${pipeline.next_action}"
+        },
+        {
+            "id": "flow_var_sql_lb",
+            "action": "flow_var",
+            "data": {
+                "sql_lb": "SELECT lb.nome FROM label_vulnerabilidades as lvuln INNER JOIN vulnerabilidades as vuln ON lvuln.hostname = vuln.hostname INNER JOIN labels as lb ON lb.id = lvuln.label_id WHERE vuln.id_vuln = ${flow.vulnerabilities[0].id_vuln};"
+            },
+            "next_action": "sql_db_sapi_select_lb"
+        },
+        {
+            "id": "sql_db_sapi_select_lb",
+            "action": "sql_db",
+            "data": {
+                "conn_name": "sapi",
+                "sql": "${flow.sql_lb}"
+            },
+            "next_action": "flow_var_lb_data"
+        },
+        {
+            "id": "flow_var_lb_data",
+            "action": "flow_var",
+            "data": {
+                "labels": "${response.data}"
+            },
+            "next_action": "run_lb_data"
+        },
+        {
+            "id": "run_lb_data",
+            "action": "run",
+            "data": {
+                "vulnerability": "${function.util.add_key(flow.vulnerabilities[0],'labels',flow.labels)}"
+            },
+            "next_action": "mongodb_find_update"
         },
         {
             "id": "mongodb_find_update",
@@ -57,8 +90,8 @@
                 "action": "find_and_modify",
                 "conn_name": "socportal",
                 "args": {
-                    "query": {"id_vuln": "${flow.vulnerabilities[0].id_vuln}"},
-                    "update": {"$set": "${function.util.add_sys_date(flow.vulnerabilities[0])}"},
+                    "query": {"id_vuln": "${flow.vulnerability.id_vuln}"},
+                    "update": {"$set": "${function.util.add_sys_date(flow.vulnerability)}"},
                     "upsert": true
                 }
             }, 
@@ -70,7 +103,7 @@
             "data": {
                 "vulnerabilities": "${function.util.remove_from_dict(flow.vulnerabilities)}"
             },
-            "next_action": "handle_worker_frequency"
+            "next_action": "check_var_vulnerabilities"
         },
         {
             "id": "handle_worker_frequency",
@@ -78,7 +111,7 @@
             "data": {
                 "flow": "worker-frequency"
             },
-            "next_action": "response"
+            "next_action": "check_var_vulnerabilities"
         },
         {
             "id": "response",
