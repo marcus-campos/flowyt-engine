@@ -28,4 +28,4 @@ RUN pip install pygments
 RUN pipenv lock --requirements > requirements.txt
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["/bin/bash","./docker/start.sh"]
+ENTRYPOINT ["/bin/bash"]
