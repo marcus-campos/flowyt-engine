@@ -2,6 +2,7 @@ import re
 
 from engine.actions.register import get_action
 from engine.eval import contexted_run_pipeline
+from engine.exceptions.action import UnsynchronizedActionException
 
 
 class Actions:
@@ -62,4 +63,5 @@ class Action:
     def __check_execute_async(self):
         if self.execute_async:
             if not self.action.can_execute_async:
-                raise Exception("You cannot perform this action asynchronously")
+                action_name = self.action_name
+                raise UnsynchronizedActionException(action_name)

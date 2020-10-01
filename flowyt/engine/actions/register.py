@@ -2,9 +2,9 @@ from .actions.default import Default
 from .actions.end import End
 from .actions.flow_var import FlowVar
 from .actions.handle import Handle
-from .actions.integrations.data.mongodb import MongoDB
-from .actions.integrations.data.redis import Redis
-from .actions.integrations.data.sql_db import SqlDatabase
+from .actions.integrations.mongo.mongo import MongoDB
+from .actions.integrations.redis import Redis
+from .actions.integrations.sql_db import SqlDatabase
 from .actions.integrations.marketplace.mercado_livre import MercadoLivre
 from .actions.jump import Jump
 from .actions.loop import Loop

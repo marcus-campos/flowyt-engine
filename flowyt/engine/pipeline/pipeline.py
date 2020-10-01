@@ -4,12 +4,12 @@ import os
 import time
 
 from dotmap import DotMap
-from engine.debug import PipelineDebug
-from engine.flow import Flow
+from .debug import PipelineDebug
+from .flow import Flow
 from engine.utils.asyncio_pool import AsyncioPool
-from engine.workspace import Workspace
+from .workspace import Workspace
 
-from .settings import WORKSPACE_STORAGE_MODE
+from engine.settings import WORKSPACE_STORAGE_MODE
 
 
 class Pipeline:
@@ -174,45 +174,45 @@ class PipelineActions:
     def execute_action(self):
         action = None
 
-        # try:
-        # Get next action
-        action = self.actions.next_action(self.context.pipeline_context)
+        try:
+            # Get next action
+            action = self.actions.next_action(self.context.pipeline_context)
 
-        if not action:
-            response = self.context.pipeline_context.get("response")
-            next_flow = self.context.pipeline_context.get("next_flow")
+            if not action:
+                response = self.context.pipeline_context.get("response")
+                next_flow = self.context.pipeline_context.get("next_flow")
 
-            if not response and not next_flow:
-                self.has_actions = False
-                self.process_pipeline = False
+                if not response and not next_flow:
+                    self.has_actions = False
+                    self.process_pipeline = False
 
-            return None
+                return None
 
-        # Execute action
-        if action.execute_async:
-            self.context.pipeline_context["async_pool"].add(action.action.start_async(self.context))
-        else:
-            self.context = action.action.start(self.context)
-        # except Exception as e:
-        #     self.process_pipeline = False
-        #     self.has_actions = False
-        #     self.execution_error = True
+            # Execute action
+            if action.execute_async:
+                self.context.pipeline_context["async_pool"].add(action.action.start_async(self.context))
+            else:
+                self.context = action.action.start(self.context)
+        except Exception as e:
+            self.process_pipeline = False
+            self.has_actions = False
+            self.execution_error = True
 
-        #     if hasattr(e, "message"):
-        #         self.pipeline_response = {"exception": {}}
+            if hasattr(e, "message"):
+                self.pipeline_response = {"exception": {}}
 
-        #         if self.context.pipeline_context.debug:
-        #             self.pipeline_response["exception"] = {
-        #                 "message": e.message,
-        #                 "action": {"id": action.id, "name": action.action_name, "data": action.data},
-        #             }
-        #     else:
-        #         self.pipeline_response = {"exception": {}}
-        #         if self.context.pipeline_context.debug:
-        #             self.pipeline_response["exception"] = {
-        #                 "message": str(e),
-        #                 "action": {"id": action.id, "name": action.action_name, "data": action.data},
-        #             }
+                if self.context.pipeline_context.debug:
+                    self.pipeline_response["exception"] = {
+                        "message": e.message,
+                        "action": {"id": action.id, "name": action.action_name, "data": action.data},
+                    }
+            else:
+                self.pipeline_response = {"exception": {}}
+                if self.context.pipeline_context.debug:
+                    self.pipeline_response["exception"] = {
+                        "message": str(e),
+                        "action": {"id": action.id, "name": action.action_name, "data": action.data},
+                    }
 
         return action
 

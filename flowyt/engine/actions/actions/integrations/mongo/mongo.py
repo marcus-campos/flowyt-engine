@@ -4,6 +4,7 @@ import json
 from bson import json_util
 from engine.actions.action import GenericAction
 from pymongo import MongoClient
+from .exceptions import MongoConnectionErrorException
 
 
 class MongoDB(GenericAction):
@@ -28,7 +29,7 @@ class MongoDB(GenericAction):
             db = client[config.database]
             collection = db[collection]
         except Exception:
-            raise Exception("Something went wrong when establishing the connection with Mongo")
+            raise MongoConnectionErrorException()
 
         return collection
 

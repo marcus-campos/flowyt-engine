@@ -4,7 +4,7 @@ import re
 from dotmap import DotMap
 from engine.eval import contexted_run
 
-from .settings import WORKSPACE_STORAGE_MODE
+from engine.settings import WORKSPACE_STORAGE_MODE
 
 
 class Workspace:

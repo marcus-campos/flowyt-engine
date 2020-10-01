@@ -1,5 +1,5 @@
-from .functions import FunctionLoader
-from .pipeline import Pipeline
+from .pipeline.functions import FunctionLoader
+from .pipeline.pipeline import Pipeline
 from .settings import WORKSPACE_STORAGE_MODE
 
 

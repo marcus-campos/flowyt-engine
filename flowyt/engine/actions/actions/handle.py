@@ -2,7 +2,7 @@ import copy
 import time
 
 from engine.actions.action import GenericAction
-from engine.debug import PipelineDebug
+from engine.pipeline.debug import PipelineDebug
 
 
 class Handle(GenericAction):

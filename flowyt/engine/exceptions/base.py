@@ -1,0 +1,2 @@
+class FlowytException(Exception):
+    pass
