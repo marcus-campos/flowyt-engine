@@ -2,7 +2,7 @@ from engine.actions.action import GenericAction
 
 
 class Switch(GenericAction):
-    def handle(self, action_data, execution_context, pipeline_context):
+    def handle(self, action_data, execution_context, pipeline):
         next_action = None
 
         for condition in action_data.get("conditions"):
@@ -29,6 +29,6 @@ class Switch(GenericAction):
         if not next_action:
             next_action = action_data.get("next_action_else")
 
-        pipeline_context = {"next_action": next_action}
+        pipeline = {"next_action": next_action}
 
-        return execution_context, pipeline_context
+        return execution_context, pipeline

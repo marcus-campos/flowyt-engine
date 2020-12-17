@@ -1,9 +1,8 @@
 import os
 import re
 
-from dotmap import DotMap
+from engine.utils.dotmap import DotMap
 from engine.eval import contexted_run
-
 from engine.settings import WORKSPACE_STORAGE_MODE
 
 

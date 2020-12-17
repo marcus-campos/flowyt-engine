@@ -2,12 +2,15 @@ import json
 import time
 
 import js2py
-from dotmap import DotMap
 
 
 def __run_python(source, run_context):
     try:
-        result = eval("{0}".format(source), run_context, {"json": json},)
+        result = eval(
+            "{0}".format(source),
+            run_context,
+            {"json": json},
+        )
     except SyntaxError as e:
         pass
 

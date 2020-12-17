@@ -12,7 +12,13 @@ class Router:
     def __map(self, routes):
         urls = []
         for route in routes:
-            urls.append(Rule(route["path"], endpoint=route["flow"], methods=[route["method"]],))
+            urls.append(
+                Rule(
+                    route["path"],
+                    endpoint=route["flow"],
+                    methods=[route["method"]],
+                )
+            )
 
         return Map(urls)
 

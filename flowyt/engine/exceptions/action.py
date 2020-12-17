@@ -1,5 +1,6 @@
 from .base import FlowytException
 
+
 class UnsynchronizedActionException(FlowytException):
     def __init__(self, action_name=None):
         self.message = "You cannot perform this action asynchronously"

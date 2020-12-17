@@ -4,7 +4,7 @@ from redis.exceptions import DataError
 
 
 class Redis(GenericAction):
-    def handle(self, action_data, execution_context, pipeline_context):
+    def handle(self, action_data, execution_context, pipeline):
         response = None
         key = action_data.get("key")
         data = action_data.get("data", None)
@@ -25,7 +25,7 @@ class Redis(GenericAction):
             raise "Something went wrong and it was not possible to perform this action"
 
         execution_context.public.response = {"data": response}
-        return execution_context, pipeline_context
+        return execution_context, pipeline
 
     def __connect(self, config):
         try:

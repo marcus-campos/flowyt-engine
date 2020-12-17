@@ -4,13 +4,14 @@ import json
 from bson import json_util
 from engine.actions.action import GenericAction
 from pymongo import MongoClient
+
 from .exceptions import MongoConnectionErrorException
 
 
 class MongoDB(GenericAction):
     can_execute_async = True
 
-    def handle(self, action_data, execution_context, pipeline_context):
+    def handle(self, action_data, execution_context, pipeline):
         config = execution_context.private.integrations.mongodb
 
         conn_name = action_data.get("conn_name")
@@ -19,7 +20,7 @@ class MongoDB(GenericAction):
         result = self.perform_action(collection, action_data["action"], action_data["args"])
         execution_context.public.response = {"data": result}
 
-        return execution_context, pipeline_context
+        return execution_context, pipeline
 
     def __collection(self, config, collection):
         try:

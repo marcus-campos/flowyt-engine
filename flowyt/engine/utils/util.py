@@ -5,5 +5,6 @@ def safe_cast(val, to_type):
     except:
         return False
 
+
 def can_cast(val, to_type):
     return True if safe_cast(val, to_type) else False

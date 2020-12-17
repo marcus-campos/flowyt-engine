@@ -40,7 +40,7 @@ class Database:
 class SqlDatabase(GenericAction):
     action_schema: {}
 
-    def handle(self, action_data, execution_context, pipeline_context):
+    def handle(self, action_data, execution_context, pipeline):
         conn_name = action_data.get("conn_name")
 
         database = Database(execution_context.private.integrations.sql_database.get(conn_name, {}))
@@ -51,7 +51,7 @@ class SqlDatabase(GenericAction):
 
         execution_context.public.response = {"db": database, "data": data}
 
-        return execution_context, pipeline_context
+        return execution_context, pipeline
 
     def execute_raw(self, database, sql):
         result = database.raw(sql)

@@ -24,7 +24,7 @@ class Actions:
                 self.__next_action = action_id
                 actions_added = True
 
-    def next_action(self, pipeline_context):
+    def next_action(self, pipeline):
         self.__current_action = self.__next_action
 
         elements = {}
@@ -34,7 +34,7 @@ class Actions:
 
         if len(elements) > 0:
             for element in elements:
-                result = contexted_run_pipeline(context=pipeline_context, source=element)
+                result = contexted_run_pipeline(context=pipeline, source=element)
                 self.__current_action = self.__current_action.replace(element, str(result))
 
         if not self.__current_action:

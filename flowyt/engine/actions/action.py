@@ -3,11 +3,12 @@ import copy
 import re
 
 from cerberus import Validator
-from dotmap import DotMap
+from engine.utils.dotmap import DotMap
 from engine.eval import contexted_run
 from engine.utils.http import HttpRequest
 from engine.utils.json_parser import parse_json_file
 from engine.utils.util import can_cast
+
 
 class GenericAction:
     initial_action_data = None
@@ -28,18 +29,18 @@ class GenericAction:
 
     def start(self, context):
         """
-            Action life cycle: 
-            __validate_schema -> __load_action_data -> before_handle -> handle -> after_handle -> _next_action
+        Action life cycle:
+        __validate_schema -> __load_action_data -> before_handle -> handle -> after_handle -> _next_action
         """
         initial_action_data = copy.deepcopy(self.initial_action_data)
         # self.__validate_schema(initial_action_data)
         self.action_data = self.__load_action_data(initial_action_data, context)
 
-        self.action_data, context, pipeline_context = self.before_handle(self.action_data, context)
-        context, pipeline_context = self.handle(self.action_data, context, pipeline_context)
-        context, pipeline_context = self.after_handle(self.action_data, context, pipeline_context)
+        self.action_data, context, pipeline = self.before_handle(self.action_data, context)
+        context, pipeline = self.handle(self.action_data, context, pipeline)
+        context, pipeline = self.after_handle(self.action_data, context, pipeline)
 
-        return self._next_action(context, pipeline_context)
+        return self._next_action(context, pipeline)
 
     def __validate_schema(self, action_data):
         action_schema = {
@@ -59,23 +60,23 @@ class GenericAction:
     def before_handle(self, action_data, execution_context):
         return action_data, execution_context, {}
 
-    def handle(self, action_data, execution_context, pipeline_context):
-        return execution_context, pipeline_context
+    def handle(self, action_data, execution_context, pipeline):
+        return execution_context, pipeline
 
-    def after_handle(self, action_data, execution_context, pipeline_context):
-        return execution_context, pipeline_context
+    def after_handle(self, action_data, execution_context, pipeline):
+        return execution_context, pipeline
 
-    def _next_action(self, context, pipeline_context=None):
-        context.pipeline_context["response"] = None
-        context.pipeline_context["next_flow"] = None
-        context.pipeline_context["next_action"] = None
-        context.pipeline_context["extra"] = None
+    def _next_action(self, context, pipeline=None):
+        context.pipeline["response"] = None
+        context.pipeline["next_flow"] = None
+        context.pipeline["next_action"] = None
+        context.pipeline["extra"] = None
 
-        if pipeline_context:
-            context.pipeline_context["response"] = pipeline_context.get("response", None)
-            context.pipeline_context["next_flow"] = pipeline_context.get("next_flow", None)
-            context.pipeline_context["next_action"] = pipeline_context.get("next_action", None)
-            context.pipeline_context["extra"] = pipeline_context.get("extra", None)
+        if pipeline:
+            context.pipeline["response"] = pipeline.get("response", None)
+            context.pipeline["next_flow"] = pipeline.get("next_flow", None)
+            context.pipeline["next_action"] = pipeline.get("next_action", None)
+            context.pipeline["extra"] = pipeline.get("extra", None)
 
         return context
 
@@ -90,7 +91,7 @@ class GenericAction:
                         self.__load_action_data(item, context)
 
             elements = []
-            language = context.private.development_language
+            language = context.private["development_language"]
             if type(action_data[key]) is str:
                 elements = re.findall("\$\{.*?\}", action_data[key])
                 if not elements:
@@ -107,10 +108,10 @@ class GenericAction:
                     for index in range(len(result)):
                         item = result[index]
                         if type(item) is DotMap:
-                            result[index] = item.toDict()
+                            result[index] = item.to_dict()
                     action_data[key] = result
                 elif type(result) is DotMap:
-                    action_data[key] = result.toDict()
+                    action_data[key] = result.to_dict()
                 elif can_cast(result, str):
                     action_data[key] = action_data[key].replace(element, str(result))
                 else:
@@ -133,7 +134,7 @@ class HttpAction(GenericAction):
         action_context.public = {
             **action_context.public.toDict(),
             **self.action_context,
-            **{"p": action_data.get("path_params", {"teste": "123"})},
+            # **{"p": action_data.get("path_params", {"teste": "123"})},
         }
         action_context = DotMap(action_context)
 
@@ -168,7 +169,7 @@ class HttpAction(GenericAction):
 
         return action_data, execution_context, {}
 
-    def handle(self, action_data, execution_context, pipeline_context):
+    def handle(self, action_data, execution_context, pipeline):
         response_data = {}
         request = HttpRequest(action_data.get("url"))
         request_data = {
@@ -198,11 +199,11 @@ class HttpAction(GenericAction):
         status_code = execution_context.public.response.get("status")
 
         if status_code < self.http_status_ok_200 or status_code >= self.http_status_multiple_choices_300:
-            pipeline_context["next_action"] = self.action_data.get("next_action_fail")
+            pipeline["next_action"] = self.action_data.get("next_action_fail")
         else:
-            pipeline_context["next_action"] = self.action_data.get("next_action_success")
+            pipeline["next_action"] = self.action_data.get("next_action_success")
 
-        return execution_context, pipeline_context
+        return execution_context, pipeline
 
     def _load_scheme(self):
         schema_path = "actions/schemas/{0}.json".format(self.schema)

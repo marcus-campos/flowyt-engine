@@ -2,14 +2,14 @@ from .actions.default import Default
 from .actions.end import End
 from .actions.flow_var import FlowVar
 from .actions.handle import Handle
+from .actions.integrations.marketplace.mercado_livre import MercadoLivre
 from .actions.integrations.mongo.mongo import MongoDB
 from .actions.integrations.redis import Redis
 from .actions.integrations.sql_db import SqlDatabase
-from .actions.integrations.marketplace.mercado_livre import MercadoLivre
 from .actions.jump import Jump
 from .actions.loop import Loop
 from .actions.request import Request
-from .actions.response import Response
+from .actions.response import Response, ResponseHttp
 from .actions.run import Run
 from .actions.start import Start
 from .actions.switch import Switch
@@ -23,6 +23,7 @@ __actions = {
     "request": Request,
     "switch": Switch,
     "response": Response,
+    "response_http": Response,
     "validation": Validation,
     "jump": Jump,
     "sql_db": SqlDatabase,

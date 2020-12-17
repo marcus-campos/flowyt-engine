@@ -23,7 +23,8 @@ if __name__ == "__main__":
 
     if args.workspace and args.flow:
         workspace_data = WorkspaceLoad().load(args.workspace.strip())
-        result = None
+        result = None,
+        logs = None
         debug = "false"
 
         if args.debug:
@@ -31,24 +32,36 @@ if __name__ == "__main__":
 
         if args.input:
             args_data = json.loads(args.input)
-            result = engine_class.start(
+            result, logs = engine_class.start(
                 workspace_data, {}, {**args_data, "debug": debug}, args.workspace.strip(), args.flow.strip()
             )
         else:
-            result = engine_class.start(
+            result, logs = engine_class.start(
                 workspace_data, {}, {"debug": debug}, args.workspace.strip(), args.flow.strip()
             )
 
         if result:
             if debug == "false":
-                del result["__debug__"]
                 if "exception" in result:
                     del result["exception"]
+            else:
+                result["__debug__"] = logs
 
             if args.debug.strip() == "simplified":
                 for flow in range(len(result["__debug__"]["workspace"]["flows"])):
                     for action in range(len(result["__debug__"]["workspace"]["flows"][flow]["actions"])):
                         del result["__debug__"]["workspace"]["flows"][flow]["actions"][action]["data"]
+
+            if args.debug.strip() == "draw":
+                print("")
+                for flow in range(len(result["__debug__"]["workspace"]["flows"])):
+                    for action_index in range(len(result["__debug__"]["workspace"]["flows"][flow]["actions"])):
+                        action = result["__debug__"]["workspace"]["flows"][flow]["actions"][action_index]
+                        print("Action: {0}  ID: {1}  Time spent: {2}".format(action["name"], action["id"], action["time_spent"]))
+                        if action["name"] not in ["response", "end"]:
+                            print("↓")
+
+                del result["__debug__"]
 
             result = json.dumps(
                 result, indent=2, default=lambda o: f"<non-serializable: {type(o).__qualname__}>"
