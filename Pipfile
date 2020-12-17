@@ -30,4 +30,4 @@ pymysql = "*"
 psycopg2-binary = "*"
 
 [requires]
-python_full_version = "3.8.1"
+python_full_version = "3.8.5"
